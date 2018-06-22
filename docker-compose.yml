@@ -1,0 +1,10 @@
+version: '2'
+services:
+    cli:
+        build: .
+        ports:
+            - "710:80"
+        tty: true
+        volumes:
+          - .:/var/www/html
+        command: "ping 127.0.0.1"
