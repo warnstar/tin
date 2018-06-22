@@ -5,7 +5,7 @@
  * Date: 18-6-22
  * Time: 上午9:54
  */
-namespace controllers;
+namespace app\controllers;
 
 class IndexController
 {

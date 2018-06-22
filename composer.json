@@ -2,10 +2,6 @@
     "name": "warnstar/tin",
     "description": "swoole http server",
     "type": "project",
-    "require": {
-        "symfony/var-dumper": "^3.1",
-        "nikic/fast-route": "^1.3"
-    },
     "license": "0.1",
     "authors": [
         {
@@ -13,6 +9,18 @@
             "email": "wchuang@aliyun.com"
         }
     ],
+    "require": {
+        "symfony/var-dumper": "^3.1",
+        "nikic/fast-route": "^1.3",
+        "vlucas/phpdotenv": "^2.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "friendsofphp/php-cs-fixer": "^2.10"
+    },
+    "scripts": {
+        "cs": "./vendor/bin/php-cs-fixer fix ./framework --using-cache=false"
+    },
     "repositories": {
         "packagist": {
             "type": "composer",
