@@ -7,13 +7,14 @@
  */
 
 namespace tin\base;
-use FastRoute\simpleDispatcher;
+use FastRoute;
 
 class Application
 {
 
-    public function run()
+    public function run($config = [])
     {
+
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
             $r->addRoute('GET', '/users', 'get_all_users_handler');
             // {id} must be a number (\d+)
@@ -22,13 +23,13 @@ class Application
             $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
         });
 
-        $http = new swoole_http_server("0.0.0.0", 80);
+        $http = new \Swoole\Http\Server("0.0.0.0", 80);
 
         $http->on("start", function ($server) {
             echo "Swoole http server is started at http://0.0.0.0:80\n";
         });
 
-        $http->on("request", function ($request, $response) use ($dispatcher) {
+        $http->on("request", function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) use ($dispatcher) {
             $response->header("Content-Type", "text/plain");
 
             $request_method = $request->server['request_method'];
