@@ -26,7 +26,6 @@ class Router
         array_push(self::$routes, ['GET', $route, $handle, $middlewares]);
     }
 
-
     /**
      * @param string $route
      * @param string $handle

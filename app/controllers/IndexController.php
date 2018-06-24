@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is part of Tin.
+ */
 namespace app\controllers;
 
 use Tin\Base\Controller;

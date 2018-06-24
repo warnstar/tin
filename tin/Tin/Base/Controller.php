@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2018/6/24
- * Time: 19:56
+ * This file is part of Tin.
  */
 namespace Tin\Base;
 
@@ -44,11 +41,9 @@ class Controller extends ControllerAbstract
 
     protected function beforeAction()
     {
-
     }
 
     protected function afterAction()
     {
-
     }
 }

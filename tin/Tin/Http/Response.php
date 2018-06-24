@@ -41,8 +41,8 @@ class Response extends Message implements ResponseInterface
      */
     protected $reasonPhrase = '';
 
-
     const CONTENT_TYPE_JSON = 'application/json';
+
     const CONTENT_TYPE_TEXT = 'text/html';
 
     /**

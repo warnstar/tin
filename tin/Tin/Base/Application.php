@@ -56,15 +56,13 @@ class Application
         throw new \BadMethodCallException("Method $method is not a valid method");
     }
 
-
-
     public function run($config = [])
     {
-        $http = new \Swoole\Http\Server(env("SWOOLE_HTTP_SERVER_ADDR", '0.0.0.0'), env("SWOOLE_HTTP_LISTEN_PORT", 80));
+        $http = new \Swoole\Http\Server(env('SWOOLE_HTTP_SERVER_ADDR', '0.0.0.0'), env('SWOOLE_HTTP_LISTEN_PORT', 80));
 
         $http->set([
-            'worker_num' => env("SWOOLE_HTTP_WORKER_NUM", 4),
-            'daemonize' => env("SWOOLE_HTTP_IS_DAEMON", false),
+            'worker_num' => env('SWOOLE_HTTP_WORKER_NUM', 4),
+            'daemonize' => env('SWOOLE_HTTP_IS_DAEMON', false),
             'backlog' => 128,
         ]);
 
