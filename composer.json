@@ -23,7 +23,7 @@
         "friendsofphp/php-cs-fixer": "^2.10"
     },
     "scripts": {
-        "cs": "./vendor/bin/php-cs-fixer fix ."
+        "cs": "./vendor/bin/php-cs-fixer fix "
     },
     "repositories": {
         "packagist": {

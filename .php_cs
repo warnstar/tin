@@ -23,8 +23,7 @@ return PhpCsFixer\Config::create()
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
-            ->exclude('runtime')
-            ->exclude('vendor')
-            ->in(__DIR__)
+            ->in(__DIR__ . "/app")
+            ->in(__DIR__ . "/tin")
     )
     ->setUsingCache(false);
