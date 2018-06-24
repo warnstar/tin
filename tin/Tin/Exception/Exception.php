@@ -1,6 +1,8 @@
 <?php
-
-namespace tin\base;
+/**
+ * This file is part of Tin.
+ */
+namespace Tin\Base;
 
 class Exception extends \Exception
 {

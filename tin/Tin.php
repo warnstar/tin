@@ -1,16 +1,18 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: root
- * Date: 18-6-22
- * Time: 上午10:51
+ * This file is part of Tin.
  */
 
-require __DIR__ . '/tin/BaseTin.php';
+require __DIR__ . '/Tin/BaseTin.php';
 
 
-class Tin extends \tin\base\BaseTin
+class Tin extends Tin\BaseTin
 {
 }
 
 spl_autoload_register(['Tin', 'autoload'], true, true);
+
+
+require_once  __DIR__ . '/Tin/Bootstrap.php';
+
+require_once  __DIR__ . '/Tin/Helper.php';

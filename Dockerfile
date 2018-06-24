@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1-cli
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
 
@@ -13,12 +13,13 @@ RUN apt-get update \
         wget \
         git \
         zip \
+        vim \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
-        libpcre3-dev \
-    && apt-get clean \
-    && apt-get autoremove
+        libpcre3-dev
+#    && apt-get clean \
+#    && apt-get autoremove
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer \
@@ -61,12 +62,13 @@ RUN wget https://github.com/swoole/swoole-src/archive/v4.0.0.tar.gz -O swoole.ta
     && rm -r swoole \
     && docker-php-ext-enable swoole
 
-ADD . /var/www/html
+RUN apt-get install -y procps 
+#ADD . /var/www/html
 
 WORKDIR /var/www/html
 
-RUN composer install --no-dev \
-    && composer dump-autoload -o
+#RUN composer install --no-dev \
+#    && composer dump-autoload -o
 
 EXPOSE 80
 

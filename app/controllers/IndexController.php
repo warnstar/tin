@@ -1,17 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 18-6-22
- * Time: 上午9:54
- */
 namespace app\controllers;
 
-class IndexController
+use Tin\Base\Controller;
+
+class IndexController extends Controller
 {
-    public function show()
+    public function index($args = null)
     {
-        dump(111);
-        return 111;
+        $res = $this->request->getUri()->getPath();
+        $data = $this->request->getParsedBody();
+
+        return ['aaa' => $args, 'ccc' => 111];
+    }
+
+    public function create()
+    {
+        return ['aaa' => 123, 'ccc' => 111];
     }
 }
