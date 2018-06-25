@@ -9,9 +9,20 @@ use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Tin\Exception\HttpInterruptException;
 use Tin\Http\Request;
+use Tin;
 
 class Application
 {
+    /**
+     * @var \Swoole\Http\Server $swServer
+     */
+    private static $swServer;
+
+    public static function swServer()
+    {
+        return self::$swServer;
+    }
+
     /**
      * Container
      *
@@ -60,6 +71,9 @@ class Application
     {
         $http = new \Swoole\Http\Server(env('SWOOLE_HTTP_SERVER_ADDR', '0.0.0.0'), env('SWOOLE_HTTP_LISTEN_PORT', 80));
 
+        // 设置全局swoole server变量
+        self::$swServer = &$http;
+
         $http->set([
             'worker_num' => env('SWOOLE_HTTP_WORKER_NUM', 4),
             'daemonize' => env('SWOOLE_HTTP_IS_DAEMON', false),
@@ -68,6 +82,22 @@ class Application
 
         $http->on('start', function ($server) {
             echo "Tin已启动http服务器，监听80端口\n";
+
+            // 开启热加载
+            if (getenv('RUN_ENV') == 'DEV') {
+                Tin\Watcher::run([
+                    APP_ROOT . '/tin',
+                    APP_ROOT . '/app'
+                ]);
+            }
+        });
+
+        $http->on('ManagerStart', function (\Swoole\Http\Server $server) {
+            echo 'ManagerStart: ' . PHP_EOL . PHP_EOL;
+        });
+
+        $http->on('WorkerStart', function (\Swoole\Http\Server $server, int $workerId) {
+            // 通过重新加载外部文件来重载代码和释放之前占用的内存
         });
 
         $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {

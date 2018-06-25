@@ -17,7 +17,9 @@ RUN apt-get update \
         libz-dev \
         libssl-dev \
         libnghttp2-dev \
-        libpcre3-dev
+        libpcre3-dev \
+        procps \
+        htop
 #    && apt-get clean \
 #    && apt-get autoremove
 
@@ -62,7 +64,8 @@ RUN wget https://github.com/swoole/swoole-src/archive/v4.0.0.tar.gz -O swoole.ta
     && rm -r swoole \
     && docker-php-ext-enable swoole
 
-RUN apt-get install -y procps 
+RUN pecl install inotify && docker-php-ext-enable inotify
+
 #ADD . /var/www/html
 
 WORKDIR /var/www/html

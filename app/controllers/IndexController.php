@@ -4,6 +4,7 @@
  */
 namespace app\controllers;
 
+use Tin\Base\Application;
 use Tin\Base\Controller;
 
 class IndexController extends Controller
@@ -19,5 +20,11 @@ class IndexController extends Controller
     public function create()
     {
         return ['aaa' => 123, 'ccc' => 111];
+    }
+
+    public function reload()
+    {
+        dump('重载服务器');
+        return Application::swServer()->reload();
     }
 }
