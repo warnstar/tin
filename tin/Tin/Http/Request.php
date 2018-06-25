@@ -140,7 +140,8 @@ class Request extends Message implements ServerRequestInterface
         $uri = Uri::createFromSwoole($swooleRequest);
         $headers = Headers::createFromSwoole($swooleRequest);
         $cookies = Cookies::parseHeader($headers->get('Cookie', []));
-        $body = new RequestBody();
+        $body = new RequestBody($swooleRequest->rawContent());
+
         $uploadedFiles = UploadedFile::createFromSwoole($swooleRequest);
 
         $request = new static($method, $uri, $headers, $cookies, $_SERVER, $body, $uploadedFiles);
@@ -198,7 +199,7 @@ class Request extends Message implements ServerRequestInterface
         HeadersInterface $headers,
         array $cookies,
         array $serverParams,
-        StreamInterface $body,
+        RequestBody $body,
         array $uploadedFiles = []
     ) {
         try {
@@ -226,6 +227,7 @@ class Request extends Message implements ServerRequestInterface
         }
 
         $this->registerMediaTypeParser('application/json', function ($input) {
+
             $result = json_decode($input, true);
             if (!is_array($result)) {
                 return null;
@@ -304,10 +306,6 @@ class Request extends Message implements ServerRequestInterface
                 $overrideMethod = $this->filterMethod($this->getParsedBodyParam('_METHOD'));
                 if ($overrideMethod !== null) {
                     $this->method = $overrideMethod;
-                }
-
-                if ($this->getBody()->eof()) {
-                    $this->getBody()->rewind();
                 }
             }
         }
@@ -1232,6 +1230,7 @@ class Request extends Message implements ServerRequestInterface
     {
         $params = $this->getQueryParams();
         $postParams = $this->getParsedBody();
+
         if ($postParams) {
             $params = array_merge($params, (array)$postParams);
         }

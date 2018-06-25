@@ -78,6 +78,8 @@ class Application
             'worker_num' => env('SWOOLE_HTTP_WORKER_NUM', 4),
             'daemonize' => env('SWOOLE_HTTP_IS_DAEMON', false),
             'backlog' => 128,
+            'enable_static_handler' => true,
+            'document_root' => APP_ROOT . "/public"
         ]);
 
         $http->on('start', function ($server) {
@@ -117,6 +119,8 @@ class Application
         } catch (HttpInterruptException $e) {
             $request->response->end('qwe');
         } catch (\Exception $e) {
+            throw $e;
+            $request->response->end(json_encode($e, true));
         }
     }
 }

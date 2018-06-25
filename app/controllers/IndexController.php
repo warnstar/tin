@@ -4,27 +4,31 @@
  */
 namespace app\controllers;
 
-use Tin\Base\Application;
 use Tin\Base\Controller;
 
 class IndexController extends Controller
 {
     public function index($args = null)
     {
+        $this->request->getHeaders();
+        $this->request->getHeader("key");
         $res = $this->request->getUri()->getPath();
         $data = $this->request->getParsedBody();
+
+        # query
+        $this->request->getQueryParams();
+        $this->request->getQueryParam("key");
+
+        # form or json
+        $this->request->getParsedBodyParam("key" , "default");
+        $this->request->getParsedBody();
 
         return ['aaa' => $args, 'ccc' => 111];
     }
 
     public function create()
     {
-        return ['aaa' => 123, 'ccc' => 111];
-    }
-
-    public function reload()
-    {
-        dump('重载服务器');
-        return Application::swServer()->reload();
+        $params = $this->request->getParsedBody();
+        return $params;
     }
 }

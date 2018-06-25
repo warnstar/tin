@@ -7,17 +7,21 @@ namespace Tin\Http;
 /**
  * Provides a PSR-7 implementation of a reusable raw request body
  */
-class RequestBody extends Body
+class RequestBody
 {
-    /**
-     * Create a new RequestBody.
-     */
-    public function __construct()
-    {
-        $stream = fopen('php://temp', 'w+');
-        stream_copy_to_stream(fopen('php://input', 'r'), $stream);
-        rewind($stream);
+    public $rawData = '';
 
-        parent::__construct($stream);
+    public function __toString()
+    {
+        return $this->rawData;
+    }
+
+    /**
+     * RequestBody constructor.
+     * @param string $rawData
+     */
+    public function __construct($rawData = '')
+    {
+        $this->rawData = $rawData;
     }
 }
