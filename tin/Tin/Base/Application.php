@@ -117,7 +117,7 @@ class Application
         try {
             Router::execute($request);
         } catch (HttpInterruptException $e) {
-            $request->response->end('qwe');
+            $request->response->end('HttpInterruptException');
         } catch (\Exception $e) {
             throw $e;
             $request->response->end(json_encode($e, true));
