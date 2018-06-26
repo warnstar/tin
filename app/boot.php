@@ -16,7 +16,3 @@ spl_autoload_register('autoload', true, true);
 
 define('APP_ROOT', __DIR__ . '/../');
 define('APP_PATH', APP_ROOT . '/app');
-
-\Tin\Base\Router::get('/users', \app\controllers\IndexController::class . '@index');
-\Tin\Base\Router::get('/index/{id:\d+}', \app\controllers\IndexController::class . '@index');
-\Tin\Base\Router::post('/index', \app\controllers\IndexController::class . '@create');

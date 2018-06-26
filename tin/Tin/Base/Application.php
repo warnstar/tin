@@ -67,7 +67,7 @@ class Application
         throw new \BadMethodCallException("Method $method is not a valid method");
     }
 
-    public function run($config = [])
+    public function run(Router $router)
     {
         $http = new \Swoole\Http\Server(env('SWOOLE_HTTP_SERVER_ADDR', '0.0.0.0'), env('SWOOLE_HTTP_LISTEN_PORT', 80));
 
@@ -102,8 +102,8 @@ class Application
             // 通过重新加载外部文件来重载代码和释放之前占用的内存
         });
 
-        $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
-            $this->process(Request::createFromSwoole($request, $response));
+        $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) use ($router) {
+            $this->process($router, Request::createFromSwoole($request, $response));
         });
 
         $http->start();
@@ -112,10 +112,10 @@ class Application
     /**
      * @param Request $request
      */
-    public function process(Request $request)
+    public function process(Router $router, Request $request)
     {
         try {
-            Router::execute($request);
+           $router->execute($request);
         } catch (HttpInterruptException $e) {
             $request->response->end('HttpInterruptException');
         } catch (\Exception $e) {

@@ -14,16 +14,19 @@ class Router
     /**
      * @var array $routes
      */
-    private static $routes = [];
+    private $routes = [];
+
+    private $curRouteGroup;
 
     /**
      * @param string $route
      * @param string $handle
      * @param array $middlewares
      */
-    public static function get(string $route, string $handle, $middlewares = [])
+    public function get(string $route, string $handle, $middlewares = [])
     {
-        array_push(self::$routes, ['GET', $route, $handle, $middlewares]);
+        $route = $this->curRouteGroup . $route;
+        array_push($this->routes, ['GET', $route, $handle, $middlewares]);
     }
 
     /**
@@ -31,34 +34,47 @@ class Router
      * @param string $handle
      * @param array $middlewares
      */
-    public static function post(string $route, string $handle, $middlewares = [])
+    public function post(string $route, string $handle, $middlewares = [])
     {
-        array_push(self::$routes, ['POST', $route, $handle, $middlewares]);
+        $route = $this->curRouteGroup . $route;
+        array_push($this->routes, ['POST', $route, $handle, $middlewares]);
+    }
+
+    /**
+     * @param string $route
+     * @param callable $callable
+     */
+    public function group(string $route, callable $callable)
+    {
+        $this->curRouteGroup = $route;
+        $callable($this);
+        unset($this->curRouteGroup);
     }
 
     /**
      * @var FastRoute\Dispatcher $dispatcher
      */
-    private static $dispatcher;
+    private $dispatcher;
 
     /**
      * @return FastRoute\Dispatcher
      */
-    public static function getDispatcher()
+    public function getDispatcher()
     {
-        if (!self::$dispatcher) {
-            self::$dispatcher = self::buildDispatcher(self::$routes);
+        if ($this->dispatcher) {
+            $this->dispatcher = $this->buildDispatcher();
         }
 
-        return self::$dispatcher;
+        return $this->dispatcher;
     }
 
     /**
      * @param $router
      * @return FastRoute\Dispatcher
      */
-    protected static function buildDispatcher($router)
+    protected function buildDispatcher()
     {
+        $router = $this->routes;
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($router) {
             if ($router) {
                 foreach ($router as $v) {
@@ -67,13 +83,14 @@ class Router
             }
         });
 
+        dump("已注册路由如下：\n", $dispatcher);
         return $dispatcher;
     }
 
     /**
      * @param Request  $request
      */
-    public static function execute($request)
+    public function execute($request)
     {
         $request_method =$request->getMethod();
         $request_uri = $request->getUri()->getPath();
@@ -88,7 +105,7 @@ class Router
         }
         $uri = rawurldecode($uri);
 
-        $routeInfo = self::getDispatcher()->dispatch($httpMethod, $uri);
+        $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
         $data = null;
         switch ($routeInfo[0]) {
