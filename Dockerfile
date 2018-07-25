@@ -1,6 +1,8 @@
 FROM php:7.1-cli
 
-RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo 'Asia/Shanghai' >/etc/timezone \
+    && echo 'date.timezone=PRC' > /usr/local/etc/php/conf.d/timezone.ini
 
 RUN sed -i 's/deb.debian.org/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
@@ -75,4 +77,4 @@ WORKDIR /var/www/html
 
 EXPOSE 80
 
-CMD ["php index.php"]
+CMD ["php public/index.php"]
