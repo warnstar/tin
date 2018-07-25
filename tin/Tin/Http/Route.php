@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: root
- * Date: 18-6-26
- * Time: 下午7:03
+ * This file is part of Tin.
  */
 namespace Tin\Http;
 

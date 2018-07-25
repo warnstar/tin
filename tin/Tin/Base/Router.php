@@ -21,8 +21,21 @@ class Router
 
     public function __construct()
     {
-        $this->getDispatcher();
+    }
 
+    public function init()
+    {
+        $this->getDispatcher();
+        $this->printRoute();
+    }
+
+    public function printRoute()
+    {
+        echo "\033[1;33m 已经注册的路由如下： \033[0m \n";
+        foreach ($this->routes as $r) {
+            echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $r[0], $r[1], $r[2]);
+        }
+        exit;
     }
 
     /**
@@ -82,7 +95,7 @@ class Router
     protected function buildDispatcher()
     {
         $router = $this->routes;
-        dump($router);
+
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($router) {
             if ($router) {
                 foreach ($router as $v) {

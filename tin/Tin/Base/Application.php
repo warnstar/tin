@@ -18,6 +18,11 @@ class Application
      */
     private static $swServer;
 
+    /**
+     * @var $router Router
+     */
+    public $router;
+
     public static function swServer()
     {
         return self::$swServer;
@@ -67,7 +72,7 @@ class Application
         throw new \BadMethodCallException("Method $method is not a valid method");
     }
 
-    public function run(Router $router)
+    public function initHttpServer()
     {
         $http = new \Swoole\Http\Server(env('SWOOLE_HTTP_SERVER_ADDR', '0.0.0.0'), env('SWOOLE_HTTP_LISTEN_PORT', 80));
 
@@ -79,7 +84,7 @@ class Application
             'daemonize' => env('SWOOLE_HTTP_IS_DAEMON', false),
             'backlog' => 128,
             'enable_static_handler' => true,
-            'document_root' => APP_ROOT . "/public"
+            'document_root' => APP_ROOT . '/public'
         ]);
 
         $http->on('start', function ($server) {
@@ -102,20 +107,34 @@ class Application
             // 通过重新加载外部文件来重载代码和释放之前占用的内存
         });
 
-        $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) use ($router) {
-            $this->process($router, Request::createFromSwoole($request, $response));
+        $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
+            $this->processRequest($this->router, Request::createFromSwoole($request, $response));
         });
 
         $http->start();
     }
 
+    public function run(Router $router)
+    {
+        $this->initRouter($router);
+
+
+        $this->initHttpServer();
+    }
+
+    public function initRouter(Router $router)
+    {
+        $this->router = $router;
+        $this->router->init();
+    }
+
     /**
      * @param Request $request
      */
-    public function process(Router $router, Request $request)
+    public function processRequest(Router $router, Request $request)
     {
         try {
-           $router->execute($request);
+            $router->execute($request);
         } catch (HttpInterruptException $e) {
             $request->response->end('HttpInterruptException');
         } catch (\Exception $e) {

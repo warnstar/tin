@@ -20,7 +20,7 @@ $r->get('/users', \app\controllers\IndexController::class . '@index');
 $r->get('/index/{id:\d+}', \app\controllers\IndexController::class . '@index');
 $r->post('/index', \app\controllers\IndexController::class . '@create');
 
-$r->group("/test", function(\Tin\Base\Router $r){
+$r->group('/test', function (\Tin\Base\Router $r) {
     $r->get('/mid', \app\controllers\TestController::class . '@mid');
 });
 
