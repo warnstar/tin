@@ -39,11 +39,11 @@ class Controller extends ControllerAbstract
         return $data;
     }
 
-    protected function beforeAction()
+    public function beforeAction()
     {
     }
 
-    protected function afterAction()
+    public function afterAction()
     {
     }
 }

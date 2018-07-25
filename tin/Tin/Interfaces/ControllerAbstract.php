@@ -13,13 +13,13 @@ abstract class ControllerAbstract
      */
     public $request;
 
-    abstract protected function beforeAction();
+    abstract public function beforeAction();
 
-    abstract protected function afterAction();
+    abstract public function afterAction();
 
     /**
      * @param string $action
      * @return mixed
      */
-    abstract protected function runAction($action);
+    abstract public function runAction($action);
 }

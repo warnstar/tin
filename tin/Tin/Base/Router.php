@@ -8,6 +8,7 @@ namespace Tin\Base;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
+use Tin\Interfaces\ControllerAbstract;
 
 class Router
 {
@@ -17,6 +18,25 @@ class Router
     private $routes = [];
 
     private $curRouteGroup;
+
+    public function __construct()
+    {
+    }
+
+    public function init()
+    {
+        $this->getDispatcher();
+        $this->printRoute();
+    }
+
+    public function printRoute()
+    {
+        echo "\033[1;33m 已经注册的路由如下： \033[0m \n";
+        foreach ($this->routes as $r) {
+            echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $r[0], $r[1], $r[2]);
+        }
+        exit;
+    }
 
     /**
      * @param string $route
@@ -61,7 +81,7 @@ class Router
      */
     public function getDispatcher()
     {
-        if ($this->dispatcher) {
+        if ($this->dispatcher == null) {
             $this->dispatcher = $this->buildDispatcher();
         }
 
@@ -75,6 +95,7 @@ class Router
     protected function buildDispatcher()
     {
         $router = $this->routes;
+
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($router) {
             if ($router) {
                 foreach ($router as $v) {
@@ -83,7 +104,6 @@ class Router
             }
         });
 
-        dump("已注册路由如下：\n", $dispatcher);
         return $dispatcher;
     }
 
@@ -127,6 +147,9 @@ class Router
                 list($class, $method) = explode('@', $handler);
 
                 if (class_exists($class)) {
+                    /**
+                     * @var $class ControllerAbstract
+                     */
                     $object = new $class;
 
                     $object->request = $request;

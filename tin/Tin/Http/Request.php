@@ -227,7 +227,6 @@ class Request extends Message implements ServerRequestInterface
         }
 
         $this->registerMediaTypeParser('application/json', function ($input) {
-
             $result = json_decode($input, true);
             if (!is_array($result)) {
                 return null;
