@@ -3,7 +3,7 @@
  * This file is part of Tin.
  */
 
-namespace Tin\Base;
+namespace Tin;
 
 use FastRoute;
 use Tin\Http\Request;

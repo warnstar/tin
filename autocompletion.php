@@ -1,10 +1,10 @@
 <?php
 
-abstract class PimpleContainer extends  Pimple\Container implements \Composer\Semver\Constraint\ConstraintInterface
+ class Application extends  \Tin\Application
 {
 
     /**
-     * @var $router \Tin\Base\Router
+     * @var $router \Tin\Router
      */
     public $router;
 }

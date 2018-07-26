@@ -11,7 +11,7 @@ use RuntimeException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
-use Tin\Base\Collection;
+use Tin\Collection;
 use Tin\Exception\HttpInterruptException;
 use Tin\Exception\InvalidMethodException;
 use Tin\Interfaces\Http\HeadersInterface;

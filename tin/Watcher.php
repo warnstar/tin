@@ -4,8 +4,6 @@
  */
 namespace Tin;
 
-use Tin\Base\Application;
-
 class Watcher
 {
     const DIRWATCHER_CHANGED = IN_MODIFY | IN_CLOSE_WRITE | IN_MOVE | IN_CREATE | IN_DELETE;

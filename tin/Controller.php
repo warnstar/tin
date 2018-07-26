@@ -2,7 +2,7 @@
 /**
  * This file is part of Tin.
  */
-namespace Tin\Base;
+namespace Tin;
 
 use Tin\Http\Response;
 use Tin\Interfaces\ControllerAbstract;

@@ -4,7 +4,7 @@
  */
 namespace Tin\Http;
 
-use Tin\Base\Collection;
+use Tin\Collection;
 use Tin\Interfaces\Http\HeadersInterface;
 
 /**

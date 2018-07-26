@@ -3,13 +3,12 @@
  * This file is part of Tin.
  */
 
-namespace Tin\Base;
+namespace Tin;
 
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Tin\Exception\HttpInterruptException;
 use Tin\Http\Request;
-use Tin;
 
 class Application
 {
@@ -17,11 +16,6 @@ class Application
      * @var \Swoole\Http\Server $swServer
      */
     private static $swServer;
-
-    /**
-     * @var $router Router
-     */
-    public $router;
 
     public static function swServer()
     {
@@ -92,7 +86,7 @@ class Application
 
             // 开启热加载
             if (getenv('RUN_ENV') == 'DEV') {
-                Tin\Watcher::run([
+                Watcher::run([
                     APP_ROOT . '/tin',
                     APP_ROOT . '/app'
                 ]);
@@ -131,6 +125,24 @@ class Application
         } catch (\Exception $e) {
             throw $e;
             $request->response->end(json_encode($e, true));
+        }
+    }
+
+    public static function autoload($className)
+    {
+        if (strpos($className, '\\') !== false) {
+            $classFile = str_replace('\\', '/', $className) . '.php';
+            if ($classFile === false || !is_file($classFile)) {
+                return;
+            }
+        } else {
+            return;
+        }
+
+        include $classFile;
+
+        if (!class_exists($className, false) && !interface_exists($className, false) && !trait_exists($className, false)) {
+            throw new \Exception("Unable to find '$className' in file: $classFile. Namespace missing?");
         }
     }
 }
