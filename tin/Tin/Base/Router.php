@@ -35,7 +35,6 @@ class Router
         foreach ($this->routes as $r) {
             echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $r[0], $r[1], $r[2]);
         }
-        exit;
     }
 
     /**
