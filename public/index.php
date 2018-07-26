@@ -15,7 +15,6 @@ require_once __DIR__ . '/../app/boot.php';
 
 $r = new \Tin\Base\Router();
 
-
 $r->get('/users', \app\controllers\IndexController::class . '@index');
 $r->get('/index/{id:\d+}', \app\controllers\IndexController::class . '@index');
 $r->post('/index', \app\controllers\IndexController::class . '@create');
@@ -24,4 +23,7 @@ $r->group('/test', function (\Tin\Base\Router $r) {
     $r->get('/mid', \app\controllers\TestController::class . '@mid');
 });
 
-(new \Tin\Base\Application())->run($r);
+$r->init();
+
+$components['router'] = $r;
+(new \Tin\Base\Application($components))->run();

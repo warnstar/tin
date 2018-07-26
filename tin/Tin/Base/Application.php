@@ -108,24 +108,15 @@ class Application
         });
 
         $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
-            $this->processRequest($this->router, Request::createFromSwoole($request, $response));
+            $this->processRequest($this->container->router, Request::createFromSwoole($request, $response));
         });
 
         $http->start();
     }
 
-    public function run(Router $router)
+    public function run()
     {
-        $this->initRouter($router);
-
-
         $this->initHttpServer();
-    }
-
-    public function initRouter(Router $router)
-    {
-        $this->router = $router;
-        $this->router->init();
     }
 
     /**
