@@ -5,11 +5,17 @@
 namespace Tin;
 
 use Tin\Http\Response;
-use Tin\Interfaces\ControllerAbstract;
+use Tin\Interfaces\ActionInterface;
+use Tin\Http\Request;
 
-class Controller extends ControllerAbstract
+class Controller implements ActionInterface
 {
     public $ContentType = 'application/json';
+
+    /**
+     * @var Request $request
+     */
+    public $request;
 
     public function runAction($action, $vars = null)
     {

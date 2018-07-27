@@ -4,7 +4,7 @@
  */
 namespace app\controllers;
 
-use Tin\Base\Controller;
+use Tin\Controller;
 
 class TestController extends Controller
 {

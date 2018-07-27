@@ -8,6 +8,7 @@ namespace Tin;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
+use Tin\Interfaces\ActionInterface;
 use Tin\Interfaces\ControllerAbstract;
 
 class Router
@@ -145,9 +146,9 @@ class Router
 
                 list($class, $method) = explode('@', $handler);
 
-                if (class_exists($class)) {
+                if (class_exists($class) && $class instanceof Controller) {
                     /**
-                     * @var $class ControllerAbstract
+                     * @var $object Controller
                      */
                     $object = new $class;
 
