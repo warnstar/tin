@@ -26,7 +26,7 @@ class Watcher
                 foreach ($events as $k => $event) {
                     if (preg_match("/\.php$/i", $event['name']) && $k == 0) {
                         printConsole("{$event['name']}文件发生了改变, 准备重载swoole服务器!");
-                        Application::swServer()->reload();
+                        Tin::$app->server->reload();
                         sleep($waitTime);
                     }
                 }

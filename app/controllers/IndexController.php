@@ -5,6 +5,7 @@
 namespace app\controllers;
 
 use Tin\Controller;
+use Tin\Tin;
 
 class IndexController extends Controller
 {
@@ -14,7 +15,6 @@ class IndexController extends Controller
         $this->request->getHeader('key');
         $res = $this->request->getUri()->getPath();
         $data = $this->request->getParsedBody();
-
         # query
         $this->request->getQueryParams();
         $this->request->getQueryParam('key');
@@ -23,7 +23,7 @@ class IndexController extends Controller
         $this->request->getParsedBodyParam('key', 'default');
         $this->request->getParsedBody();
 
-        return ['aaa' => $args, 'ccc' => 111];
+        return ['aaa' => $args, 'ccc' => 111, 'd' => 12];
     }
 
     public function create()

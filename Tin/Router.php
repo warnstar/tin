@@ -8,8 +8,6 @@ namespace Tin;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
-use Tin\Interfaces\ActionInterface;
-use Tin\Interfaces\ControllerAbstract;
 
 class Router
 {
@@ -142,11 +140,16 @@ class Router
             case FastRoute\Dispatcher::FOUND:
                 $handler = $routeInfo[1];
                 $vars = $routeInfo[2];
-                $data = $handler . json_encode($vars);
 
-                list($class, $method) = explode('@', $handler);
+                if (is_callable($handler)) {
+                    $data = $handler($vars);
+                } else {
+                    list($class, $method) = explode('@', $handler);
 
-                if (class_exists($class) && $class instanceof Controller) {
+                    if (!class_exists($class)) {
+                        throw new \Exception(sprintf("Class %s Is Not Found!", $class));
+                    }
+
                     /**
                      * @var $object Controller
                      */
@@ -155,6 +158,8 @@ class Router
                     $object->request = $request;
                     $data = $object->runAction($method, $vars);
                 }
+
+
 
                 break;
             default:
