@@ -12,11 +12,16 @@ use Tin\Http\StatusCode;
 class Router
 {
     /**
-     * @var array $routes
+     * @var Route[] $routes
      */
     private $routes = [];
 
     private $curRouteGroup;
+    /**
+     * Route counter incrementer
+     * @var int
+     */
+    protected $routeCounter = 0;
 
     public function __construct()
     {
@@ -31,42 +36,78 @@ class Router
     public function printRoute()
     {
         echo "\033[1;33m 已经注册的路由如下： \033[0m \n";
-        foreach ($this->routes as $r) {
-            echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $r[0], $r[1], $r[2]);
+        foreach ($this->routes as $v) {
+            echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $v->getMethod(), $v->getRoute(), $v->getCallable());
         }
     }
 
     /**
-     * @param string $route
-     * @param string $handle
-     * @param array $middlewares
+     * Add route
+     *
+     * @param  string[] $method Array of HTTP methods
+     * @param  string   $pattern The route pattern
+     * @param  callable $handler The route callable
+     *
+     * @return Route
      */
-    public function get(string $route, string $handle, $middlewares = [])
+    public function map($method, $pattern, $handler)
     {
-        $route = $this->curRouteGroup . $route;
-        array_push($this->routes, ['GET', $route, $handle, $middlewares]);
+        if (!is_string($pattern)) {
+            throw new \Exception('Route pattern must be a string');
+        }
+
+        // Add route
+        $route = $this->createRoute($method, $pattern, $handler);
+        $this->routes[$route->getIdentifier()] = $route;
+        $this->routeCounter++;
+
+        return $route;
+    }
+
+    /**
+     * Create a new Route object
+     *
+     * @param  string $method of HTTP methods
+     * @param  string   $pattern The route pattern
+     * @param  callable $callable The route callable
+     *
+     * @return Route
+     */
+    protected function createRoute($method, $pattern, $callable)
+    {
+        $route = new Route($method, $pattern, $callable, $this->curRouteGroup, $this->routeCounter);
+        
+        return $route;
     }
 
     /**
      * @param string $route
      * @param string $handle
-     * @param array $middlewares
      */
-    public function post(string $route, string $handle, $middlewares = [])
+    public function get(string $route, string $handle)
     {
-        $route = $this->curRouteGroup . $route;
-        array_push($this->routes, ['POST', $route, $handle, $middlewares]);
+        return $this->map("GET", $route, $handle);
     }
 
     /**
      * @param string $route
-     * @param callable $callable
+     * @param string $handle
      */
-    public function group(string $route, callable $callable)
+    public function post(string $route, string $handle)
     {
-        $this->curRouteGroup = $route;
-        $callable($this);
-        unset($this->curRouteGroup);
+        return $this->map("POST", $route, $handle);
+    }
+
+    /**
+     * @param string $route
+     * @param callable $callback
+     */
+    public function group(string $prefix, callable $callback)
+    {
+        $previousGroupPrefix = $this->curRouteGroup;
+        $this->curRouteGroup = $previousGroupPrefix . $prefix;
+        $callback($this);
+        $this->curRouteGroup = $previousGroupPrefix;
     }
 
     /**
@@ -97,7 +138,7 @@ class Router
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($router) {
             if ($router) {
                 foreach ($router as $v) {
-                    $r->addRoute($v[0], $v[1], $v[2]);
+                    $r->addRoute($v->getMethod(), $v->getRoute(), $v->getCallable());
                 }
             }
         });
@@ -133,7 +174,6 @@ class Router
                 $data = 'not fund';
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = $routeInfo[1];
                 // ... 405 Method Not Allowed
                 $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
                 break;
@@ -158,9 +198,6 @@ class Router
                     $object->request = $request;
                     $data = $object->runAction($method, $vars);
                 }
-
-
-
                 break;
             default:
                 $data = 'not fund';

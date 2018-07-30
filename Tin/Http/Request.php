@@ -86,7 +86,7 @@ class Request extends Message implements ServerRequestInterface
     /**
      * The request attributes (route segment names and values)
      *
-     * @var \Tin\Base\Collection
+     * @var \Tin\Collection
      */
     protected $attributes;
 
