@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/7/27
- * Time: 10:59
+ * This file is part of Tin.
  */
 namespace Tin\Interfaces;
 

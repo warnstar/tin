@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/7/30
- * Time: 20:05
+ * This file is part of Tin.
  */
 
 namespace Tin;
@@ -52,7 +49,7 @@ class Route
         list($class, $classMethod) = explode('@', $this->callable);
 
         if (!class_exists($class)) {
-            throw new \Exception(sprintf("Class %s Is Not Found !", $class));
+            throw new \Exception(sprintf('Class %s Is Not Found !', $class));
         }
 
         /**
@@ -61,7 +58,7 @@ class Route
         $object = new $class;
 
         if (!method_exists($object, $classMethod)) {
-            throw new \Exception(sprintf("Method %s Is Not In Class %s !", $classMethod, $class));
+            throw new \Exception(sprintf('Method %s Is Not In Class %s !', $classMethod, $class));
         }
 
         $this->runObject = $object;

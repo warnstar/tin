@@ -17,6 +17,7 @@ class Router
     private $routes = [];
 
     private $curRouteGroup;
+
     /**
      * Route counter incrementer
      * @var int
@@ -100,7 +101,7 @@ class Router
 
         // 检查路由是否合法
         if ($this->getRouteByPattern($route->getRoute())) {
-            throw  new \Exception(sprintf("当前路由已注册：%s", $route->getRoute()));
+            throw  new \Exception(sprintf('当前路由已注册：%s', $route->getRoute()));
         }
 
         return $route;
@@ -112,7 +113,7 @@ class Router
      */
     public function get(string $route, string $handle)
     {
-        return $this->map("GET", $route, $handle);
+        return $this->map('GET', $route, $handle);
     }
 
     /**
@@ -121,7 +122,7 @@ class Router
      */
     public function post(string $route, string $handle)
     {
-        return $this->map("POST", $route, $handle);
+        return $this->map('POST', $route, $handle);
     }
 
     /**
@@ -210,7 +211,7 @@ class Router
                 $route = $this->getRouteByIdentified($routeIdentified);
 
                 if (!$route) {
-                    throw new \Exception(sprintf("目标路由不存在：%s", $routeIdentified));
+                    throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
                 }
 
                 $data = $route->run($vars, $request);

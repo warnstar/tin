@@ -5,7 +5,6 @@
 namespace app\controllers;
 
 use Tin\Controller;
-use Tin\Tin;
 
 class IndexController extends Controller
 {

@@ -14,7 +14,7 @@ function autoload($className)
 }
 spl_autoload_register('autoload', true, true);
 
-require_once "Helper.php";
+require_once 'Helper.php';
 
 $dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
 $dotenv->load();

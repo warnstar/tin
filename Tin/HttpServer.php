@@ -1,13 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: huangweichang
- * Date: 2018/7/26
- * Time: 下午11:02
+ * This file is part of Tin.
  */
 
 namespace Tin;
-
 
 use Swoole\Server;
 use Tin\Http\Request;
@@ -16,10 +12,10 @@ class HttpServer
 {
     private function __construct($config = [])
     {
-
     }
 
-    public static function build($config = []) {
+    public static function build($config = [])
+    {
         return new self($config);
     }
 
@@ -29,9 +25,13 @@ class HttpServer
     private $swServer;
 
     public $host = '0.0.0.0';
+
     public $port = '80';
+
     public $worker_num = 4;
+
     public $daemmonize = false;
+
     public $document_root = '../public';
 
     public function reload()
@@ -79,7 +79,7 @@ class HttpServer
             Tin::$app->router->execute(Request::createFromSwoole($request, $response));
         });
 
-        $http->on('WorkerError', function(\Swoole\Http\Server $serv, int $worker_id, int $worker_pid, int $exit_code, int $signal) {
+        $http->on('WorkerError', function (\Swoole\Http\Server $serv, int $worker_id, int $worker_pid, int $exit_code, int $signal) {
             dump(func_get_args());
         });
 
