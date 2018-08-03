@@ -14,5 +14,10 @@ function autoload($className)
 }
 spl_autoload_register('autoload', true, true);
 
+require_once 'Helper.php';
+
+$dotenv = new \Dotenv\Dotenv(dirname(__DIR__));
+$dotenv->load();
+
 define('APP_ROOT', __DIR__ . '/../');
 define('APP_PATH', APP_ROOT . '/app');

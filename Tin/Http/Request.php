@@ -11,7 +11,7 @@ use RuntimeException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\StreamInterface;
-use Tin\Base\Collection;
+use Tin\Collection;
 use Tin\Exception\HttpInterruptException;
 use Tin\Exception\InvalidMethodException;
 use Tin\Interfaces\Http\HeadersInterface;
@@ -86,7 +86,7 @@ class Request extends Message implements ServerRequestInterface
     /**
      * The request attributes (route segment names and values)
      *
-     * @var \Tin\Base\Collection
+     * @var \Tin\Collection
      */
     protected $attributes;
 

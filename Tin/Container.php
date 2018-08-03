@@ -2,7 +2,7 @@
 /**
  * This file is part of Tin.
  */
-namespace Tin\Base;
+namespace Tin;
 
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;

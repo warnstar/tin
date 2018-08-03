@@ -4,7 +4,7 @@
  */
 namespace app\controllers;
 
-use Tin\Base\Controller;
+use Tin\Controller;
 
 class TestController extends Controller
 {
@@ -28,7 +28,6 @@ class TestController extends Controller
 
     public function mid()
     {
-        $params = $this->request->getParsedBody();
-        return $params;
+        return $this->request->getAttributes();
     }
 }
