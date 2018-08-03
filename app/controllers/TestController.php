@@ -28,7 +28,6 @@ class TestController extends Controller
 
     public function mid()
     {
-        $params = $this->request->getParsedBody();
-        return $params;
+        return $this->request->getAttributes();
     }
 }

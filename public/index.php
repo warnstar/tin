@@ -17,7 +17,7 @@ $r->group('/test', function (\Tin\Router $r) {
     $r->get('/mid', \app\controllers\TestController::class . '@mid');
 });
 
-$r->get('to-end',\app\controllers\IndexController::class . '@index');
+$r->get('to-end',\app\controllers\IndexController::class . '@mid');
 
 $components['router'] = $r;
 

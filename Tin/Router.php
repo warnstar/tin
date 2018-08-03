@@ -33,11 +33,32 @@ class Router
         $this->printRoute();
     }
 
+    /**
+     * @param string $routeStr
+     * @return null|Route
+     */
+    public function getRouteByPattern(string $pattern)
+    {
+        if ($pattern) {
+            foreach ($this->routes as $v) {
+                if ($v->getRoute() == $pattern) {
+                    return $v;
+                }
+            }
+        }
+
+        return null;
+    }
+
     public function printRoute()
     {
         echo "\033[1;33m 已经注册的路由如下： \033[0m \n";
         foreach ($this->routes as $v) {
-            echo sprintf("\t\033[0;34m %s \t\033[0;32m%s \033[0m \t%s\n", $v->getMethod(), $v->getRoute(), $v->getCallable());
+            $route = str_pad($v->getRoute(), 25, ' ');
+
+            list($class, $classMethod) = explode('@', $v->getCallable());
+
+            echo sprintf("\t\033[0;34m %s \t\033[1;37m %s \t\033[0;32m%s \033[0;37m%s\n \e[0m ", $v->getMethod(), $route, $class, $classMethod);
         }
     }
 
@@ -76,7 +97,12 @@ class Router
     protected function createRoute($method, $pattern, $callable)
     {
         $route = new Route($method, $pattern, $callable, $this->curRouteGroup, $this->routeCounter);
-        
+
+        // 检查路由是否合法
+        if ($this->getRouteByPattern($route->getRoute())) {
+            throw  new \Exception(sprintf("当前路由已注册：%s", $route->getRoute()));
+        }
+
         return $route;
     }
 

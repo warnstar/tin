@@ -26,6 +26,11 @@ class IndexController extends Controller
         return ['aaa' => $args, 'ccc' => 111, 'd' => 12];
     }
 
+    public function mid()
+    {
+        return $this->request;
+    }
+
     public function create()
     {
         $params = $this->request->getParsedBody();

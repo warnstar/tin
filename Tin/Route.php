@@ -23,6 +23,13 @@ class Route
     protected $identifier;
 
     /**
+     * @var $object Controller
+     */
+    protected $runObject;
+
+    protected $runMethod;
+
+    /**
      * Create new route
      *
      * @param string            $method The route HTTP methods
@@ -32,10 +39,33 @@ class Route
     public function __construct($method, $pattern, $callable, $group = '', $identifier = 0)
     {
         $this->method  = $method;
-        $this->pattern  = $pattern;
+        $this->pattern  = substr($pattern, 0, 1) == '/' ? $pattern : '/' . $pattern;
         $this->callable = $callable;
         $this->group   = $group;
         $this->identifier = $identifier;
+
+        $this->buildRunObject();
+    }
+
+    protected function buildRunObject()
+    {
+        list($class, $classMethod) = explode('@', $this->callable);
+
+        if (!class_exists($class)) {
+            throw new \Exception(sprintf("Class %s Is Not Found !", $class));
+        }
+
+        /**
+         * @var $object Controller
+         */
+        $object = new $class;
+
+        if (!method_exists($object, $classMethod)) {
+            throw new \Exception(sprintf("Method %s Is Not In Class %s !", $classMethod, $class));
+        }
+
+        $this->runObject = $object;
+        $this->runMethod = $classMethod;
     }
 
     public function getIdentifier()
@@ -70,23 +100,10 @@ class Route
 
     public function run($vars = null, Request &$request)
     {
-        if (is_callable($this->callable)) {
-            $data = $this->getCallable()($vars);
-        } else {
-            list($class, $method) = explode('@', $this->callable);
+        $object = clone $this->runObject;
 
-            if (!class_exists($class)) {
-                throw new \Exception(sprintf("Class %s Is Not Found!", $class));
-            }
-
-            /**
-             * @var $object Controller
-             */
-            $object = new $class;
-
-            $object->request = $request;
-            $data = $object->runAction($method, $vars);
-        }
+        $object->request = &$request;
+        $data = $object->runAction($this->runMethod, $vars);
 
         return $data;
     }
