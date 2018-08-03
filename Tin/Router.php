@@ -138,7 +138,7 @@ class Router
         $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) use ($router) {
             if ($router) {
                 foreach ($router as $v) {
-                    $r->addRoute($v->getMethod(), $v->getRoute(), $v->getCallable());
+                    $r->addRoute($v->getMethod(), $v->getRoute(), $v->getIdentifier());
                 }
             }
         });
@@ -149,7 +149,7 @@ class Router
     /**
      * @param Request  $request
      */
-    public function execute($request)
+    public function execute(&$request)
     {
         $request_method =$request->getMethod();
         $request_uri = $request->getUri()->getPath();
@@ -178,26 +178,16 @@ class Router
                 $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
                 break;
             case FastRoute\Dispatcher::FOUND:
-                $handler = $routeInfo[1];
+                $routeIdentified = $routeInfo[1];
                 $vars = $routeInfo[2];
 
-                if (is_callable($handler)) {
-                    $data = $handler($vars);
-                } else {
-                    list($class, $method) = explode('@', $handler);
+                $route = $this->getRouteByIdentified($routeIdentified);
 
-                    if (!class_exists($class)) {
-                        throw new \Exception(sprintf("Class %s Is Not Found!", $class));
-                    }
-
-                    /**
-                     * @var $object Controller
-                     */
-                    $object = new $class;
-
-                    $object->request = $request;
-                    $data = $object->runAction($method, $vars);
+                if (!$route) {
+                    throw new \Exception(sprintf("目标路由不存在：%s", $routeIdentified));
                 }
+
+                $data = $route->run($vars, $request);
                 break;
             default:
                 $data = 'not fund';
@@ -205,5 +195,14 @@ class Router
 
         $request->response->write($data);
         $request->response->end();
+    }
+
+    /**
+     * @param $identified
+     * @return null|Route
+     */
+    public function getRouteByIdentified($identified)
+    {
+        return isset($this->routes[$identified]) ? $this->routes[$identified] : null;
     }
 }

@@ -8,6 +8,8 @@
 
 namespace Tin;
 
+use Tin\Http\Request;
+
 class Route
 {
     protected $pattern = '';
@@ -34,8 +36,6 @@ class Route
         $this->callable = $callable;
         $this->group   = $group;
         $this->identifier = $identifier;
-
-
     }
 
     public function getIdentifier()
@@ -66,5 +66,28 @@ class Route
     public function getMethod()
     {
         return $this->method;
+    }
+
+    public function run($vars = null, Request &$request)
+    {
+        if (is_callable($this->callable)) {
+            $data = $this->getCallable()($vars);
+        } else {
+            list($class, $method) = explode('@', $this->callable);
+
+            if (!class_exists($class)) {
+                throw new \Exception(sprintf("Class %s Is Not Found!", $class));
+            }
+
+            /**
+             * @var $object Controller
+             */
+            $object = new $class;
+
+            $object->request = $request;
+            $data = $object->runAction($method, $vars);
+        }
+
+        return $data;
     }
 }
