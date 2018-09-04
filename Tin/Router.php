@@ -6,6 +6,7 @@
 namespace Tin;
 
 use FastRoute;
+use Tin\Exception\ExitException;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
 
@@ -174,6 +175,8 @@ class Router
     }
 
     /**
+     * 一次http请求的地点
+     *
      * @param Request  $request
      */
     public function execute(&$request)
@@ -193,12 +196,12 @@ class Router
 
         $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
-        $data = null;
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
                 // ... 404 Not Found
 
                 $data = 'not fund';
+                $request->response->write($data);
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 // ... 405 Method Not Allowed
@@ -214,13 +217,32 @@ class Router
                     throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
                 }
 
-                $data = $route->run($vars, $request);
+                $handle = [
+                    function(Request $request){
+                        echo "this is abc start \n";
+                        yield;
+                        echo "this is abc end \n";
+                    },
+                    function($request){
+                        echo "this is qwe start \n";
+                        yield;
+                        echo "this is qwe end \n";
+                    },
+                ];
+
+                (new \Tin\Middleware\Middleware())
+                    ->send($request)
+                    ->through($handle)
+                    ->then(function($request) use ($vars, $route){
+                        $data = $route->run($vars, $request);
+                        $request->response->write($data);
+                    });
                 break;
             default:
-                $data = 'not fund';
+            $data = 'not fund';
+            $request->response->write($data);
         }
 
-        $request->response->write($data);
         $request->response->end();
     }
 

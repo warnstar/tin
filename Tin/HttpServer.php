@@ -6,6 +6,7 @@
 namespace Tin;
 
 use Swoole\Server;
+use Tin\Exception\ExitException;
 use Tin\Http\Request;
 
 class HttpServer
@@ -76,7 +77,11 @@ class HttpServer
         });
 
         $http->on('request', function (\Swoole\Http\Request $request, \Swoole\Http\Response $response) {
-            Tin::$app->router->execute(Request::createFromSwoole($request, $response));
+            try {
+                Tin::$app->router->execute(Request::createFromSwoole($request, $response));
+            } catch (ExitException $e) {
+
+            }
         });
 
         $http->on('WorkerError', function (\Swoole\Http\Server $serv, int $worker_id, int $worker_pid, int $exit_code, int $signal) {

@@ -27,6 +27,11 @@ class Route
     protected $runMethod;
 
     /**
+     * @var $middleware array
+     */
+    public $middleware;
+
+    /**
      * Create new route
      *
      * @param string            $method The route HTTP methods
