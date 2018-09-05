@@ -22,7 +22,7 @@ $handle = [
     },
 ];
 
-(new \Tin\Middleware\Middleware())
+(new \Tin\Middleware\Processor())
     ->send(new \stdClass())
     ->through($handle)
     ->then(function($object){

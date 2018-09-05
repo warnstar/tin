@@ -230,7 +230,7 @@ class Router
                     },
                 ];
 
-                (new \Tin\Middleware\Middleware())
+                (new \Tin\Middleware\Processor())
                     ->send($request)
                     ->through($handle)
                     ->then(function($request) use ($vars, $route){
