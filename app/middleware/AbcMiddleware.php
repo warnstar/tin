@@ -13,7 +13,7 @@ class AbcMiddleware extends Middleware implements MiddlewareHandle
     public function handle(Request $request)
     {
         echo __CLASS__ . "\n";
-//        yield;
-//        echo __CLASS__ . "end \n";
+        yield;
+        echo __CLASS__ . "end \n";
     }
 }
