@@ -72,6 +72,23 @@ class Router
     }
 
     /**
+     * 用于 call_user_func 处理
+     * @return array
+     */
+    public function getMiddlewareHandles()
+    {
+        $arr = [];
+        foreach ($this->middleware as $k => $v)
+        {
+            $arr[$k] = [
+                $v,
+                'handle'
+            ];
+        }
+        return $arr;
+    }
+
+    /**
      * @param string $routeStr
      * @return null|Route
      */
@@ -256,14 +273,14 @@ class Router
                 /**
                  * 构造中间件队列
                  */
-                $handle = array_merge($this->middleware, $route->middleware);
+                $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
 
                 /**
                  * 中间件调度处理
                  */
                 (new \Tin\Middleware\Processor())
                     ->send($request)
-                    ->through($handle)
+                    ->through($handles)
                     ->then(function($request) use ($vars, $route){
                         $data = $route->run($vars, $request);
                         $request->response->write($data);

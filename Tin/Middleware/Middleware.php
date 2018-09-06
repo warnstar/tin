@@ -20,18 +20,4 @@ class Middleware implements MiddlewareHandle
     {
         // 处理中间件事务
     }
-
-    public function __invoke(Request $request)
-    {
-        $this->handle($request);
-    }
-
-    /**
-     * @param string $class
-     * @return Middleware
-     */
-    public static function getObject(string $class)
-    {
-        return new $class();
-    }
 }

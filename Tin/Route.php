@@ -130,4 +130,21 @@ class Route
 
         return $this;
     }
+
+    /**
+     * 用于 call_user_func 处理
+     * @return array
+     */
+    public function getMiddlewareHandles()
+    {
+        $arr = [];
+        foreach ($this->middleware as $k => $v)
+        {
+            $arr[$k] = [
+                $v,
+                'handle'
+            ];
+        }
+        return $arr;
+    }
 }
