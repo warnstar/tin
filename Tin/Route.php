@@ -138,8 +138,7 @@ class Route
     public function getMiddlewareHandles()
     {
         $arr = [];
-        foreach ($this->middleware as $k => $v)
-        {
+        foreach ($this->middleware as $k => $v) {
             $arr[$k] = [
                 $v,
                 'handle'

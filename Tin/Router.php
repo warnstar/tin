@@ -5,12 +5,10 @@
 
 namespace Tin;
 
-use app\middleware\TestMiddleware;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
 use Tin\Middleware\Middleware;
-use Tin\Middleware\MiddlewareBuilder;
 
 class Router
 {
@@ -34,7 +32,6 @@ class Router
 
     public function __construct()
     {
-
     }
 
     public function init()
@@ -78,8 +75,7 @@ class Router
     public function getMiddlewareHandles()
     {
         $arr = [];
-        foreach ($this->middleware as $k => $v)
-        {
+        foreach ($this->middleware as $k => $v) {
             $arr[$k] = [
                 $v,
                 'handle'
@@ -281,7 +277,7 @@ class Router
                 (new \Tin\Middleware\Processor())
                     ->send($request)
                     ->through($handles)
-                    ->then(function($request) use ($vars, $route){
+                    ->then(function ($request) use ($vars, $route) {
                         $data = $route->run($vars, $request);
                         $request->response->write($data);
                     });

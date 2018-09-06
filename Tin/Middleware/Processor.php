@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/8/17
- * Time: 14:19
+ * This file is part of Tin.
  */
 namespace Tin\Middleware;
 
@@ -70,7 +67,7 @@ class Processor
                 $yieldValue = $generator->current();
                 if ($yieldValue === false) {
                     break;
-                }elseif($yieldValue instanceof Arguments){
+                } elseif ($yieldValue instanceof Arguments) {
                     //替换传递参数
                     $arguments = $yieldValue->toArray();
                 }
@@ -85,14 +82,14 @@ class Processor
             /* @var $generator Generator */
             if ($isSend) {
                 $generator->send($result);
-            }else{
+            } else {
                 $generator->next();
             }
 
             if ($getReturnValue) {
                 $result = $generator->getReturn();
                 $isSend = ($result !== null);
-            }else{
+            } else {
                 $isSend = false;
             }
         }

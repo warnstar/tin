@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/8/17
- * Time: 14:20
+ * This file is part of Tin.
  */
 namespace Tin\Middleware;
 
@@ -49,7 +46,7 @@ class Arguments implements ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return array_key_exists($offset,$this->arguments);
+        return array_key_exists($offset, $this->arguments);
     }
 
     /**
