@@ -9,17 +9,29 @@ namespace Tin\Middleware;
 
 use Tin\Http\Request;
 
-abstract class Middleware
+class Middleware implements MiddlewareHandle
 {
     /**
      * 中间件处理器
      * @param Request $request
      * @return void
      */
-    public abstract function handle(Request $request);
+    public function handle(Request $request)
+    {
+        // 处理中间件事务
+    }
 
     public function __invoke(Request $request)
     {
         $this->handle($request);
+    }
+
+    /**
+     * @param string $class
+     * @return Middleware
+     */
+    public static function getObject(string $class)
+    {
+        return new $class();
     }
 }

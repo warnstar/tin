@@ -6,6 +6,7 @@
 namespace Tin;
 
 use Tin\Http\Request;
+use Tin\Middleware\Middleware;
 
 class Route
 {
@@ -108,5 +109,25 @@ class Route
         $data = $object->runAction($this->runMethod, $vars);
 
         return $data;
+    }
+
+    /**
+     * @param mixed ...$middleware
+     * @return self
+     */
+    public function addMiddleware(...$middleware)
+    {
+        $args = func_get_args();
+        foreach ($args as $k => $midClass) {
+            $mid = new $midClass;
+            if ($mid instanceof Middleware) {
+                $this->middleware[$midClass] = $mid;
+            } else {
+                printConsole('Middleware type is invalidity');
+                exit(1);
+            }
+        }
+
+        return $this;
     }
 }

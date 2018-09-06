@@ -5,10 +5,12 @@
 
 namespace Tin;
 
+use app\middleware\TestMiddleware;
 use FastRoute;
-use Tin\Exception\ExitException;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
+use Tin\Middleware\Middleware;
+use Tin\Middleware\MiddlewareBuilder;
 
 class Router
 {
@@ -25,14 +27,48 @@ class Router
      */
     protected $routeCounter = 0;
 
+    /**
+     * @var Middleware[]
+     */
+    protected $middleware = [];
+
     public function __construct()
     {
+
     }
 
     public function init()
     {
         $this->getDispatcher();
         $this->printRoute();
+    }
+
+    /**
+     * @param mixed ...$middleware
+     * @return self
+     */
+    public function addMiddleware(...$middleware)
+    {
+        $args = func_get_args();
+        foreach ($args as $k => $midClass) {
+            $mid = new $midClass;
+            if ($mid instanceof Middleware) {
+                $this->middleware[$midClass] = $mid;
+            } else {
+                printConsole('Middleware type is invalidity');
+                exit(1);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Middleware[]
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
     }
 
     /**
@@ -217,19 +253,14 @@ class Router
                     throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
                 }
 
-                $handle = [
-                    function(Request $request){
-                        echo "this is abc start \n";
-                        yield;
-                        echo "this is abc end \n";
-                    },
-                    function($request){
-                        echo "this is qwe start \n";
-                        yield;
-                        echo "this is qwe end \n";
-                    },
-                ];
+                /**
+                 * 构造中间件队列
+                 */
+                $handle = array_merge($this->middleware, $route->middleware);
 
+                /**
+                 * 中间件调度处理
+                 */
                 (new \Tin\Middleware\Processor())
                     ->send($request)
                     ->through($handle)
