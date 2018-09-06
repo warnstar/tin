@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/4
- * Time: 21:23
+ * This file is part of Tin.
  */
 namespace Tin\Exception;
 

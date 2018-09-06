@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/8/17
- * Time: 14:19
+ * This file is part of Tin.
  */
 namespace Tin\Middleware;
 

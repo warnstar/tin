@@ -80,7 +80,6 @@ class HttpServer
             try {
                 Tin::$app->router->execute(Request::createFromSwoole($request, $response));
             } catch (ExitException $e) {
-
             }
         });
 
