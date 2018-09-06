@@ -16,14 +16,28 @@ php public/index.php
 ### 路由配置
 > 任意文件内配置路由对象，然后注入到application中启动
 ```php
+
+// 实例化路由处理器对象
 $r = new \Tin\Base\Router();
+
+// 设置全局中间件
+$r->addMiddleware(\app\middleware\TestMiddleware::class);
+
+// 路由内设置中间件
+$r->get('/mid2', \app\controllers\IndexController::class . '@index')->addMiddleware(\app\middleware\AbcMiddleware::class);
+
+// 设置路由
 $r->get('/users', \app\controllers\IndexController::class . '@index');
 $r->get('/index/{id:\d+}', \app\controllers\IndexController::class . '@index');
 
+// 设置路由组
 $r->group("/test", function(\Tin\Base\Router $r){
     $r->get('/mid', \app\controllers\TestController::class . '@mid');
 });
+
 ```
+
+
 
 ## 请求处理
 ### 获取请求参数

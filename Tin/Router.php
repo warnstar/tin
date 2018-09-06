@@ -5,9 +5,12 @@
 
 namespace Tin;
 
+use app\middleware\TestMiddleware;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
+use Tin\Middleware\Middleware;
+use Tin\Middleware\MiddlewareBuilder;
 
 class Router
 {
@@ -24,14 +27,65 @@ class Router
      */
     protected $routeCounter = 0;
 
+    /**
+     * @var Middleware[]
+     */
+    protected $middleware = [];
+
     public function __construct()
     {
+
     }
 
     public function init()
     {
         $this->getDispatcher();
         $this->printRoute();
+    }
+
+    /**
+     * @param mixed ...$middleware
+     * @return self
+     */
+    public function addMiddleware(...$middleware)
+    {
+        $args = func_get_args();
+        foreach ($args as $k => $midClass) {
+            $mid = new $midClass;
+            if ($mid instanceof Middleware) {
+                $this->middleware[$midClass] = $mid;
+            } else {
+                printConsole('Middleware type is invalidity');
+                exit(1);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Middleware[]
+     */
+    public function getMiddleware()
+    {
+        return $this->middleware;
+    }
+
+    /**
+     * 用于 call_user_func 处理
+     * @return array
+     */
+    public function getMiddlewareHandles()
+    {
+        $arr = [];
+        foreach ($this->middleware as $k => $v)
+        {
+            $arr[$k] = [
+                $v,
+                'handle'
+            ];
+        }
+        return $arr;
     }
 
     /**
@@ -174,6 +228,8 @@ class Router
     }
 
     /**
+     * 一次http请求的地点
+     *
      * @param Request  $request
      */
     public function execute(&$request)
@@ -193,12 +249,12 @@ class Router
 
         $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
-        $data = null;
         switch ($routeInfo[0]) {
             case FastRoute\Dispatcher::NOT_FOUND:
                 // ... 404 Not Found
 
                 $data = 'not fund';
+                $request->response->write($data);
                 break;
             case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
                 // ... 405 Method Not Allowed
@@ -214,13 +270,27 @@ class Router
                     throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
                 }
 
-                $data = $route->run($vars, $request);
+                /**
+                 * 构造中间件队列
+                 */
+                $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
+
+                /**
+                 * 中间件调度处理
+                 */
+                (new \Tin\Middleware\Processor())
+                    ->send($request)
+                    ->through($handles)
+                    ->then(function($request) use ($vars, $route){
+                        $data = $route->run($vars, $request);
+                        $request->response->write($data);
+                    });
                 break;
             default:
-                $data = 'not fund';
+            $data = 'not fund';
+            $request->response->write($data);
         }
 
-        $request->response->write($data);
         $request->response->end();
     }
 

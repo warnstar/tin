@@ -6,11 +6,11 @@ require_once __DIR__ .  '/../vendor/autoload.php';
 
 require_once __DIR__ . '/../app/boot.php';
 
-
-
 $r = new \Tin\Router();
 
-$r->get('/', \app\controllers\IndexController::class . '@index');
+$r->addMiddleware(\app\middleware\TestMiddleware::class);
+
+$r->get('/', \app\controllers\IndexController::class . '@index')->addMiddleware(\app\middleware\AbcMiddleware::class);
 $r->get('/index/{id:\d+}', \app\controllers\IndexController::class . '@index');
 
 $r->group('/test', function (\Tin\Router $r) {

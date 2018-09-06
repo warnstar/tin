@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
+use Tin\Exception\ExitException;
 use Tin\Interfaces\Http\HeadersInterface;
 
 /**
@@ -22,6 +23,11 @@ use Tin\Interfaces\Http\HeadersInterface;
  */
 class Response extends Message implements ResponseInterface
 {
+    /**
+     * @var $data string
+     */
+    private $data;
+
     /**
      * @var
      */
@@ -305,7 +311,7 @@ class Response extends Message implements ResponseInterface
      */
     public function write($data)
     {
-        $this->swResponse->write($data);
+        $this->data = $data;
         return $this;
     }
 
@@ -536,6 +542,11 @@ class Response extends Message implements ResponseInterface
      */
     public function end($html = '')
     {
+        // 设置响应数据
+        if ($this->data) {
+            $this->swResponse->write($this->data);
+        }
+
         // 设置响应状态
         $this->swResponse->status($this->getStatusCode());
 
@@ -551,6 +562,8 @@ class Response extends Message implements ResponseInterface
 
         // 返回结束信号
         $this->swResponse->end($html);
+
+        throw new ExitException('');
     }
 
     /**
