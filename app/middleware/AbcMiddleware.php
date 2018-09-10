@@ -6,9 +6,8 @@ namespace app\middleware;
 
 use Tin\Http\Request;
 use Tin\Middleware\Middleware;
-use Tin\Middleware\MiddlewareHandle;
 
-class AbcMiddleware extends Middleware implements MiddlewareHandle
+class AbcMiddleware extends Middleware
 {
     public function handle(Request $request)
     {
