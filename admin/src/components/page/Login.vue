@@ -23,6 +23,8 @@
 </template>
 
 <script>
+    import { login} from '../apis/api';
+
     export default {
         data: function(){
             return {
@@ -44,8 +46,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
-                        this.$router.push('/');
+                        // localStorage.setItem('ms_username',this.ruleForm.username);
+                        // this.$router.push('/');
+
+                        login(this.form).then(res => {
+                           
+                        });
                     } else {
                         console.log('error submit!!');
                         return false;

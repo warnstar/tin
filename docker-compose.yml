@@ -3,7 +3,7 @@ services:
     cli:
         build: .
         ports:
-            - "711:80"
+            - "1400:80"
         tty: true
         volumes:
           - .:/var/www/html
