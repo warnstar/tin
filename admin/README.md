@@ -1,110 +1,210 @@
-# litadmin
-> 一个基于vue2.x编写的后端管理项目
+# vue-manage-system #
+基于Vue.js 2.x系列 + Element UI 的后台管理系统解决方案。[线上地址](http://blog.gdfengshuo.com/example/work/)
 
-## 介绍
+[English document](https://github.com/lin-xin/manage-system/blob/master/README_EN.md)
+
+[更新日志](https://github.com/lin-xin/vue-manage-system/releases)
+
+## 赞赏
+请作者喝杯咖啡吧！
+
+![微信扫一扫](http://blog.gdfengshuo.com/images/weixin.jpg)
+
+## 前言 ##
+之前在公司用了Vue + Element组件库做了个后台管理系统，基本很多组件可以直接引用组件库的，但是也有一些需求无法满足。像图片裁剪上传、富文本编辑器、图表等这些在后台管理系统中很常见的功能，就需要引用其他的组件才能完成。从寻找组件，到使用组件的过程中，遇到了很多问题，也积累了宝贵的经验。所以我就把开发这个后台管理系统的经验，总结成这个后台管理系统解决方案。
+
+该方案作为一套多功能的后台框架模板，适用于绝大部分的后台管理系统（Web Management System）开发。基于vue.js,使用vue-cli脚手架快速生成项目目录，引用Element UI组件库，方便开发快速简洁好看的组件。分离颜色样式，支持手动切换主题色，而且很方便使用自定义主题色。
+
+## 功能 ##
+- [x] Element UI
+- [x] 登录/注销
+- [x] Dashboard
+- [x] 表格
+- [x] Tab选项卡
+- [x] 表单
+- [x] 图表 :bar_chart:
+- [x] 富文本编辑器
+- [x] markdown编辑器
+- [x] 图片拖拽/裁剪上传
+- [x] 支持切换主题色 :sparkles:
+- [x] 列表拖拽排序
+- [x] 权限测试
+- [x] 404 / 403
+- [x] 三级菜单
+- [x] 自定义图标
 
 
-### 说明
+## 目录结构介绍 ##
 
-　这是一个用vuejs2.0和element-ui 2.x搭建的后台管理界面。
-  演示地址：[http://lit.ipyro.cn](http://lit.ipyro.cn)
-    
-### 项目结构
+	|-- build                            // webpack配置文件
+	|-- config                           // 项目打包路径
+	|-- src                              // 源码目录
+	|   |-- components                   // 组件
+	|       |-- common                   // 公共组件
+	|           |-- bus.js           	 // Event Bus
+	|           |-- Header.vue           // 公共头部
+	|           |-- Home.vue           	 // 公共路由入口
+	|           |-- Sidebar.vue          // 公共左边栏
+	|           |-- Tags.vue           	 // 页面切换标签组件
+	|       |-- page                   	 // 主要路由页面
+	|           |-- 403.vue
+	|           |-- 404.vue
+	|           |-- BaseCharts.vue       // 基础图表
+	|           |-- BaseForm.vue         // 基础表单
+	|           |-- BaseTable.vue        // 基础表格
+	|           |-- DashBoard.vue        // 系统首页
+	|           |-- DragList.vue         // 拖拽列表组件
+	|           |-- Icon.vue			 // 自定义图标组件
+	|           |-- Login.vue          	 // 登录
+	|           |-- Markdown.vue         // markdown组件
+	|           |-- Premission.vue       // 权限测试组件
+	|           |-- Upload.vue           // 图片上传
+	|           |-- VueEditor.vue        // 富文本编辑器
+	|   |-- App.vue                      // 页面入口文件
+	|   |-- main.js                      // 程序入口文件，加载各种公共组件
+	|-- .babelrc                         // ES6语法编译配置
+	|-- .editorconfig                    // 代码编写规格
+	|-- .gitignore                       // 忽略的文件
+	|-- index.html                       // 入口html文件
+	|-- package.json                     // 项目及工具的依赖配置文件
+	|-- README.md                        // 说明
+
+
+## 安装步骤 ##
+
+	git clone https://github.com/lin-xin/vue-manage-system.git      // 把模板下载到本地
+	cd vue-manage-system    // 进入模板目录
+	npm install         // 安装项目依赖，等待安装完成之后
+
+## 本地开发 ##
+
+	// 开启服务器，浏览器访问 http://localhost:8080
+	npm run dev
+
+## 构建生产 ##
+
+	// 执行构建命令，生成的dist文件夹放在服务器下即可访问
+	npm run build
+
+## 组件使用说明与演示 ##
+
+### vue-schart ###
+vue.js封装sChart.js的图表组件。访问地址：[vue-schart](https://github.com/linxin/vue-schart)
+<p><a href="https://www.npmjs.com/package/vue-schart"><img src="https://img.shields.io/npm/dm/vue-schart.svg" alt="Downloads"></a></p>
+
+```html
+<template>
+    <div>
+        <schart  class="wrapper"
+				:canvasId="canvasId"
+				:type="type"
+				:data="data"
+				:options="options"
+		></schart>
+    </div>
+</template>
+	
+<script>
+    import Schart from 'vue-schart';        // 导入Schart组件
+    export default {
+        data: function(){
+            return {
+                canvasId: 'myCanvas',       // canvas的id
+                type: 'bar',                // 图表类型
+                data: [
+                    {name: '2014', value: 1342},
+                    {name: '2015', value: 2123},
+                    {name: '2016', value: 1654},
+                    {name: '2017', value: 1795},
+                ],
+                options: {                  // 图表可选参数
+                    title: 'Total sales of stores in recent years'
+                }
+            }
+        },
+        components: {
+            Schart
+        }
+    }
+</script>
+<style>
+.wrapper{
+	width: 7rem;
+	height: 5rem;
+}
+</style>
 ```
-├── build  #webpack编译相关文件目录，一般不用动 
-├── config  #配置目录
-│   ├────dev.env.js  #开发环境变量
-│   ├────index.js    #主配置文件
-│   └────prod.env.js #生产环境变量
-├── dist  #生产环境下build后的文件存放目录（发布目录）
-├── server  #服务端代码目录，提供给前端接口
-├── src #前端项目源码目录
-│   ├───—api  #封装的接口文件目录
-│   ├───—assets  #资源目录
-│   ├───—common  #公用文件目录
-│   ├───—components  #组件及页面文件目录
-│   ├───—router  #路由目录
-│   ├───—App.vue #项目入口文件
-│   ├───—bus.js  #公共通信组件
-│   └────main.js  #项目的核心文件
-├── static  #开发模式下的静态资源目录
-├── index.html #首页入口文件，你可以添加一些 meta 信息或同统计代码啥的
-├── package.json #项目配置文件
-└── README.md #项目的说明文档，markdown 格式
+
+### element-ui ###
+一套基于vue.js2.0的桌面组件库。访问地址：[element](http://element.eleme.io/#/zh-CN/component/layout)
+
+### Vue-Quill-Editor ###
+基于Quill、适用于Vue2的富文本编辑器。访问地址：[vue-quill-editor](https://github.com/surmon-china/vue-quill-editor)
+
+（IE10及以下不支持）
+
+### mavonEditor ###
+基于Vue的markdown编辑器。访问地址：[mavonEditor](https://github.com/hinesboy/mavonEditor)
+
+### vue-cropperjs ###
+一个封装了 cropperjs 的 Vue 组件，用于裁剪图片。访问地址：[vue-cropperjs](https://github.com/Agontuk/vue-cropperjs)
+
+## 其他注意事项 ##
+### 一、如果我不想用到上面的某些组件呢，那我怎么在模板中删除掉不影响到其他功能呢？ ###
+
+举个栗子，我不想用 Vue-Quill-Editor 这个组件，那我需要分四步走。
+
+第一步：删除该组件的路由，在目录 src/router/index.js 中，找到引入改组件的路由，删除下面这段代码。
+
+```JavaScript
+{
+    // 富文本编辑器组件
+    path: '/editor',
+    component: resolve => require(['../components/page/VueEditor.vue'], resolve) 
+},
 ```
 
-### 相关技术：
+第二步：删除引入该组件的文件。在目录 src/components/page/ 删除 VueEditor.vue 文件。
 
-* vuejs2.0：一套构建用户界面的渐进式框架，易用、灵活、高效。
-* element-ui：一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的组件库。
-* vue-router：官方的路由组件，配合vue.js创建单页应用（SPA）非常简单。
-* axios: 基于 Promise 的 HTTP 请求客户端，可同时在浏览器和 node.js 中使用。
-
-## 项目编译和运行
-
-``` bash
-第一步： 先安装node v8.2.1环境，可以用nvm安装，支持多版本切换
-可参看链接：https://fengmk2.com/blog/2014/03/node-env-and-faster-npm.html
-
-第二步：下载项目
-可以直接在git上下载项目源码。
-或者通过git命令下载
-#git命令下载
-git clone https://github.com/jerry9022/LitAdmin
-
-假定项目已经下载下来了。
-
-第三步：启动服务端
-（1）新开一个命令行窗口
-（2）定位到项目中的server目录并安装依赖
-  > cd 你自己的位置/LitAdmin/server
-  > npm install
-（3）依赖安装成功后执行启动命令
-  > npm start 
-  # 显示如下内容说明服务端启动成功
-  # Server is runing... Listening on port 3000
-  # Listening at http://localhost:3000
-  
-  
-第四步：启动前端
-（1）新开一个命令行窗口
-（2）定位到项目目录并安装依赖
-  > cd 你自己的位置/LitAdmin
-  > npm install
-（3）依赖安装成功后执行启动命令
-  > npm run dev
-  # 显示如下内容说明本地启动成功
-  # DONE Compiled successfully in 7515ms
-  # Listening at http://localhost:8081
-   
-   
-#正式环境编译命令
-# build for production with minification
-npm run build
-
+第三步：删除该页面的入口。在目录 src/components/common/Sidebar.vue 中，找到该入口，删除下面这段代码。
+	
+```js
+{
+	index: 'editor',
+	title: '富文本编辑器'
+},
 ```
 
+第四步：卸载该组件。执行以下命令：
+	
+	npm un vue-quill-editor -S
 
-### 更新日志
-> 2018-03-26
- >> 1.接口跨域请求处理方式修改。
-  
- > 2018-02-27
- >> 1.界面部分bug修改。  
- 
- > 2017-12-13
- >> 1.去掉了canvas绘图代码。  
- >> 2.element-ui升级的2.0.7，vue版本升级到2.5.9。  
- 
- > 2017-11-13
- >> 1.去掉先前在前端写的模拟数据，增加server端提供模拟数据。  
- >> 2.代码优化。  
- 
- > 2017-09-20
- >> 1.主要组件升级：vue.js升级到v2.4.4，element-ui升级到v1.4.4，其它组件升级  
- >> 2.主界面左侧菜单栏修改，使用element-ui升级的导航组件支持折叠功能。  
- >> 3.其它调整。
+完成。
 
+### 二、如何切换主题色呢？ ###
 
+第一步：打开 src/main.js 文件，找到引入 element 样式的地方，换成浅绿色主题。
 
+```javascript
+import 'element-ui/lib/theme-default/index.css';    // 默认主题
+// import '../static/css/theme-green/index.css';       // 浅绿色主题
+```
 
+第二步：打开 src/App.vue 文件，找到 style 标签引入样式的地方，切换成浅绿色主题。
+
+```javascript
+@import "../static/css/main.css";
+@import "../static/css/color-dark.css";     /*深色主题*/
+/*@import "../static/css/theme-green/color-green.css";   !*浅绿色主题*!*/
+```
+
+第三步：打开 src/components/common/Sidebar.vue 文件，找到 el-menu 标签，把 background-color/text-color/active-text-color 属性去掉即可。
+
+## 项目截图 ##
+### 默认皮肤 ###
+
+![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms1.png)
+
+### 浅绿色皮肤 ###
+
+![Image text](https://github.com/lin-xin/manage-system/raw/master/screenshots/wms2.png)
