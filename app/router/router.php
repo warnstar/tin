@@ -8,8 +8,6 @@
 
 $r = new \Tin\Router();
 
-$r->addMiddleware(\app\common\middlewares\CROSMiddleware::class);
-
 $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 
 # 后台登陆
