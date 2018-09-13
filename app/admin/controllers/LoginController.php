@@ -5,28 +5,25 @@
 namespace app\admin\controllers;
 
 use app\admin\model\Admin;
-use RedBeanPHP\R;
 use Tin\Controller;
 
 class LoginController extends Controller
 {
     public function login()
     {
-        try {
-            //初始化数据库
-            R::setup(
-                getenv('db.dsn'),
-                getenv('db.username'),
-                getenv('db.password')
-            );
-        } catch (\Exception $e) {
-            dump($e);
-            file_put_contents('error.json', json_encode($e, true));
+        $post = [
+            $this->request->getParams(),
+        ];
+
+        $username = $this->request->getParsedBodyParam('username');
+        $password = $this->request->getParsedBodyParam('password');
+
+        $a = Admin::getOneByUserName($username);
+
+        if ($a->loginByPassword($password)) {
+            return $a;
+        } else {
+            return ['登陆失败'];
         }
-
-
-        $a = Admin::getOneByUserName('admin');
-
-        return [$a];
     }
 }

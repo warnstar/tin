@@ -49,7 +49,7 @@
                         // localStorage.setItem('ms_username',this.ruleForm.username);
                         // this.$router.push('/');
 
-                        login(this.form).then(res => {
+                        login(this.ruleForm).then(res => {
                            
                         });
                     } else {
