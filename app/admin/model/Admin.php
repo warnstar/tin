@@ -7,9 +7,26 @@
  */
 namespace app\admin\model;
 
-use RedBeanPHP\R;
+use atk4\data\Model;
+use Tin\Tin;
 
-class Admin {
+class Admin extends Model
+{
+
+    public $table = 'user';
+
+    public function init()
+    {
+        parent::init();
+
+        $this->addFields([
+            'id',
+            'username',
+            'password_hash',
+            'created_at',
+            'updated_at'
+        ]);
+    }
 
     public $password_hash;
 
@@ -19,14 +36,10 @@ class Admin {
      */
     public static function getOneByUserName($username)
     {
-        $one = R::getRow( 'SELECT * FROM admin WHERE username = ? LIMIT 1',
-            [ $username ]
-        );
+        $one = new Admin(Tin::$app->db);
+        $one = $one->loadBy('username', $username);
 
-        $admin = new Admin();
-        $admin->password_hash = $one['password_hash'];
-
-        return $admin;
+        return $one;
     }
 
     public function loginByPassword($password)
