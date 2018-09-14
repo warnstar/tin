@@ -7,26 +7,16 @@
  */
 namespace app\admin\model;
 
-use atk4\data\Model;
+use Illuminate\Database\Eloquent\Model;
 use Tin\Tin;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Container\Container;
 
 class Admin extends Model
 {
 
-    public $table = 'user';
-
-    public function init()
-    {
-        parent::init();
-
-        $this->addFields([
-            'id',
-            'username',
-            'password_hash',
-            'created_at',
-            'updated_at'
-        ]);
-    }
+    public $table = 'admin';
 
     public $password_hash;
 
@@ -36,8 +26,7 @@ class Admin extends Model
      */
     public static function getOneByUserName($username)
     {
-        $one = new Admin(Tin::$app->db);
-        $one = $one->loadBy('username', $username);
+        $one = Admin::query()->where('username', '=', $username);
 
         return $one;
     }
