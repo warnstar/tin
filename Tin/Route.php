@@ -138,7 +138,7 @@ class Route
     public function getMiddlewareHandles()
     {
         $arr = [];
-        foreach ($this->middleware as $k => $v) {
+        if (is_array($this->middleware)) foreach ($this->middleware as $k => $v) {
             $arr[$k] = [
                 $v,
                 'handle'

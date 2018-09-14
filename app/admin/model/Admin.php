@@ -7,33 +7,46 @@
  */
 namespace app\admin\model;
 
-use Illuminate\Database\Eloquent\Model;
-use Tin\Tin;
-use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
+use app\common\base\TinModel;
 
-class Admin extends Model
+class Admin extends TinModel
 {
-
     public $table = 'admin';
 
-    public $password_hash;
+    protected $fillable = ['username','password_hash', 'id', 'access_token'];
 
+    protected $attributes = [
+        'username','password_hash', 'id', 'access_token'
+    ];
     /**
      * @param $username
-     * @return Admin
+     * @return self
      */
     public static function getOneByUserName($username)
     {
-        $one = Admin::query()->where('username', '=', $username);
-
+        $one = Admin::query()->where('username', '=', $username)->first();
         return $one;
     }
 
+    /**
+     * @param $password
+     * @return mixed|null
+     */
     public function loginByPassword($password)
     {
-        return $this->password_hash == $this->generatePasswordHash($password);
+        if ($this->getAttribute('password_hash') != $this->generatePasswordHash($password)) {
+            $this->addError('password', '密码不正确');
+            return null;
+        }
+
+        $this->setAttribute('access_token', rand_str(48));
+
+        if ($this->save()) {
+            return $this->getAttribute('access_token');
+        } else {
+            $this->addError('admin', '无法保存用户');
+            return null;
+        }
     }
 
     public function generatePasswordHash($password)

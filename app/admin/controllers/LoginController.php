@@ -5,25 +5,27 @@
 namespace app\admin\controllers;
 
 use app\admin\model\Admin;
+use app\common\helpers\ApiResponse;
 use Tin\Controller;
 
 class LoginController extends Controller
 {
     public function login()
     {
-        $post = [
-            $this->request->getParams(),
-        ];
-
         $username = $this->request->getParsedBodyParam('username');
         $password = $this->request->getParsedBodyParam('password');
 
-        $a = Admin::getOneByUserName($username);
+        $admin = Admin::getOneByUserName($username);
 
-        if ($a->loginByPassword($password)) {
-            return $a;
+        if (!$admin) {
+            return ApiResponse::error('PARAM', '账户不存在');
+        }
+
+        $token = $admin->loginByPassword($password);
+        if ($token) {
+            return ApiResponse::success($token);
         } else {
-            return ['登陆失败'];
+            return ApiResponse::error('PARAM', $admin->getErrorFirstString());
         }
     }
 }
