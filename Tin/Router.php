@@ -8,10 +8,14 @@ namespace Tin;
 use FastRoute;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
-use Tin\Middleware\Middleware;
+use Tin\Middleware\MiddlewareBeforeRouteTrait;
+use Tin\Middleware\MiddlewareTrait;
 
 class Router
 {
+    use MiddlewareTrait;
+    use MiddlewareBeforeRouteTrait;
+
     /**
      * @var Route[] $routes
      */
@@ -25,11 +29,6 @@ class Router
      */
     protected $routeCounter = 0;
 
-    /**
-     * @var Middleware[]
-     */
-    protected $middleware = [];
-
     public function __construct()
     {
     }
@@ -38,50 +37,6 @@ class Router
     {
         $this->getDispatcher();
         $this->printRoute();
-    }
-
-    /**
-     * @param mixed ...$middleware
-     * @return self
-     */
-    public function addMiddleware(...$middleware)
-    {
-        $args = func_get_args();
-        foreach ($args as $k => $midClass) {
-            $mid = new $midClass;
-            if ($mid instanceof Middleware) {
-                $this->middleware[$midClass] = $mid;
-            } else {
-                printConsole('Middleware type is invalidity');
-                exit(1);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Middleware[]
-     */
-    public function getMiddleware()
-    {
-        return $this->middleware;
-    }
-
-    /**
-     * 用于 call_user_func 处理
-     * @return array
-     */
-    public function getMiddlewareHandles()
-    {
-        $arr = [];
-        foreach ($this->middleware as $k => $v) {
-            $arr[$k] = [
-                $v,
-                'handle'
-            ];
-        }
-        return $arr;
     }
 
     /**
@@ -230,74 +185,78 @@ class Router
      */
     public function execute(&$request)
     {
-        $request_method =$request->getMethod();
-        $request_uri = $request->getUri()->getPath();
+        /**
+         * 构造中间件队列
+         */
+        $handlesBeforeRoute = $this->getMiddlewareHandlesBeforeRoute();
 
-        printConsole(sprintf('%s Fd=%s %s %s', date('Y-m-d H:i:s'), $request->getFd(), $request_method, $request_uri));
+        /**
+         * 中间件调度处理
+         */
+        (new \Tin\Middleware\Processor())
+            ->send($request)
+            ->through($handlesBeforeRoute)
+            ->then(function (Request $request) {
+                $request_method =$request->getMethod();
+                $request_uri = $request->getUri()->getPath();
 
-        // CROS 处理
-        $request->response->withHeader('Access-Control-Allow-Origin', '*');
-        $request->response->withHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
-        $request->response->withHeader("Access-Control-Allow-Headers", "authorization, origin, content-type, accept, X-Request-Token");
-        $request->response->withHeader("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS");
-        $request->response->withHeader("Content-Type", "application/json");
-        if ($request->getMethod() == 'OPTIONS') {
-            $request->endShow('');
-        }
+                printConsole(sprintf('%s Fd=%s %s %s', date('Y-m-d H:i:s'), $request->getFd(), $request_method, $request_uri));
 
-        $httpMethod =$request_method;
-        $uri = $request_uri;
+                $httpMethod =$request_method;
+                $uri = $request_uri;
 
-        if (false !== $pos = strpos($uri, '?')) {
-            $uri = substr($uri, 0, $pos);
-        }
-        $uri = rawurldecode($uri);
+                if (false !== $pos = strpos($uri, '?')) {
+                    $uri = substr($uri, 0, $pos);
+                }
+                $uri = rawurldecode($uri);
 
-        $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
+                $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
-        switch ($routeInfo[0]) {
-            case FastRoute\Dispatcher::NOT_FOUND:
-                // ... 404 Not Found
+                switch ($routeInfo[0]) {
+                    case FastRoute\Dispatcher::NOT_FOUND:
+                        // ... 404 Not Found
 
-                $data = 'not fund';
-                $request->response->write($data);
-                break;
-            case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                // ... 405 Method Not Allowed
-                $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
-                break;
-            case FastRoute\Dispatcher::FOUND:
-                $routeIdentified = $routeInfo[1];
-                $vars = $routeInfo[2];
+                        $data = 'not fund';
+                        $request->response->write($data);
+                        break;
+                    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+                        // ... 405 Method Not Allowed
+                        $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
+                        break;
+                    case FastRoute\Dispatcher::FOUND:
+                        $routeIdentified = $routeInfo[1];
+                        $vars = $routeInfo[2];
 
-                $route = $this->getRouteByIdentified($routeIdentified);
+                        $route = $this->getRouteByIdentified($routeIdentified);
 
-                if (!$route) {
-                    throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
+                        if (!$route) {
+                            throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
+                        }
+
+                        /**
+                         * 构造中间件队列
+                         */
+                        $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
+
+                        /**
+                         * 中间件调度处理
+                         */
+                        (new \Tin\Middleware\Processor())
+                            ->send($request)
+                            ->through($handles)
+                            ->then(function ($request) use ($vars, $route) {
+                                $data = $route->run($vars, $request);
+                                $request->response->write($data);
+                            });
+                        break;
+                    default:
+                        $data = 'not fund';
+                        $request->response->write($data);
                 }
 
-                /**
-                 * 构造中间件队列
-                 */
-                $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
-
-                /**
-                 * 中间件调度处理
-                 */
-                (new \Tin\Middleware\Processor())
-                    ->send($request)
-                    ->through($handles)
-                    ->then(function ($request) use ($vars, $route) {
-                        $data = $route->run($vars, $request);
-                        $request->response->write($data);
-                    });
-                break;
-            default:
-            $data = 'not fund';
-            $request->response->write($data);
-        }
-
-        $request->response->end();
+                $request->response->end();
+            }
+        );
     }
 
     /**
