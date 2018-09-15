@@ -29,8 +29,8 @@
         data: function(){
             return {
                 ruleForm: {
-                    username: 'admin',
-                    password: '123123'
+                    username: '',
+                    password: ''
                 },
                 rules: {
                     username: [
@@ -46,11 +46,12 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // localStorage.setItem('ms_username',this.ruleForm.username);
-                        // this.$router.push('/');
-
                         login(this.ruleForm).then(res => {
-                           
+                           if (res.data.status == 200) {
+                            localStorage.setItem('access_token', res.data.data.access_token);
+                            
+                            this.$router.push('/');
+                           };
                         });
                     } else {
                         console.log('error submit!!');

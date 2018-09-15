@@ -1,23 +1,33 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
+import { route } from '../../main';
+
 
 axios.defaults.baseURL =  "http://oo:1400";
 // axios.defaults.baseURL =  "https://" + window.location.hostname + ":1400";
 
-console.log(axios.defaults.baseURL);
-
-axios.interceptors.request.use(
+axios.interceptors.request.use (
     config => {
-        config.headers.Authorization = "Bearer " + sessionStorage.getItem('Authorization');
-
+        config.headers['X-Request-Token'] = localStorage.getItem("access_token");
         return config;
     },
     err => {
         return Promise.reject(err);
     });
 
-axios.interceptors.response.use(
+axios.interceptors.response.use (
     response => {
+        if (response.data.status != 200) {
+            switch (response.data.status) {
+                case 401 :
+                    route.replace({
+                        path: 'login',
+                        query: {redirect: route.currentRoute.fullPath}
+                    });
+                default :
+                    Message.error(response.data.message);
+            }
+        }
         return response;
     },
     error => {
@@ -35,15 +45,6 @@ export const baseUrl = axios.defaults.baseURL;
 
 export const login = params => { return axios.post(`/admin/login`, params )};
 
-export const getSetting = params => { return axios.get(`/admin/setting`, { params: params }); };
-export const saveSetting = params => { return axios.post(`/admin/setting`, params )};
+export const getHome = params => { return axios.get(`/admin/home`, { params: params }); };
 
-export const getUserListPage = params => { return axios.get(`/admin/app-release`, { params: params }); };
-
-export const removeUser = params => { return axios.get(`/user/remove`, { params: params }); };
-
-export const batchRemoveUser = params => { return axios.get(`/user/batchremove`, { params: params }); };
-
-export const editUser = params => { return axios.get(`/user/edit`, { params: params }); };
-
-export const addUser = params => { return axios.get(`/user/add`, { params: params }); };
+export const getAdminInfo = params => { return axions.get('/admin/admin-info', { params : params})}

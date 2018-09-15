@@ -22,8 +22,10 @@ class LoginController extends Controller
         }
 
         $token = $admin->loginByPassword($password);
+
+        $data['access_token'] = $token;
         if ($token) {
-            return ApiResponse::success($token);
+            return ApiResponse::success($data);
         } else {
             return ApiResponse::error('PARAM', $admin->getErrorFirstString());
         }

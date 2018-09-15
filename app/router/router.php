@@ -13,5 +13,8 @@ $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 # 后台登陆
 $r->post('/admin/login', \app\admin\controllers\LoginController::class . '@login');
 
+# 后台首页
+$r->get('/admin/home', \app\admin\controllers\HomeController::class . '@index')
+    ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
 return $r;

@@ -107,6 +107,7 @@
 <script>
     import Schart from 'vue-schart';
     import bus from '../common/bus';
+    import { getHome} from '../apis/api';
     export default {
         name: 'dashboard',
         data() {
@@ -191,6 +192,11 @@
             role() {
                 return this.name === 'admin' ? '超级管理员' : '普通用户';
             }
+        },
+        mounted() {
+            getHome('').then(res => {
+                
+            });
         },
         created(){
             bus.$on('collapse', msg => {

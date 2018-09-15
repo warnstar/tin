@@ -14,6 +14,7 @@ class BaseResponse
     protected static $errorTypes = [
         'OK'                =>  200,
         'DENY'              =>  403,
+        'UN_AUTH'          =>  401,
         'PARAM'             =>  400,
         'EXIST'             =>  409,
         'NOT_FOUND'         =>  404,
@@ -22,6 +23,7 @@ class BaseResponse
     ];
     protected static $defaultMessage = [
         'OK'                =>  '',
+        'UN_AUTH'          =>  '未受权',
         'DENY'              =>  "禁止访问",
         'PARAM'             =>  "参数错误",
         'EXIST'             =>  "对象已存在",

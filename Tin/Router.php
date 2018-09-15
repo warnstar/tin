@@ -238,7 +238,7 @@ class Router
         // CROS 处理
         $request->response->withHeader('Access-Control-Allow-Origin', '*');
         $request->response->withHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
-        $request->response->withHeader("Access-Control-Allow-Headers", "authorization, origin, content-type, accept");
+        $request->response->withHeader("Access-Control-Allow-Headers", "authorization, origin, content-type, accept, X-Request-Token");
         $request->response->withHeader("Allow", "HEAD,GET,POST,PUT,PATCH,DELETE,OPTIONS");
         $request->response->withHeader("Content-Type", "application/json");
         if ($request->getMethod() == 'OPTIONS') {

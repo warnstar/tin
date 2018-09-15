@@ -49,6 +49,12 @@ class Admin extends TinModel
         }
     }
 
+    public static function getOneByToken($token)
+    {
+        $one = Admin::query()->where('access_token', '=', $token)->first();
+        return $one;
+    }
+
     public function generatePasswordHash($password)
     {
         return md5(base64_encode($password));
