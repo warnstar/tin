@@ -38,11 +38,13 @@ trait MiddlewareBeforeRouteTrait
     public function getMiddlewareHandlesBeforeRoute()
     {
         $arr = [];
-        if (is_array($this->middlewareBeforeRoute)) foreach ($this->middlewareBeforeRoute as $k => $v) {
-            $arr[$k] = [
+        if (is_array($this->middlewareBeforeRoute)) {
+            foreach ($this->middlewareBeforeRoute as $k => $v) {
+                $arr[$k] = [
                 $v,
                 'handle'
             ];
+            }
         }
         return $arr;
     }

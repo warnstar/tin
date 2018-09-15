@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/12
- * Time: 21:05
+ * This file is part of Tin.
  */
 namespace app\admin\model;
 
@@ -18,6 +15,7 @@ class Admin extends TinModel
     protected $attributes = [
         'username','password_hash', 'id', 'access_token'
     ];
+
     /**
      * @param $username
      * @return self

@@ -38,11 +38,13 @@ trait MiddlewareTrait
     public function getMiddlewareHandles()
     {
         $arr = [];
-        if (is_array($this->middleware)) foreach ($this->middleware as $k => $v) {
-            $arr[$k] = [
+        if (is_array($this->middleware)) {
+            foreach ($this->middleware as $k => $v) {
+                $arr[$k] = [
                 $v,
                 'handle'
             ];
+            }
         }
         return $arr;
     }

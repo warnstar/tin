@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/14
- * Time: 10:25
+ * This file is part of Tin.
  */
 namespace app\common\components;
 
@@ -36,5 +33,4 @@ class DbComponent
 
         return $capsule;
     }
-
 }

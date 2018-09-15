@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/15
- * Time: 14:31
+ * This file is part of Tin.
  */
 namespace app\common\base;
 

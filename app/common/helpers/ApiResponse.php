@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2016/9/12
- * Time: 10:08
+ * This file is part of Tin.
  */
 
 namespace app\common\helpers;
@@ -19,7 +16,6 @@ class ApiResponse extends BaseResponse
     {
         return $data;
     }
-
 
     /**
      * @param mixed $info

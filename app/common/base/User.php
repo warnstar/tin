@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/15
- * Time: 14:30
+ * This file is part of Tin.
  */
 
 namespace app\common\base;
@@ -15,6 +12,7 @@ class User
     public $id;
 
     public $identity;
+
     /**
      * @param $identity
      */

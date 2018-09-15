@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/12
- * Time: 20:25
+ * This file is part of Tin.
  */
 
 $r = new \Tin\Router();

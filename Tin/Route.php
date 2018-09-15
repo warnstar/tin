@@ -29,7 +29,6 @@ class Route
 
     protected $runMethod;
 
-
     /**
      * Create new route
      *
@@ -108,5 +107,4 @@ class Route
 
         return $data;
     }
-
 }

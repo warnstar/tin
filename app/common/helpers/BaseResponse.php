@@ -1,15 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2016/9/12
- * Time: 9:59
+ * This file is part of Tin.
  */
 namespace app\common\helpers;
 
 class BaseResponse
 {
-    protected static $successType = "OK";
+    protected static $successType = 'OK';
 
     protected static $errorTypes = [
         'OK'                =>  200,
@@ -21,18 +18,17 @@ class BaseResponse
         'BUSY'              =>  503,
         'SERVER'            =>  500,
     ];
+
     protected static $defaultMessage = [
         'OK'                =>  '',
         'UN_AUTH'          =>  '未受权',
-        'DENY'              =>  "禁止访问",
-        'PARAM'             =>  "参数错误",
-        'EXIST'             =>  "对象已存在",
-        'NOT_FOUND'         =>  "对象不存在",
-        'BUSY'              =>  "系统繁忙",
-        'SERVER'            =>  "操作失败",
+        'DENY'              =>  '禁止访问',
+        'PARAM'             =>  '参数错误',
+        'EXIST'             =>  '对象已存在',
+        'NOT_FOUND'         =>  '对象不存在',
+        'BUSY'              =>  '系统繁忙',
+        'SERVER'            =>  '操作失败',
     ];
-
-
 
     protected static function buildResponse($type = '', $message = '', $info = [], $code = '')
     {

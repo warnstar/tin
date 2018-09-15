@@ -12,5 +12,4 @@ class HomeController extends Controller
     {
         return $this->request->user;
     }
-
 }

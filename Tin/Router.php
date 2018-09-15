@@ -196,23 +196,24 @@ class Router
         (new \Tin\Middleware\Processor())
             ->send($request)
             ->through($handlesBeforeRoute)
-            ->then(function (Request $request) {
-                $request_method =$request->getMethod();
-                $request_uri = $request->getUri()->getPath();
+            ->then(
+                function (Request $request) {
+                    $request_method =$request->getMethod();
+                    $request_uri = $request->getUri()->getPath();
 
-                printConsole(sprintf('%s Fd=%s %s %s', date('Y-m-d H:i:s'), $request->getFd(), $request_method, $request_uri));
+                    printConsole(sprintf('%s Fd=%s %s %s', date('Y-m-d H:i:s'), $request->getFd(), $request_method, $request_uri));
 
-                $httpMethod =$request_method;
-                $uri = $request_uri;
+                    $httpMethod =$request_method;
+                    $uri = $request_uri;
 
-                if (false !== $pos = strpos($uri, '?')) {
-                    $uri = substr($uri, 0, $pos);
-                }
-                $uri = rawurldecode($uri);
+                    if (false !== $pos = strpos($uri, '?')) {
+                        $uri = substr($uri, 0, $pos);
+                    }
+                    $uri = rawurldecode($uri);
 
-                $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
+                    $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
-                switch ($routeInfo[0]) {
+                    switch ($routeInfo[0]) {
                     case FastRoute\Dispatcher::NOT_FOUND:
                         // ... 404 Not Found
 
@@ -254,8 +255,8 @@ class Router
                         $request->response->write($data);
                 }
 
-                $request->response->end();
-            }
+                    $request->response->end();
+                }
         );
     }
 

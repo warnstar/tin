@@ -12,7 +12,8 @@ if (!function_exists('printConsole')) {
 
 
 if (!function_exists('rand_str')) {
-    function rand_str($length = 32) {
+    function rand_str($length = 32)
+    {
         // 密码字符集，可任意添加你需要的字符
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $str = '';
