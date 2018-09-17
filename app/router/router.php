@@ -19,6 +19,14 @@ $r->group('/admin', function(\Tin\Router $r) {
    ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 });
 
+$r->group('/admin', function(\Tin\Router $r) {
+   $r->group('/test', function(\Tin\Router $r) {
+       $r->get('/index', \app\admin\controllers\TestController::class. '@index');
+       $r->get('/form', \app\admin\controllers\TestController::class. '@form');
+       $r->post('/save', \app\admin\controllers\TestController::class. '@form');
+   });
+});
+
 # 后台首页
 $r->get('/admin/home', \app\admin\controllers\HomeController::class . '@index')
     ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);

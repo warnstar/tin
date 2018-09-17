@@ -4,15 +4,16 @@
  */
 namespace app\admin\controllers;
 
-use app\admin\model\Admin;
+use app\admin\models\Admin;
 use app\common\helpers\ApiResponse;
 use Tin\Controller;
+use Tin\Tin;
 
 class AdminController extends Controller
 {
     public function detail()
     {
-        $admin = $this->request->user->id;
+        $admin = Admin::getOneById($this->request->user->id);
 
         if ($admin) {
             return ApiResponse::success($admin);

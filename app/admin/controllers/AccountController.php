@@ -4,7 +4,7 @@
  */
 namespace app\admin\controllers;
 
-use app\admin\model\Admin;
+use app\admin\models\Admin;
 use app\common\helpers\ApiResponse;
 use Tin\Controller;
 

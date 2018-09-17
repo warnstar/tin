@@ -2,7 +2,7 @@
 /**
  * This file is part of Tin.
  */
-namespace app\admin\model;
+namespace app\admin\models;
 
 use app\common\base\TinModel;
 
@@ -26,15 +26,6 @@ class Admin extends TinModel
     protected $attributes = [
         'username','password_hash', 'id', 'access_token'
     ];
-
-    /**
-     * @param $id
-     * @return self
-     */
-    public static function getOneById($id)
-    {
-        return Admin::query()->where('id', '=', $id)->first();
-    }
 
     /**
      * @param $username

@@ -22,13 +22,13 @@ class DbComponent
             'password'  => getenv('db.password'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
+            'loggingQueries' => false,
             'prefix'    => '',
         ]);
 
         $capsule->setEventDispatcher(new Dispatcher(new Container));
 
         $capsule->setAsGlobal();
-
         $capsule->bootEloquent();
 
         return $capsule;

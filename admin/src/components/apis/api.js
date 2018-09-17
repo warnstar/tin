@@ -49,3 +49,4 @@ export const getHome = params => { return axios.get(`/admin/home`, { params: par
 export const getAdminInfo = params => { return axios.get('/admin/admin-info', { params : params})}
 
 export const getTestIndex = params => { return axios.get('/admin/test/index', { params : params})}
+export const postTestSave = params => { return axios.post(`/admin/test/save`, params )};

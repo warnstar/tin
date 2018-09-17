@@ -21,9 +21,14 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/test',
+                    path: '/test/index',
                     component: resolve => require(['../components/page/test/Index.vue'], resolve),
                     meta: { title: '基础表格' }
+                },
+                {
+                    path: '/test/form',
+                    component: resolve => require(['../components/page/test/form.vue'], resolve),
+                    meta: { title: '新增测评' }
                 },
                 {
                     path: '/icon',

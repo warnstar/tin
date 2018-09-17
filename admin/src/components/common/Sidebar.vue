@@ -44,9 +44,19 @@
                         title: '系统首页'
                     },
                     {
-                        icon: 'el-icon-lx-cascades',
-                        index: '/test',
-                        title: '测试管理'
+                        icon: 'el-icon-lx-warn',
+                        title: '测评管理',
+                        index : '/test/index',
+                        subs: [
+                            {
+                                index: '/test/form',
+                                title: '新增测评'
+                            },
+                            {
+                                index: '/test/index',
+                                title: '测试管理'
+                            }
+                        ]
                     },
                     {
                         icon: 'el-icon-lx-cascades',

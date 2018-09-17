@@ -24,6 +24,8 @@ class Test extends TinModel
 {
     public $table = 'ou_test';
 
+    protected $fillable = ['title', 'desc', 'cover', 'created_at', 'updated_at'];
+
     protected $attributes = [
         'id', 'title', 'desc', 'cover', 'created_at', 'updated_at'
     ];
