@@ -8,7 +8,7 @@ use app\admin\model\Admin;
 use app\common\helpers\ApiResponse;
 use Tin\Controller;
 
-class LoginController extends Controller
+class AccountController extends Controller
 {
     public function login()
     {

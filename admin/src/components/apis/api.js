@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Message } from 'element-ui';
 import { route } from '../../main';
 
 
@@ -25,7 +24,7 @@ axios.interceptors.response.use (
                         query: {redirect: route.currentRoute.fullPath}
                     });
                 default :
-                    Message.error(response.data.message);
+
             }
         }
         return response;
@@ -43,8 +42,10 @@ axios.interceptors.response.use (
 
 export const baseUrl = axios.defaults.baseURL;
 
-export const login = params => { return axios.post(`/admin/login`, params )};
+export const login = params => { return axios.post(`/admin/account/login`, params )};
 
 export const getHome = params => { return axios.get(`/admin/home`, { params: params }); };
 
-export const getAdminInfo = params => { return axions.get('/admin/admin-info', { params : params})}
+export const getAdminInfo = params => { return axios.get('/admin/admin-info', { params : params})}
+
+export const getTestIndex = params => { return axios.get('/admin/test/index', { params : params})}

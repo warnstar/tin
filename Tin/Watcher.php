@@ -12,6 +12,8 @@ class Watcher
     {
         $fd = inotify_init();
 
+        echo "热加载：开启\n";
+
         if (count($watcherDirs) > 0) {
             foreach ($watcherDirs as $dir) {
                 //递归监听目录
@@ -24,6 +26,8 @@ class Watcher
             $events = inotify_read($fd);
             if ($events) {
                 foreach ($events as $k => $event) {
+                    printConsole("{$event['name']}文件发生了改变, 准备重载swoole服务器!");
+
                     if (preg_match("/\.php$/i", $event['name']) && $k == 0) {
                         printConsole("{$event['name']}文件发生了改变, 准备重载swoole服务器!");
                         Tin::$app->server->reload();

@@ -15,11 +15,14 @@ class AuthTokenMiddleware extends Middleware
     public function handle(Request $request)
     {
         $token = $request->getHeader('X-Request-Token');
+
         if (!$token) {
             $request->endShow(ApiResponse::error('UN_AUTH'));
         }
 
+        $token = is_array($token) ? current($token) : $token;
         $admin = Admin::getOneByToken($token);
+
         if (!$admin) {
             $request->endShow(ApiResponse::error('UN_AUTH'));
         }

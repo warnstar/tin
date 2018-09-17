@@ -23,7 +23,7 @@
 </template>
 
 <script>
-    import { login} from '../apis/api';
+    import { login, getAdminInfo } from '../apis/api';
 
     export default {
         data: function(){
@@ -48,9 +48,13 @@
                     if (valid) {
                         login(this.ruleForm).then(res => {
                            if (res.data.status == 200) {
-                            localStorage.setItem('access_token', res.data.data.access_token);
-                            
-                            this.$router.push('/');
+                               localStorage.setItem('access_token', res.data.data.access_token);
+
+
+                               getAdminInfo().then(res => {
+                                   console.log(res);
+                               });
+                               this.$router.push('/');
                            };
                         });
                     } else {

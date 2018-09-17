@@ -9,6 +9,7 @@ export default new Router({
             path: '/',
             redirect: '/dashboard'
         },
+
         {
             path: '/',
             component: resolve => require(['../components/common/Home.vue'], resolve),
@@ -18,6 +19,11 @@ export default new Router({
                     path: '/dashboard',
                     component: resolve => require(['../components/page/Dashboard.vue'], resolve),
                     meta: { title: '系统首页' }
+                },
+                {
+                    path: '/test',
+                    component: resolve => require(['../components/page/test/Index.vue'], resolve),
+                    meta: { title: '基础表格' }
                 },
                 {
                     path: '/icon',
@@ -49,13 +55,13 @@ export default new Router({
                     // markdown组件
                     path: '/markdown',
                     component: resolve => require(['../components/page/Markdown.vue'], resolve),
-                    meta: { title: 'markdown编辑器' }    
+                    meta: { title: 'markdown编辑器' }
                 },
                 {
                     // 图片上传组件
                     path: '/upload',
                     component: resolve => require(['../components/page/Upload.vue'], resolve),
-                    meta: { title: '文件上传' }   
+                    meta: { title: '文件上传' }
                 },
                 {
                     // vue-schart组件

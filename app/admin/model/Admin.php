@@ -6,6 +6,17 @@ namespace app\admin\model;
 
 use app\common\base\TinModel;
 
+
+/**
+ * Class Admin
+ *
+ * @property string $id;
+ * @property string $username
+ * @property string $password_hash
+ * @property string $access_token
+ *
+ * @package app\admin\model
+ */
 class Admin extends TinModel
 {
     public $table = 'admin';
@@ -15,6 +26,15 @@ class Admin extends TinModel
     protected $attributes = [
         'username','password_hash', 'id', 'access_token'
     ];
+
+    /**
+     * @param $id
+     * @return self
+     */
+    public static function getOneById($id)
+    {
+        return Admin::query()->where('id', '=', $id)->first();
+    }
 
     /**
      * @param $username
@@ -32,15 +52,15 @@ class Admin extends TinModel
      */
     public function loginByPassword($password)
     {
-        if ($this->getAttribute('password_hash') != $this->generatePasswordHash($password)) {
+        if ($this->password_hash != $this->generatePasswordHash($password)) {
             $this->addError('password', '密码不正确');
             return null;
         }
 
-        $this->setAttribute('access_token', rand_str(48));
+        $this->access_token = rand_str(48);
 
         if ($this->save()) {
-            return $this->getAttribute('access_token');
+            return $this->access_token;
         } else {
             $this->addError('admin', '无法保存用户');
             return null;

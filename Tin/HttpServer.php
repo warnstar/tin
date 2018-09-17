@@ -60,7 +60,6 @@ class HttpServer
 
             // 开启热加载
             if (getenv('RUN_ENV') == 'DEV') {
-                echo "热加载：开启\n";
                 Watcher::run([
                     APP_ROOT . '/Tin',
                     APP_ROOT . '/app'
@@ -86,7 +85,6 @@ class HttpServer
         $http->on('WorkerError', function (\Swoole\Http\Server $serv, int $worker_id, int $worker_pid, int $exit_code, int $signal) {
             dump(func_get_args());
         });
-
 
         $http->start();
     }
