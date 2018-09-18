@@ -23,7 +23,7 @@ $r->group('/admin', function(\Tin\Router $r) {
    $r->group('/test', function(\Tin\Router $r) {
        $r->get('/index', \app\admin\controllers\TestController::class. '@index');
        $r->get('/form', \app\admin\controllers\TestController::class. '@form');
-       $r->post('/save', \app\admin\controllers\TestController::class. '@form');
+       $r->get('/delete', \app\admin\controllers\TestController::class . '@delete');
    });
 });
 

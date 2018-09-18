@@ -42,10 +42,13 @@
         },
         methods: {
             onSubmit() {
-                this.$message.success('提交成功！');
-
                 postTestSave(this.form).then(res => {
-                    console.log(res);
+                    if (res.data.status == 200) {
+                        this.$message.success('提交成功！');
+                        this.$router.push('/test/index');
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
                 });
             }
         }
