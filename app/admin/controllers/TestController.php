@@ -30,10 +30,6 @@ class TestController extends Controller
 
         if ($this->request->getMethod() == 'POST') {
             $post  = $this->request->getParsedBody();
-
-            $test->title = 'wwwwww';
-            $test->desc = '123';
-            return ApiResponse::success($test->save());
             if ($test->load($post)) {
 
                 if ($test->save()) {
@@ -41,8 +37,6 @@ class TestController extends Controller
                 }
             }
         }
-
-
 
         return ApiResponse::success($test);
     }
