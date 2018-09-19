@@ -12,9 +12,12 @@ class TestController extends Controller
 {
     public function index()
     {
+        $params = $this->request->getQueryParams();
 
-        
-        return ApiResponse::success([]);
+        $res = (new Test())->search($params);
+
+        $data = $res;
+        return ApiResponse::success($data);
     }
 
 
@@ -25,19 +28,35 @@ class TestController extends Controller
         $test = Test::getOneById($id);
         if (!$test) {
             $test = new Test();
-            $test->cover ;
+            $test->cover = '' ;
         }
 
         if ($this->request->getMethod() == 'POST') {
             $post  = $this->request->getParsedBody();
-            if ($test->load($post)) {
 
+            if ($test->load($post)) {
                 if ($test->save()) {
-                    return ApiResponse::success(111);
+                    return ApiResponse::success($test);
                 }
             }
         }
 
         return ApiResponse::success($test);
+    }
+
+    public function delete()
+    {
+        $id = $this->request->getQueryParam('id');
+        $test = Test::getOneById($id);
+
+        if ($test) {
+            if ($test->delete()) {
+                return ApiResponse::success();
+            } else {
+                return ApiResponse::error('PARAM', '删除失败');
+            }
+        }
+
+        return ApiResponse::error('PARAM', '删除失败-目标不存在');
     }
 }
