@@ -10,16 +10,19 @@ $r->addMiddlewareBeforeRoute(\app\common\middlewares\CROSMiddleware::class);
 
 $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 
-# 后台登陆
-$r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
-
-
 $r->group('/admin', function(\Tin\Router $r) {
-   $r->get('/admin-info', \app\admin\controllers\AdminController::class . '@detail')
-   ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
-});
+    # 后台登陆
+    $r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
 
-$r->group('/admin', function(\Tin\Router $r) {
+    # 后台首页
+    $r->get('/admin/home', \app\admin\controllers\HomeController::class . '@index')
+        ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
+
+    // 后台用户信息
+    $r->get('/admin-info', \app\admin\controllers\AdminController::class . '@detail')
+        ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
+
+    // 测评相关
    $r->group('/test', function(\Tin\Router $r) {
        $r->get('/index', \app\admin\controllers\TestController::class. '@index');
        $r->get('/form', \app\admin\controllers\TestController::class. '@form');
@@ -28,8 +31,25 @@ $r->group('/admin', function(\Tin\Router $r) {
    });
 });
 
-# 后台首页
-$r->get('/admin/home', \app\admin\controllers\HomeController::class . '@index')
-    ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
+$r->group('/api', function(\Tin\Router $r){
+    // 测试
+    $r->group('/test', function(\Tin\Router $r) {
+        $r->get('/home', \app\admin\controllers\TestController::class. '@index');
+        $r->post('/confirm-answer', \app\admin\controllers\TestController::class. '@form');
+        $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
+        $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
+    });
+
+    // 问题
+    $r->group('/question', function(\Tin\Router $r) {
+        $r->get('/list', \app\admin\controllers\TestController::class. '@index');
+        $r->get('/detail', \app\admin\controllers\TestController::class. '@index');
+    });
+
+    // 愿望
+    $r->get('/desire/hot', \app\admin\controllers\TestController::class. '@index');
+    $r->post('/desire', \app\admin\controllers\TestController::class. '@index');
+});
+
 
 return $r;
