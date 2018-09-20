@@ -16,8 +16,7 @@ class TestController extends Controller
 
         $res = (new Test())->search($params);
 
-        $data = $res;
-        return ApiResponse::success($data);
+        return ApiResponse::success($res);
     }
 
 
