@@ -23,9 +23,11 @@ use app\common\base\TinModel;
 class Test extends TinModel
 {
     public $table = 'ou_test';
-
+    
     public $fillable = [
-        'title'
+        'title',
+        'desc',
+        'cover'
     ];
 
     /**
@@ -38,7 +40,12 @@ class Test extends TinModel
 
         $page = $query->paginate();
 
-        $query->offset($page->perPage() * $params['page']);
+
+        if (isset($params['page'])) {
+            $query->offset($page->perPage() * $params['page']);
+        }
+
+        $query->orderBy("id DESC");
 
         $data = $query->get();
 

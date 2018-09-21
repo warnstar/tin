@@ -18,7 +18,7 @@
 
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">表单提交</el-button>
-                        <el-button>取消</el-button>
+                        <el-button  type="info" @click="cancel">取消</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -45,11 +45,14 @@
                 postTestSave(this.form).then(res => {
                     if (res.data.status == 200) {
                         this.$message.success('提交成功！');
-                        this.$router.push('/test/index');
+                        this.$router.replace('/test/index');
                     } else {
                         this.$message.error(res.data.message);
                     }
                 });
+            },
+            cancel() {
+                this.$router.replace('/test/index');
             }
         }
     }

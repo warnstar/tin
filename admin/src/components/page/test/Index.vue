@@ -20,7 +20,7 @@
                 </el-table-column>
             </el-table>
             <div class="pagination">
-                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
+                <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :page-size="pagination.pageSize" :total="pagination.total">
                 </el-pagination>
             </div>
         </div>
@@ -62,7 +62,7 @@
             return {
                 url: './static/vuetable.json',
                 tableData: [],
-                cur_page: 1,
+                cur_page: 0,
                 select_cate: '',
                 select_word: '',
                 is_search: false,
@@ -72,10 +72,14 @@
                     title: '',
                     desc: '',
                 },
+                pagination: {
+                    total : 0,
+                    pageSize : 15
+                },
                 idx: -1
             }
         },
-        created() {
+        mounted() {
             this.getData();
         },
         computed: {
@@ -102,7 +106,7 @@
         methods: {
             // 分页导航
             handleCurrentChange(val) {
-                this.cur_page = val;
+                this.cur_page = val - 1;
                 this.getData();
             },
             // 获取 easy-mock 的模拟数据
@@ -112,7 +116,9 @@
                 };
 
                 getTestIndex(form).then(res => {
-                    this.tableData = res.data.data;
+                    this.tableData = res.data.data.data;
+                    this.pagination.total = res.data.data.page.total;
+                    this.pagination.pageSize = res.data.data.page.per_page;
                 });
             },
             search() {

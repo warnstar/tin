@@ -22,7 +22,7 @@ class TestController extends Controller
 
     public function form()
     {
-        $id = $this->request->getQueryParam('id');
+        $id = $this->request->getParsedBodyParam('id');
 
         $test = Test::getOneById($id);
         if (!$test) {

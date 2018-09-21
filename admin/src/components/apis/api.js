@@ -8,6 +8,7 @@ axios.defaults.baseURL =  "http://oo:1400";
 axios.interceptors.request.use (
     config => {
         config.headers['X-Request-Token'] = localStorage.getItem("access_token");
+        config.headers['Content-Type'] = 'application/json;charset=utf-8';
         return config;
     },
     err => {
