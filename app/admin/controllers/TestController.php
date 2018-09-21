@@ -33,7 +33,7 @@ class TestController extends Controller
         if ($this->request->getMethod() == 'POST') {
             $post  = $this->request->getParsedBody();
 
-            if ($test->load($post)) {
+            if ($test->fill($post)) {
                 if ($test->save()) {
                     return ApiResponse::success($test);
                 }

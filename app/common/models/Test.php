@@ -13,7 +13,7 @@ use app\common\base\TinModel;
  * Class Test
  * @property int $id
  * @property string $title
- * @property string desc
+ * @property string $desc
  * @property string $cover
  * @property string $created_at
  * @property string $updated_at
@@ -24,6 +24,9 @@ class Test extends TinModel
 {
     public $table = 'ou_test';
 
+    public $fillable = [
+        'title'
+    ];
 
     /**
      * @param array $params

@@ -37,7 +37,6 @@ $r->group('/api', function(\Tin\Router $r){
         $r->get('/home', \app\admin\controllers\TestController::class. '@index');
         $r->post('/confirm-answer', \app\admin\controllers\TestController::class. '@form');
         $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
-        $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
     });
 
     // 问题
