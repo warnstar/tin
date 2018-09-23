@@ -35,6 +35,25 @@
                     <el-input v-model="form.desc"></el-input>
                 </el-form-item>
 
+                <el-form-item label="封面">
+                    <el-upload
+                            :action="upload.action"
+                            :headers="upload.headers"
+                            list-type="picture-card"
+                            :file-list="upload.fileList"
+                            :on-success="uploadSuccess"
+                            :on-preview="uploadPictureCardPreview"
+                            :on-remove="uploadRemove"
+                            :multiple=false
+                            :limit=1
+                    >
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="upload.dialogVisible">
+                        <img width="100%" :src="upload.dialogImageUrl" alt="">
+                    </el-dialog>
+                </el-form-item>
+
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="editVisible = false">取 消</el-button>
@@ -54,7 +73,7 @@
 </template>
 
 <script>
-    import { getTestIndex,getTestDelete,postTestSave } from '../../apis/api';
+    import { getTestIndex,getTestDelete,postTestSave,uploadUrl } from '../../apis/api';
 
     export default {
         name: 'basetable',
@@ -71,12 +90,22 @@
                 form: {
                     title: '',
                     desc: '',
+                    cover: ''
                 },
                 pagination: {
                     total : 0,
                     pageSize : 15
                 },
-                idx: -1
+                idx: -1,
+                upload : {
+                    action : uploadUrl,
+                    headers : {
+                        'X-Request-Token' : localStorage.getItem("access_token")
+                    },
+                    dialogImageUrl: '',
+                    dialogVisible: false,
+                    filelist : null
+                }
             }
         },
         mounted() {
@@ -134,10 +163,15 @@
                 this.form = {
                     title : item.title,
                     desc : item.desc,
-                    id : item.id
+                    id : item.id,
+                    cover: item.cover
                 };
 
                 this.editVisible = true;
+
+                this.upload.dialogImageUrl = this.form.cover;
+                this.upload.filelist = [{name: 'cover.jpg', url: this.form.cover}];
+
             },
             handleDelete(index, row) {
                 this.idx = index;
@@ -179,6 +213,16 @@
                     }
                 });
 
+            },
+            uploadSuccess(response, file, fileList) {
+                this.form.cover = response.data.url;
+            },
+            uploadRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            uploadPictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
             }
         }
     }

@@ -42,6 +42,7 @@ axios.interceptors.response.use (
     });
 
 export const baseUrl = axios.defaults.baseURL;
+export const uploadUrl = baseUrl + "/admin/storage/upload";
 
 export const login = params => { return axios.post(`/admin/account/login`, params )};
 

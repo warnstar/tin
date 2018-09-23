@@ -16,10 +16,29 @@
                         <el-input type="textarea" rows="5" v-model="form.desc"></el-input>
                     </el-form-item>
 
+                    <el-form-item label="封面">
+                        <el-upload
+                                :action="upload.action"
+                                :headers="upload.headers"
+                                list-type="picture-card"
+                                :on-success="uploadSuccess"
+                                :on-preview="uploadPictureCardPreview"
+                                :on-remove="uploadRemove"
+                                :multiple=false
+                                :limit=1
+                        >
+                            <i class="el-icon-plus"></i>
+                        </el-upload>
+                        <el-dialog :visible.sync="upload.dialogVisible">
+                            <img width="100%" :src="upload.dialogImageUrl" alt="">
+                        </el-dialog>
+                    </el-form-item>
+
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">表单提交</el-button>
                         <el-button  type="info" @click="cancel">取消</el-button>
                     </el-form-item>
+
                 </el-form>
             </div>
         </div>
@@ -28,7 +47,7 @@
 </template>
 
 <script>
-    import { postTestSave } from '../../apis/api';
+    import { postTestSave, uploadUrl } from '../../apis/api';
 
     export default {
         name: 'baseform',
@@ -37,6 +56,15 @@
                 form: {
                     title: '',
                     desc: '',
+                    cover : ''
+                },
+                upload : {
+                    action : uploadUrl,
+                    headers : {
+                        'X-Request-Token' : localStorage.getItem("access_token")
+                    },
+                    dialogImageUrl: '',
+                    dialogVisible: false,
                 }
             }
         },
@@ -53,6 +81,16 @@
             },
             cancel() {
                 this.$router.replace('/test/index');
+            },
+            uploadSuccess(response, file, fileList) {
+                this.form.cover = response.data.url;
+            },
+            uploadRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            uploadPictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
             }
         }
     }
