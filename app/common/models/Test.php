@@ -45,7 +45,7 @@ class Test extends TinModel
             $query->offset($page->perPage() * $params['page']);
         }
 
-        $query->orderBy("id DESC");
+        $query->orderByDesc("id");
 
         $data = $query->get();
 

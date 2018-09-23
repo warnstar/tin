@@ -12,10 +12,10 @@ $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 
 $r->group('/admin', function(\Tin\Router $r) {
     # 后台登陆
-    $r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
+    $r->post('/account/login', \app\admin\controllers\AccountController::class . '@login');
 
     # 后台首页
-    $r->get('/admin/home', \app\admin\controllers\HomeController::class . '@index')
+    $r->get('/home', \app\admin\controllers\HomeController::class . '@index')
         ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
     // 后台用户信息
@@ -50,5 +50,9 @@ $r->group('/api', function(\Tin\Router $r){
     $r->post('/desire', \app\admin\controllers\TestController::class. '@index');
 });
 
+// 微信相关接口
+$r->group('/wechat', function(\Tin\Router $r) {
+    $r->get('/account/login', \app\wechat\controllers\AccountController::class . '@login');
+});
 
 return $r;
