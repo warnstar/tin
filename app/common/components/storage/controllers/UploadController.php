@@ -21,13 +21,15 @@ class UploadController extends Controller
 
         if ($files) {
             $file = array_pop($files);
+
             $res = Tin::$app->storage->upload($file);
+
             if (is_object($res)) {
                 return ApiResponse::error('PARAM', $res->message());
             } else {
                 $info = [
                     'key'   =>  $res,
-                    'url'    =>  $this->storage->getLink($res)
+                    'url'    =>  Tin::$app->storage->getLink($res)
                 ];
                 return ApiResponse::success($info);
             }

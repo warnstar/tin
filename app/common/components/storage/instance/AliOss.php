@@ -6,6 +6,8 @@
 namespace app\common\components\storage\instance;
 
 use app\common\components\storage\ObjectStorage;
+use OSS\Core\OssException;
+use OSS\OssClient;
 use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
 use Qiniu\Storage\UploadManager;
@@ -26,20 +28,21 @@ use Qiniu\Storage\UploadManager;
  */
 class AliOss extends ObjectStorage
 {
-    public $auth;
-
     public $domain = '';
 
     public $bucket = '';
 
-    private $_token = '';
-
     public $accessKey = '';             //访问Key
 
-    public $secreKey = '';
+    public $accessSecret = '';
 
     //空间名
-    public $server_address = '';             //服务器地址
+    public $endpoint  = '';             //服务器地址
+
+    /**
+     * @var $client OssClient
+     */
+    public $client;
 
     public $format = [
         'icon' => '?imageView2/2/w/240/h/240',
@@ -57,26 +60,19 @@ class AliOss extends ObjectStorage
     public function init()
     {
         //初始化
-        $this->auth = new Auth($this->accessKey, $this->secreKey);
-
-        $this->_token = $this->auth->uploadToken($this->bucket);
+        $this->client = new OssClient($this->accessKey, $this->accessSecret, $this->endpoint);
     }
 
     public function upload($file, $savePath = '')
     {
         //存入的文件路径
-        $path = $savePath . date('Y-m-d', time()) . ':' . uniqid('', false) . '.jpg';
+        $path = $savePath . date('Y-m-d', time()) . '/' . uniqid('', false) . '.jpg';
+        try {
+            $this->client->uploadFile($this->bucket, $path, $file->file);
 
-        //初始化 UploadManager 对象并进行文件的上传。
-        $uploadMgr = new UploadManager();
-        list($ret, $err) = $uploadMgr->putFile($this->_token, $path, $file->file, null, 'application/octet-stream', false);
-
-
-        if ($err !== null) {
-            return $err;
-        } else {
-            //返回url
-            return $ret['key'];
+            return $path;
+        } catch(OssException $e) {
+            return $e;
         }
     }
 
@@ -144,9 +140,7 @@ class AliOss extends ObjectStorage
      */
     public function getLink($key = '')
     {
-        $https = getenv('qiniu.https') == 'false' ? false : true;
-
-        return ($https ? 'https://' : 'http://') . rtrim($this->domain, '/') . "/{$key}";
+        return sprintf("https://%s.%s/%s", $this->bucket, $this->endpoint, $key);
     }
 
     /**

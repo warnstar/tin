@@ -27,12 +27,18 @@ $components['wechat'] = new \app\common\components\Wechat([
 
 $components['storage'] = new \app\common\components\storage\instance\Qiniu([
     'accessKey' => getenv('qiniu.access_key'),
-    'secreKey' => getenv('qiniu.secret_key'),
+    'accessSecret' => getenv('qiniu.secret_key'),
     'bucket' => getenv('qiniu.bucket'),
     'domian' => getenv('qiniu.domain'),
     'https' => getenv('qiniu.https')
 ]);
 
+$components['storage'] = new \app\common\components\storage\instance\AliOss([
+    'accessKey' => getenv('oss.ali.accessKey'),
+    'accessSecret' => getenv('oss.ali.accessSecret'),
+    'endpoint' => getenv('oss.ali.endpoint'),
+    'bucket' => getenv('oss.ali.bucket')
+]);
 
 $config['components'] = $components;
 
