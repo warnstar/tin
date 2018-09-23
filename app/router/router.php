@@ -48,7 +48,10 @@ $r->group('/api', function(\Tin\Router $r){
     // 愿望
     $r->get('/desire/hot', \app\admin\controllers\TestController::class. '@index');
     $r->post('/desire', \app\admin\controllers\TestController::class. '@index');
+
 });
+
+$r->post('/storage/upload', \app\common\components\storage\controllers\UploadController::class. '@upload');
 
 // 微信相关接口
 $r->group('/wechat', function(\Tin\Router $r) {

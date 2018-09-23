@@ -1,0 +1,32 @@
+[2018-09-23 16:46:20] NULL.INFO: >>>>>>>>
+GET /sns/jscode2session?access_token=14_ucvKwRumXMIQFwt5n329N08bEEpzcl412QMKeYHpGxJFEPRoTgxJhmGSWOXfMLFbD9zDmmPsdLjSfQFPMLN3dAtpFzMxw5zRctOMEKZfOC-aW-ixVFiOu3jR0qViEA5axUqwDwC13HXwa0__FHZbAJAWYQ&appid=wxf73eec264663bd4d&secret=98b8c042eb8bf31ee1a7b1ae4a19e3d5&js_code=asdasd&grant_type=authorization_code HTTP/1.1
+Host: api.weixin.qq.com
+User-Agent: GuzzleHttp/6.3.3 curl/7.52.1 PHP/7.1.20
+
+
+<<<<<<<<
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: text/plain
+Date: Sun, 23 Sep 2018 08:46:19 GMT
+Content-Length: 76
+
+{"errcode":40029,"errmsg":"invalid code, hints: [ req_id: B0YtgA0379hb40 ]"}
+--------
+NULL  
+[2018-09-23 16:48:49] NULL.INFO: >>>>>>>>
+GET /sns/jscode2session?access_token=14_ucvKwRumXMIQFwt5n329N08bEEpzcl412QMKeYHpGxJFEPRoTgxJhmGSWOXfMLFbD9zDmmPsdLjSfQFPMLN3dAtpFzMxw5zRctOMEKZfOC-aW-ixVFiOu3jR0qViEA5axUqwDwC13HXwa0__FHZbAJAWYQ&appid=wxf73eec264663bd4d&secret=98b8c042eb8bf31ee1a7b1ae4a19e3d5&js_code=asdasd&grant_type=authorization_code HTTP/1.1
+Host: api.weixin.qq.com
+User-Agent: GuzzleHttp/6.3.3 curl/7.52.1 PHP/7.1.20
+
+
+<<<<<<<<
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Type: text/plain
+Date: Sun, 23 Sep 2018 08:48:49 GMT
+Content-Length: 76
+
+{"errcode":40029,"errmsg":"invalid code, hints: [ req_id: vEllDa05293122 ]"}
+--------
+NULL  
