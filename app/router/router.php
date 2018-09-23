@@ -52,7 +52,7 @@ $r->group('/api', function(\Tin\Router $r){
 
 // 微信相关接口
 $r->group('/wechat', function(\Tin\Router $r) {
-    $r->get('/account/login', \app\wechat\controllers\AccountController::class . '@login');
+    $r->post('/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
 });
 
 return $r;

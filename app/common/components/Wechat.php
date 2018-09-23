@@ -7,7 +7,7 @@ use Tin\Component;
 
 class Wechat extends Component
 {
-    protected $config;
+    public $config;
 
     public function __construct(array $config = [])
     {
@@ -17,15 +17,16 @@ class Wechat extends Component
     /**
      * @var $_app \EasyWeChat\MiniProgram\Application
      */
-    private static $_app;
+    private static $_apps;
 
     public function mina($config = [])
     {
         $config = $config ? $config :  $this->config['mina'];
-        if(!self::$_app || !self::$_app instanceof Application){
-            self::$_app = Factory::miniProgram($config);
+
+        if(empty($this->config['mina']) || !$this->config['mina'] instanceof Application){
+            self::$_apps['mina'] = Factory::miniProgram($config);
         }
 
-        return self::$_app;
+        return self::$_apps['mina'];
     }
 }
