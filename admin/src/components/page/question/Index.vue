@@ -5,17 +5,23 @@
                 <el-breadcrumb-item><i class="el-icon-lx-cascades"></i> 测评列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
-
         <div class="container">
+            <el-row>
+                <el-button type="success" @click="handleCreate">新建问题</el-button>
+            </el-row>
 
-            <el-table :data="tableData" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
+            <el-table :data="tableData" border class="table" ref="multipleTable">
                 <el-table-column prop="title" label="标题" width="120">
                 </el-table-column>
+
                 <el-table-column prop="desc" label="描述" >
                 </el-table-column>
+
+                <el-table-column prop="type" label="题目类型" >
+                </el-table-column>
+
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
-                        <el-button type="text" icon="el-icon-edit" @click="toQuestions(scope.$index, scope.row)">问题管理</el-button>
                         <el-button type="text" icon="el-icon-edit" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                         <el-button type="text" icon="el-icon-delete" class="red" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                     </template>
@@ -27,41 +33,6 @@
             </div>
         </div>
 
-        <!-- 编辑弹出框 -->
-        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
-            <el-form ref="form" :model="form" label-width="50px">
-                <el-form-item label="标题">
-                    <el-input v-model="form.title"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input v-model="form.desc"></el-input>
-                </el-form-item>
-
-                <el-form-item label="封面">
-                    <el-upload
-                            :action="upload.action"
-                            :headers="upload.headers"
-                            list-type="picture-card"
-                            :file-list="upload.fileList"
-                            :on-success="uploadSuccess"
-                            :on-preview="uploadPictureCardPreview"
-                            :on-remove="uploadRemove"
-                            :multiple=false
-                            :limit=1
-                    >
-                        <i class="el-icon-plus"></i>
-                    </el-upload>
-                    <el-dialog :visible.sync="upload.dialogVisible">
-                        <img width="100%" :src="upload.dialogImageUrl" alt="">
-                    </el-dialog>
-                </el-form-item>
-
-            </el-form>
-            <span slot="footer" class="dialog-footer">
-                <el-button @click="editVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveEdit">确 定</el-button>
-            </span>
-        </el-dialog>
 
         <!-- 删除提示框 -->
         <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
@@ -75,42 +46,32 @@
 </template>
 
 <script>
-    import { getTestIndex,getTestDelete,postTestSave,uploadUrl } from '../../apis/api';
+    import { getQuestionIndex,getQuestionDelete,postQuestionSave,uploadUrl } from '../../apis/api';
 
     export default {
         name: 'basetable',
         data() {
             return {
-                url: './static/vuetable.json',
+                test_id : null,
                 tableData: [],
                 cur_page: 0,
-                select_cate: '',
-                select_word: '',
                 is_search: false,
-                editVisible: false,
                 delVisible: false,
                 form: {
                     title: '',
+                    test_id: null,
                     desc: '',
-                    cover: ''
+                    type: ''
                 },
                 pagination: {
                     total : 0,
                     pageSize : 15
                 },
-                idx: -1,
-                upload : {
-                    action : uploadUrl,
-                    headers : {
-                        'X-Request-Token' : localStorage.getItem("access_token")
-                    },
-                    dialogImageUrl: '',
-                    dialogVisible: false,
-                    filelist : null
-                }
+                idx: -1
             }
         },
         mounted() {
+            this.test_id = this.$route.query.id;
             this.getData();
         },
         computed: {
@@ -146,10 +107,14 @@
                     page : this.cur_page
                 };
 
-                getTestIndex(form).then(res => {
-                    this.tableData = res.data.data.data;
-                    this.pagination.total = res.data.data.page.total;
-                    this.pagination.pageSize = res.data.data.page.per_page;
+                getQuestionIndex(form).then(res => {
+                    if (res.data.status == 200) {
+                        this.tableData = res.data.data.data;
+                        this.pagination.total = res.data.data.page.total;
+                        this.pagination.pageSize = res.data.data.page.per_page;
+                    } else {
+                        this.$message.error(res.data.message);
+                    }
                 });
             },
             search() {
@@ -158,14 +123,11 @@
             filterTag(value, row) {
                 return row.tag === value;
             },
-            toQuestions(index, row) {
-                this.idx = index;
-                const item = this.tableData[index];
-
+            handleCreate() {
                 this.$router.push({
-                    path: '/question/index',
+                    path: '/question/form',
                     query: {
-                        id: item.id
+                        test_id : this.test_id
                     }
                 });
             },
@@ -173,40 +135,17 @@
                 this.idx = index;
                 const item = this.tableData[index];
 
-                this.form = {
-                    title : item.title,
-                    desc : item.desc,
-                    id : item.id,
-                    cover: item.cover
-                };
-
-                this.editVisible = true;
-
-                this.upload.dialogImageUrl = this.form.cover;
-                this.upload.filelist = [{name: 'cover.jpg', url: this.form.cover}];
-
+                this.$router.push({
+                    path: '/question/form',
+                    query: {
+                        test_id : this.test_id,
+                        id : item.id
+                    }
+                });
             },
             handleDelete(index, row) {
                 this.idx = index;
                 this.delVisible = true;
-            },
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-            // 保存编辑
-            saveEdit() {
-                postTestSave(this.form).then(res => {
-                    if (res.data.status == 200) {
-                        this.$message.success('提交成功！');
-
-                        this.$set(this.tableData, this.idx, this.form);
-                        this.editVisible = false;
-                        this.$message.success(`修改第 ${this.idx+1} 行成功`);
-                    } else {
-                        this.$message.error(res.data.message);
-                    }
-                });
-
             },
             // 确定删除
             deleteRow(){
@@ -214,28 +153,17 @@
                     id : this.tableData[this.idx].id
                 };
 
-                getTestDelete(form).then(res => {
+                getQuestionDelete(form).then(res => {
                     if (res.data.status == 200) {
                         this.$message.success('删除成功');
 
                         this.tableData.splice(this.idx, 1);
                         this.delVisible = false;
-                        this.$router.push('/test/index');
+                        this.$router.push('/question/index');
                     } else {
                         this.$message.error(res.data.message);
                     }
                 });
-
-            },
-            uploadSuccess(response, file, fileList) {
-                this.form.cover = response.data.url;
-            },
-            uploadRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            uploadPictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
             }
         }
     }

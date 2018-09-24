@@ -27,10 +27,24 @@ $r->group('/admin', function(\Tin\Router $r) {
     // 测评相关
    $r->group('/test', function(\Tin\Router $r) {
        $r->get('/index', \app\admin\controllers\TestController::class. '@index');
-       $r->get('/form', \app\admin\controllers\TestController::class. '@form');
        $r->post('/save', \app\admin\controllers\TestController::class. '@form');
        $r->get('/delete', \app\admin\controllers\TestController::class . '@delete');
    });
+
+    // 题目相关
+    $r->group('/question', function(\Tin\Router $r) {
+        $r->get('/index', \app\admin\controllers\QuestionController::class. '@index');
+        $r->get('/detail', \app\admin\controllers\QuestionController::class. '@detail');
+        $r->post('/save', \app\admin\controllers\QuestionController::class. '@form');
+        $r->get('/delete', \app\admin\controllers\QuestionController::class . '@delete');
+    });
+
+    // 测试愿望
+    $r->group('/desire', function(\Tin\Router $r) {
+        $r->get('/index', \app\admin\controllers\DesireController::class. '@index');
+        $r->post('/save', \app\admin\controllers\DesireController::class. '@form');
+        $r->get('/delete', \app\admin\controllers\DesireController::class . '@delete');
+    });
 });
 
 $r->group('/api', function(\Tin\Router $r){
@@ -43,8 +57,8 @@ $r->group('/api', function(\Tin\Router $r){
 
     // 问题
     $r->group('/question', function(\Tin\Router $r) {
-        $r->get('/list', \app\admin\controllers\TestController::class. '@index');
-        $r->get('/detail', \app\admin\controllers\TestController::class. '@index');
+        $r->get('/list', \app\admin\controllers\QuestionController::class. '@index');
+        $r->get('/detail', \app\admin\controllers\QuestionController::class. '@index');
     });
 
     // 愿望
@@ -58,6 +72,11 @@ $r->post('/wechat/storage/upload', \app\common\components\storage\controllers\Up
 // 微信相关接口
 $r->group('/wechat', function(\Tin\Router $r) {
     $r->post('/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
+
+
+    // 愿望
+    $r->get('/desire/index', \app\wechat\controllers\DesireController::class . '@index');
+    $r->post('/desire', \app\wechat\controllers\DesireController::class . '@userSave');
 });
 
 return $r;

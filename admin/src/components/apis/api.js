@@ -53,3 +53,12 @@ export const getAdminInfo = params => { return axios.get('/admin/admin-info', { 
 export const getTestIndex = params => { return axios.get('/admin/test/index', { params : params})}
 export const postTestSave = params => { return axios.post(`/admin/test/save`, params )};
 export const getTestDelete = params => { return axios.get(`/admin/test/delete`, {params : params })};
+
+export const getQuestionIndex = params => { return axios.get('/admin/question/index', { params : params})}
+export const getQuestionDetail = params => { return axios.get('/admin/question/detail', { params : params})}
+export const postQuestionSave = params => { return axios.post(`/admin/question/save`, params )};
+export const getQuestionDelete = params => { return axios.get(`/admin/question/delete`, {params : params })};
+
+export const getDesireIndex = params => { return axios.get('/admin/desire/index', { params : params})}
+export const postDesireSave = params => { return axios.post(`/admin/desire/save`, params )};
+export const getDesireDelete = params => { return axios.get(`/admin/desire/delete`, {params : params })};

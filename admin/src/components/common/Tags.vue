@@ -84,7 +84,7 @@
         },
         watch:{
             $route(newValue, oldValue){
-                this.setTags(newValue);
+//                this.setTags(newValue);
             }
         },
         created(){
