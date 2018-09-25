@@ -16,8 +16,8 @@ class AccountController extends Controller
         if (!$code) {
             return ApiResponse::error("PARAMS", '请传入小程序code');
         }
-        $res = Tin::$app->wechat->mina()->auth->session($code);
 
+        $res = Tin::$app->wechat->mina()->auth->session($code);
         return ApiResponse::success($res);
     }
 }
