@@ -17,6 +17,7 @@ use app\common\base\TinModel;
  * @property string $cover
  * @property string $created_at
  * @property string $updated_at
+ * @property Question[] $questions
  *
  * @package app\common\models
  */
@@ -57,5 +58,10 @@ class Test extends TinModel
         ];
 
         return $res;
+    }
+
+    public function getQuestions()
+    {
+        return Question::query()->where(['test_id' => $this->id])->getModels();
     }
 }

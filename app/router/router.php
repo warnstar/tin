@@ -67,6 +67,12 @@ $r->post('/wechat/storage/upload', \app\common\components\storage\controllers\Up
 $r->group('/wechat', function(\Tin\Router $r) {
     $r->post('/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
 
+    // 测评相关
+    $r->group('/test', function(\Tin\Router $r) {
+        $r->get('/home', \app\wechat\controllers\TestController::class. '@home');
+        $r->post('/confirm-answer', \app\wechat\controllers\TestController::class. '@userAnswer');
+        $r->get('/result', \app\wechat\controllers\TestController::class . '@result');
+    });
 
     // 愿望
     $r->get('/desire/index', \app\wechat\controllers\DesireController::class . '@index');

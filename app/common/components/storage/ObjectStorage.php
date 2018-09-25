@@ -17,13 +17,13 @@ abstract class ObjectStorage extends Component
      * @param string $savePath
      * @return mixed
      */
-    abstract protected function upload($filePath, $savePath = '');
+    abstract public function upload($filePath, $savePath = '');
 
     /**
      * 获取上传凭据
      * @return mixed
      */
-    abstract protected function getUploadToken();
+    abstract public function getUploadToken();
 
     /**
      * 文件删除
@@ -31,12 +31,12 @@ abstract class ObjectStorage extends Component
      * @param $key
      * @return mixed
      */
-    abstract protected function delete($key);
+    abstract public function delete($key);
 
     /**
      * 获取文件格式
      * @param $type
      * @return mixed
      */
-    abstract protected function getOption($type);
+    abstract public function getOption($type);
 }

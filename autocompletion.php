@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Yii bootstrap file.
  * Used for enhanced IDE code autocompletion.
@@ -12,11 +11,6 @@ class Tin extends Tin\Tin
      * @var Tin|BaseTin|AppTin the application instance
      */
     public static $app;
-
-    /**
-     * @var $test string
-     */
-    public static $test;
 }
 
 
