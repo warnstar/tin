@@ -2,7 +2,7 @@
 /**
  * This file is part of Tin.
  */
-namespace app\admin\model;
+namespace app\common\models;
 
 use app\common\base\TinModel;
 
@@ -30,8 +30,17 @@ class User extends TinModel
 {
     public $table = 'ou_user';
 
-    protected $attributes = [
+    protected $fillable = [
         'id', 'nickname', 'wechat_id', 'union_id', 'user_mobile', 'city', 'province', 'country', 'sex', 'created_at', 'updated_at', 'deleted_at'
     ];
 
+    public static function getOneByOpenId($open_id)
+    {
+        $one = User::query()
+            ->leftjoin('ou_user_extra','ou_user_extra.user_id','=','ou_user.id')
+            ->where(['ou_user_extra.code' => $open_id])
+            ->first();
+
+        return $one;
+    }
 }
