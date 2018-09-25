@@ -55,12 +55,6 @@ $r->group('/api', function(\Tin\Router $r){
         $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
     });
 
-    // 问题
-    $r->group('/question', function(\Tin\Router $r) {
-        $r->get('/list', \app\admin\controllers\QuestionController::class. '@index');
-        $r->get('/detail', \app\admin\controllers\QuestionController::class. '@index');
-    });
-
     // 愿望
     $r->get('/desire/hot', \app\admin\controllers\TestController::class. '@index');
     $r->post('/desire', \app\admin\controllers\TestController::class. '@index');
