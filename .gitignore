@@ -5,3 +5,5 @@ vendor
 .idea
 
 .env
+
+/app/runtime/logs
