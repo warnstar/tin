@@ -24,6 +24,14 @@ class Router
     private $curRouteGroup;
 
     /**
+     * @return Route[]
+     */
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
+    /**
      * Route counter incrementer
      * @var int
      */
@@ -131,8 +139,9 @@ class Router
     }
 
     /**
-     * @param string $route
+     * @param string $prefix
      * @param callable $callback
+     * @return RouteGroup
      */
     public function group(string $prefix, callable $callback)
     {
@@ -140,6 +149,8 @@ class Router
         $this->curRouteGroup = $previousGroupPrefix . $prefix;
         $callback($this);
         $this->curRouteGroup = $previousGroupPrefix;
+
+        return new RouteGroup($previousGroupPrefix . $prefix, $this);
     }
 
     /**

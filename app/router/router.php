@@ -25,11 +25,11 @@ $r->group('/admin', function(\Tin\Router $r) {
         ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
     // 测评相关
-   $r->group('/test', function(\Tin\Router $r) {
+    $r->group('/test', function(\Tin\Router $r) {
        $r->get('/index', \app\admin\controllers\TestController::class. '@index');
        $r->post('/save', \app\admin\controllers\TestController::class. '@form');
        $r->get('/delete', \app\admin\controllers\TestController::class . '@delete');
-   });
+    });
 
     // 题目相关
     $r->group('/question', function(\Tin\Router $r) {
