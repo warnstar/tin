@@ -10,15 +10,16 @@ $r->addMiddlewareBeforeRoute(\app\common\middlewares\CROSMiddleware::class);
 
 $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 
+
+# 后台登陆
+$r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
+
+
 $r->group('/admin', function(\Tin\Router $r) {
     $r->post('/storage/upload', \app\common\components\storage\controllers\UploadController::class. '@upload');
 
-    # 后台登陆
-    $r->post('/account/login', \app\admin\controllers\AccountController::class . '@login');
-
     # 后台首页
-    $r->get('/home', \app\admin\controllers\HomeController::class . '@index')
-        ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
+    $r->get('/home', \app\admin\controllers\HomeController::class . '@index');
 
     // 后台用户信息
     $r->get('/admin-info', \app\admin\controllers\AdminController::class . '@detail')
@@ -45,7 +46,7 @@ $r->group('/admin', function(\Tin\Router $r) {
         $r->post('/save', \app\admin\controllers\DesireController::class. '@form');
         $r->get('/delete', \app\admin\controllers\DesireController::class . '@delete');
     });
-});
+})->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
 $r->group('/api', function(\Tin\Router $r){
     // 测试
