@@ -35,7 +35,12 @@ class RouteGroup
         $args = func_get_args();
 
         foreach ($this->router->getRoutes() as $k => $route) {
-            if ($route->getGroup() == $this->path) {
+            $routeGroupName = $route->getGroup();
+
+            if (
+                $routeGroupName == $this->path
+                || $this->path == substr($routeGroupName, 0, strlen($this->path))
+            ) {
                 foreach ($args as $middleware) {
                     $route->addMiddleware($middleware);
                 }
