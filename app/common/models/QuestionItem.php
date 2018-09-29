@@ -10,27 +10,23 @@ namespace app\common\models;
 use app\common\base\TinModel;
 
 /**
- * Class Test
- * @property int $id
- * @property int $test_id
- * @property string $title
- * @property string $desc
- * @property string $type
+ * Class QuestionItem
+ * @property int $question_id
+ * @property string $name
+ * @property string $option
  * @property string $created_at
  * @property string $updated_at
- * @property QuestionItem[] $items
  *
  * @package app\common\models
  */
-class Question extends TinModel
+class QuestionItem extends TinModel
 {
-    public $table = 'ou_question';
+    public $table = 'ou_question_item';
     
     public $fillable = [
-        'test_id',
-        'title',
-        'desc',
-        'type'
+        'question_id',
+        'name',
+        'option',
     ];
 
     /**
@@ -39,7 +35,7 @@ class Question extends TinModel
      */
     public function search($params = [])
     {
-        $query = Question::query();
+        $query = QuestionItem::query();
 
         $page = $query->paginate();
 
@@ -62,12 +58,4 @@ class Question extends TinModel
         return $res;
     }
 
-
-    /**
-     * @return QuestionItem[]
-     */
-    public function getItems()
-    {
-        return QuestionItem::query()->where(['question_id' => $this->id])->getModels();
-    }
 }

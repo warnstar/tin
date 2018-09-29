@@ -25,6 +25,7 @@ class QuestionController extends Controller
         $id = $this->request->getQueryParam('id');
         $one = Question::getOneById($id);
 
+        $one->items;
         return ApiResponse::success($one);
     }
 
@@ -39,6 +40,7 @@ class QuestionController extends Controller
 
         if ($this->request->getMethod() == 'POST') {
             $post  = $this->request->getParsedBody();
+            
             if ($one->fill($post)) {
                 if ($one->save()) {
                     return ApiResponse::success($one);
