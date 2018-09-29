@@ -71,6 +71,14 @@
             </span>
         </el-dialog>
 
+        <!-- 删除提示框 -->
+        <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
+            <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="delVisible = false">取 消</el-button>
+                <el-button type="primary" @click="deleteRow">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -83,6 +91,7 @@
             return {
                 selectOptionHidden : true,
                 editVisible: false,
+                delVisible: false,
                 typeDisable : false,
                 form: {
                     id : null,
@@ -183,7 +192,16 @@
                 this.$set(this.form.items, this.optionIdx, this.optionForm);
                 this.editVisible = false;
 
-            }
+            },
+            handleDelete(index, row) {
+                this.optionIdx = index;
+                this.delVisible = true;
+            },
+            // 确定删除
+            deleteRow(){
+                this.tableData.splice(this.optionIdx, 1);
+                this.delVisible = false;
+            },
         }
     }
 </script>

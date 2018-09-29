@@ -70,4 +70,43 @@ class Question extends TinModel
     {
         return QuestionItem::query()->where(['question_id' => $this->id])->getModels();
     }
+
+    public function fill(array $attributes)
+    {
+        if (!empty($attributes['items']) && is_array($attributes['items'])) {
+            $items = [];
+            foreach ($attributes['items'] as $item) {
+                if (!empty($item['id'])) {
+                    $itemObj = QuestionItem::getOneById($item['id']);
+                } else {
+                    $itemObj = new QuestionItem(['question_id' => $this->id]);
+                }
+
+                $itemObj->fill($item);
+
+                $items[] = $itemObj;
+            }
+
+            $this->setAttribute('items', $items);
+        }
+
+        return parent::fill($attributes);
+    }
+
+    public function save(array $options = [])
+    {
+        if ($this->items) {
+            $itemIds = [];
+            foreach ($this->items as $item) {
+                if ($item->save()) {
+                    $itemIds[] = $item->id;
+                }
+            }
+
+            QuestionItem::query()->where('id', 'not in', $itemIds)->delete();
+
+            unset($this->items);
+        }
+        return parent::save($options);
+    }
 }

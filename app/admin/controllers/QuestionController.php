@@ -40,7 +40,7 @@ class QuestionController extends Controller
 
         if ($this->request->getMethod() == 'POST') {
             $post  = $this->request->getParsedBody();
-            
+
             if ($one->fill($post)) {
                 if ($one->save()) {
                     return ApiResponse::success($one);
