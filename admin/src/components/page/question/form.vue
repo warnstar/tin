@@ -30,11 +30,11 @@
                     <div  :hidden="selectOptionHidden" >
                         <el-form-item label="题目选项">
                             <el-row>
-                                <el-button type="success" >新建选项</el-button>
+                                <el-button type="success" @click="addOption()">新建选项</el-button>
                             </el-row>
 
-                            <el-table :data="options.tableData" border class="table" ref="multipleTable">
-                                <el-table-column prop="title" label="标题">
+                            <el-table :data="form.items" border class="table" ref="multipleTable">
+                                <el-table-column prop="name" label="标题">
                                 </el-table-column>
 
                                 <el-table-column label="操作" width="180" align="center">
@@ -47,8 +47,6 @@
                         </el-form-item>
                     </div>
 
-
-
                     <el-form-item>
                         <el-button type="primary" @click="onSubmit">保存</el-button>
                         <el-button  type="info" @click="cancel">取消</el-button>
@@ -58,6 +56,29 @@
             </div>
         </div>
 
+
+        <!-- 编辑弹出框 -->
+        <el-dialog title="编辑" :visible.sync="editVisible" width="30%">
+            <el-form ref="form" :model="optionForm" label-width="50px">
+                <el-form-item label="标题">
+                    <el-input v-model="optionForm.name"></el-input>
+                </el-form-item>
+
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="editVisible = false">取 消</el-button>
+                <el-button type="primary" @click="saveEdit">确 定</el-button>
+            </span>
+        </el-dialog>
+
+        <!-- 删除提示框 -->
+        <el-dialog title="提示" :visible.sync="delVisible" width="300px" center>
+            <div class="del-dialog-cnt">删除不可恢复，是否确定删除？</div>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="delVisible = false">取 消</el-button>
+                <el-button type="primary" @click="deleteRow">确 定</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
@@ -69,24 +90,30 @@
         data: function(){
             return {
                 selectOptionHidden : true,
+                editVisible: false,
+                delVisible: false,
                 typeDisable : false,
                 form: {
                     id : null,
                     test_id : null,
                     title: '',
                     desc: '',
-                    type : 'select'
+                    type : 'select',
+                    items : []
                 },
+                optionForm: {
+                    id : null,
+                    name : null,
+                    option : null
+                },
+                optionIdx : -1,
                 typeMaps : [{
                     value: 'select',
                     label: '选择题'
                 }, {
                     value: 'upload_img',
                     label: '上传图片'
-                }],
-                options : {
-                    tableData : []
-                }
+                }]
             }
         },
         mounted() {
@@ -132,11 +159,49 @@
                         if (this.form.type == 'select') {
                             this.selectOptionHidden = false;
                         }
+
+                        console.log(this.form);
                     } else {
                         this.$message.error(res.data.message);
                     }
                 });
-            }
+            },
+            addOption() {
+                this.optionForm = {
+                    name : null,
+                    option : null,
+                    id : null
+                };
+
+                this.optionIdx = this.form.items.length;
+                this.editVisible = true;
+            },
+            handleEdit(index, row) {
+                this.optionIdx = index;
+                const item = this.form.items[index];
+
+                this.optionForm = {
+                    name : item.name,
+                    option : item.option,
+                    id : item.id
+                };
+
+                this.editVisible = true;
+            },
+            saveEdit() {
+                this.$set(this.form.items, this.optionIdx, this.optionForm);
+                this.editVisible = false;
+
+            },
+            handleDelete(index, row) {
+                this.optionIdx = index;
+                this.delVisible = true;
+            },
+            // 确定删除
+            deleteRow(){
+                this.tableData.splice(this.optionIdx, 1);
+                this.delVisible = false;
+            },
         }
     }
 </script>

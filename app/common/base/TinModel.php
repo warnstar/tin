@@ -26,7 +26,9 @@ class TinModel extends Model
         if (!$value) {
             $method = 'get'. ucfirst($key);
             if (method_exists($this, $method)) {
-                return call_user_func([$this, $method]);
+                $res = call_user_func([$this, $method]);
+                $this->setAttribute($key, $res);
+                return $res;
             }
         }
 
