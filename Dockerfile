@@ -77,4 +77,4 @@ WORKDIR /var/www/html
 
 EXPOSE 80
 
-CMD ["php public/index.php"]
+CMD ["php", "/var/www/html/public/index.php"]

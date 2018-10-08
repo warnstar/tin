@@ -6,4 +6,6 @@ vendor
 
 .env
 
+docker-compose.yml
+
 /app/runtime/logs
