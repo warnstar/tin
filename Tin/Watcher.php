@@ -12,6 +12,8 @@ class Watcher
     {
         $fd = inotify_init();
 
+        echo "热加载：开启\n";
+
         if (count($watcherDirs) > 0) {
             foreach ($watcherDirs as $dir) {
                 //递归监听目录

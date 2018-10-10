@@ -4,6 +4,7 @@
  */
 namespace Tin\Http;
 
+use app\common\base\User;
 use Closure;
 use InvalidArgumentException;
 use Psr\Http\Message\UploadedFileInterface;
@@ -29,6 +30,11 @@ use Tin\Interfaces\Http\HeadersInterface;
  */
 class Request extends Message implements ServerRequestInterface
 {
+    /**
+     * @var $user User;
+     */
+    public $user;
+
     /**
      * @var \Swoole\Http\Request $swRequest
      */
@@ -169,6 +175,8 @@ class Request extends Message implements ServerRequestInterface
 
     /**
      * @param $var
+     * @throws HttpInterruptException
+     * @throws \Tin\Exception\ExitException
      */
     public function endShow($var)
     {
