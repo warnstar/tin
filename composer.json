@@ -9,7 +9,7 @@
             "email": "wchuang@aliyun.com"
         }
     ],
-    "minimum-stability": "0.1",
+    "minimum-stability": "dev-master",
     "require": {
         "php": ">=7.0.0",
         "ext-swoole": "4.0",
