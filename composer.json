@@ -9,6 +9,7 @@
             "email": "wchuang@aliyun.com"
         }
     ],
+    "minimum-stability": "0.1",
     "require": {
         "php": ">=7.0.0",
         "ext-swoole": "4.0",
@@ -27,11 +28,5 @@
     },
     "scripts": {
         "cs": "./vendor/bin/php-cs-fixer fix "
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.phpcomposer.com"
-        }
     }
 }
