@@ -1,7 +1,7 @@
 {
     "name": "warnstar/tin",
     "description": "swoole http server",
-    "type": "project",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
