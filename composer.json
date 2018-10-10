@@ -28,5 +28,10 @@
     },
     "scripts": {
         "cs": "./vendor/bin/php-cs-fixer fix "
+    },
+    "autoload": {
+        "psr-4": {
+            "Tin\\": "src"
+        }
     }
 }
