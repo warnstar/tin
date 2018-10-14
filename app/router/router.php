@@ -76,7 +76,7 @@ $r->group('/wechat', function(\Tin\Router $r) {
     });
 
     // 愿望
-    $r->get('/desire/index', \app\wechat\controllers\DesireController::class . '@index');
+    $r->get('/desire/hot', \app\wechat\controllers\DesireController::class . '@index');
     $r->post('/desire', \app\wechat\controllers\DesireController::class . '@userSave');
 
     // 微信公共
