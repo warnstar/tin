@@ -10,7 +10,6 @@ $r->addMiddlewareBeforeRoute(\app\common\middlewares\CROSMiddleware::class);
 
 $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 
-
 # 后台登陆
 $r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
 
@@ -48,29 +47,18 @@ $r->group('/admin', function(\Tin\Router $r) {
     });
 })->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
-$r->group('/api', function(\Tin\Router $r){
-    // 测试
-    $r->group('/test', function(\Tin\Router $r) {
-        $r->get('/home', \app\admin\controllers\TestController::class. '@index');
-        $r->post('/confirm-answer', \app\admin\controllers\TestController::class. '@form');
-        $r->get('/result', \app\admin\controllers\TestController::class . '@delete');
-    });
 
-    // 愿望
-    $r->get('/desire/hot', \app\admin\controllers\TestController::class. '@index');
-    $r->post('/desire', \app\admin\controllers\TestController::class. '@index');
-
-});
-
-$r->post('/wechat/storage/upload', \app\common\components\storage\controllers\UploadController::class. '@upload');
+# 微信文件上传接口
+$r->post('/wechat/storage/upload', \app\common\components\storage\controllers\UploadController::class. '@upload')
+->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
 
 // 微信相关接口
-$r->group('/wechat', function(\Tin\Router $r) {
-    $r->post('/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
+$r->get('/wechat/home', \app\wechat\controllers\TestController::class. '@home');
+$r->post('/wechat/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
 
+$r->group('/wechat', function(\Tin\Router $r) {
     // 测评相关
     $r->group('/test', function(\Tin\Router $r) {
-        $r->get('/home', \app\wechat\controllers\TestController::class. '@home');
         $r->post('/confirm-answer', \app\wechat\controllers\TestController::class. '@userAnswer');
         $r->get('/result', \app\wechat\controllers\TestController::class . '@result');
     });
@@ -79,10 +67,13 @@ $r->group('/wechat', function(\Tin\Router $r) {
     $r->get('/desire/hot', \app\wechat\controllers\DesireController::class . '@index');
     $r->post('/desire', \app\wechat\controllers\DesireController::class . '@userSave');
 
+    // 用户
+    $r->get('/user/info', \app\wechat\controllers\UserController::class . '@info');
+
     // 微信公共
     $r->group('/wechat-common', function(\Tin\Router $r) {
         $r->post('/form-id', \app\wechat\controllers\WechatCommonController::class . '@submitFormId');
-    })->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
-});
+    });
+})->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
 
 return $r;

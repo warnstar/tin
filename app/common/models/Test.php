@@ -15,6 +15,7 @@ use app\common\base\TinModel;
  * @property string $title
  * @property string $desc
  * @property string $cover
+ * @property string $author
  * @property string $created_at
  * @property string $updated_at
  * @property Question[] $questions
@@ -28,6 +29,7 @@ class Test extends TinModel
     public $fillable = [
         'title',
         'desc',
+        'author',
         'cover'
     ];
 

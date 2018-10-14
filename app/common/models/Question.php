@@ -107,9 +107,10 @@ class Question extends TinModel
             }
 
             QuestionItem::query()->where('id', 'not in', $itemIds)->delete();
-
-            unset($this->items);
         }
+
+        unset($this->items);
+
         return parent::save($options);
     }
 }

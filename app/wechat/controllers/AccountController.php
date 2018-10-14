@@ -14,7 +14,7 @@ class AccountController extends Controller
     public function minaLogin()
     {
         $code = $this->request->getParsedBodyParam('code');
-
+        $userInfo = $this->request->getParsedBodyParam('userInfo');
 
         if (!$code) {
             return ApiResponse::error("PARAMS", '请传入小程序code');
@@ -42,6 +42,14 @@ class AccountController extends Controller
                 }
 
                 $user->access_token = rand_str(48);
+
+                if (!empty($userInfo['nickName'])) {
+                   $user->nickname =  $userInfo['nickName'];
+                }
+
+                if (!empty($userInfo['avatarUrl'])) {
+                    $user->avatar =  $userInfo['avatarUrl'];
+                }
 
                 if ($user->save()) {
                     $res['access_token'] = $user->access_token;
