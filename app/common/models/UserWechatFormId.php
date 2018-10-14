@@ -12,6 +12,7 @@ use app\common\base\TinModel;
  *
  * @property int $id;
  * @property int $user_id;
+ * @property string $open_id;
  * @property string form_id;
  * @property string $created_at
  * @property string $updated_at
@@ -23,6 +24,6 @@ class UserWechatFormId extends TinModel
     public $table = 'ou_user_wechat_form_id';
 
     protected $fillable = [
-        'id', 'user_id', 'form_id', 'created_at', 'updated_at'
+        'id', 'user_id', 'open_id', 'form_id', 'created_at', 'updated_at'
     ];
 }

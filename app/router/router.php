@@ -75,6 +75,14 @@ $r->group('/wechat', function(\Tin\Router $r) {
     $r->group('/wechat-common', function(\Tin\Router $r) {
         $r->post('/form-id', \app\wechat\controllers\WechatCommonController::class . '@submitFormId');
     });
+
+    // 教师端
+    $r->group('/teacher', function(\Tin\Router $r) {
+        $r->get('/answers', \app\wechat\controllers\TeacherAnswerController::class . '@answers');
+        $r->get('/answer-detail', \app\wechat\controllers\TeacherAnswerController::class . '@answerDetail');
+
+        $r->post('/result', \app\wechat\controllers\TeacherAnswerController::class . '@result');
+    });
 })->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
 
 return $r;

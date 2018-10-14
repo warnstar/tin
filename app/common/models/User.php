@@ -24,7 +24,8 @@ use app\common\base\TinModel;
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
- *
+ * @property string $open_id
+
  * @package app\admin\model
  */
 class User extends TinModel
@@ -73,5 +74,16 @@ class User extends TinModel
     {
         $one = self::query()->where('access_token', '=', $token)->first();
         return $one;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getOpen_id()
+    {
+        $extra = UserExtra::query()->where(['user_id' => $this->id, 'type' => UserExtra::TYPE_WECHAT])
+            ->first();
+
+        return $extra ? $extra->code : '';
     }
 }
