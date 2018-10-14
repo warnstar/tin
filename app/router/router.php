@@ -53,7 +53,8 @@ $r->post('/wechat/storage/upload', \app\common\components\storage\controllers\Up
 ->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
 
 // 微信相关接口
-$r->get('/wechat/home', \app\wechat\controllers\TestController::class. '@home');
+$r->get('/wechat/config', \app\wechat\controllers\ConfigController::class. '@common');
+$r->get('/wechat/test/home', \app\wechat\controllers\TestController::class. '@home');
 $r->post('/wechat/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
 
 $r->group('/wechat', function(\Tin\Router $r) {

@@ -27,6 +27,18 @@ class Desire extends TinModel
     ];
 
     /**
+     * @param int[] $ids
+     */
+    public static function getValidIds(array $ids)
+    {
+        $ids = self::query()->whereIn("id", $ids)
+            ->select("id")
+            ->get();
+
+        return $ids;
+    }
+
+    /**
      * @param array $params
      * @return mixed
      */

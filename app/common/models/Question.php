@@ -96,6 +96,21 @@ class Question extends TinModel
         return parent::fill($attributes);
     }
 
+
+    /**
+     * @param int $test_id
+     * @param int[] $ids
+     */
+    public static function getValidIds(int $test_id, array $ids)
+    {
+        $ids = self::query()->whereIn("id", $ids)
+            ->where(['test_id' => $test_id])
+            ->select("id")
+            ->get();
+
+        return $ids;
+    }
+
     public function save(array $options = [])
     {
         if ($this->items) {
