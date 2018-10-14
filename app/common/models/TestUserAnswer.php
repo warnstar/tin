@@ -83,13 +83,6 @@ class TestUserAnswer extends TinModel
             $query->offset($page->perPage() * $params['page']);
         }
 
-        $res['data'] = $data;
-        $res['page'] = [
-            'current_page' => $page->currentPage(),
-            'per_page' => $page->perPage(),
-            'total' => $page->total()
-        ];
-
-        return $res;
+        return $data;
     }
 }
