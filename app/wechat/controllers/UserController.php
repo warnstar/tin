@@ -20,7 +20,7 @@ class UserController extends Controller
         // 最后一次测试时间
         $last_test_answer = TestUserAnswer::getLastOneByUser($data['id']);
         $data['last_test_time'] = $last_test_answer ? $last_test_answer->created_at : null;
-        $data['last_test_answer_id'] = $last_test_answer ? $last_test_answer->created_at : null;
+        $data['last_test_answer_id'] = 1;
         $data['last_test_answer_status'] = 0;
 
         // 用户角色
