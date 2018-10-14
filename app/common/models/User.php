@@ -61,12 +61,16 @@ class User extends TinModel
                 return $one;
             }
         }
-
     }
-
 
     public function generatePasswordHash($password)
     {
         return md5(base64_encode($password));
+    }
+
+    public static function getOneByToken($token)
+    {
+        $one = self::query()->where('access_token', '=', $token)->first();
+        return $one;
     }
 }

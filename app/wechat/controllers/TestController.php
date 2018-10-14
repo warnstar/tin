@@ -8,6 +8,7 @@
 namespace app\wechat\controllers;
 
 use app\common\helpers\ApiResponse;
+use app\common\models\Question;
 use app\common\models\Test;
 use Tin\Controller;
 
@@ -21,6 +22,13 @@ class TestController extends Controller
         $data = $test->toArray();
 
         $data['questions'] = $test->questions;
+        if ($data['questions']) {
+            foreach ($data['questions'] as $k => $one) {
+                if ($one->type == Question::TYPE_SELECT) {
+                    $data['questions'][$k]['items'] = $one->items;
+                }
+            }
+        }
 
         return ApiResponse::success($data);
     }

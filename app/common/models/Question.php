@@ -33,6 +33,9 @@ class Question extends TinModel
         'type'
     ];
 
+    const TYPE_SELECT = 'select';
+    const TYPE_UPLOAD_IMG = 'upload_img';
+
     /**
      * @param array $params
      * @return mixed

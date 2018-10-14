@@ -78,6 +78,11 @@ $r->group('/wechat', function(\Tin\Router $r) {
     // 愿望
     $r->get('/desire/index', \app\wechat\controllers\DesireController::class . '@index');
     $r->post('/desire', \app\wechat\controllers\DesireController::class . '@userSave');
+
+    // 微信公共
+    $r->group('/wechat-common', function(\Tin\Router $r) {
+        $r->post('/form-id', \app\wechat\controllers\WechatCommonController::class . '@submitFormId');
+    })->addMiddleware(\app\wechat\middleware\AuthTokenMiddleware::class);
 });
 
 return $r;
