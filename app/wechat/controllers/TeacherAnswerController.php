@@ -56,8 +56,35 @@ class TeacherAnswerController extends Controller
     public function result()
     {
         $post = $this->request->getParsedBody();
-        
-        $data = $post;
-        return ApiResponse::success($data);
+
+        $answer_id = isset($post['answer_id']) ? $post['answer_id'] : null;
+        $answer = TestUserAnswer::getOneById($answer_id);
+        if (!$answer) {
+            return ApiResponse::error("PARAM", "目标测试答案不存在");
+        }
+
+        $result = [];
+        if (!empty($post['result']['conclusion'])) {
+            $result['conclusion'] = $post['result']['conclusion'];
+        } else {
+            return ApiResponse::error("PARAM", "请上传结论");
+        }
+
+        if (!empty($post['result']['detail'])) {
+            $result['detail'] = $post['result']['detail'];
+        } else {
+            return ApiResponse::error("PARAM", "请上传结论解读");
+        }
+
+        $answer->result = json_encode($result);
+        try {
+            if ($answer->save()) {
+                return ApiResponse::success($result);
+            } else {
+                return ApiResponse::error("PARAM", "入库失败");
+            }
+        } catch (\Exception $e) {
+            return ApiResponse::error("SERVER", $e->getMessage());
+        }
     }
 }
