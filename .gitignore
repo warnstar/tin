@@ -9,6 +9,6 @@ vendor
 docker-compose.yml
 
 
-app/rumtime
+app/runtime
 
 /app/runtime/logs
