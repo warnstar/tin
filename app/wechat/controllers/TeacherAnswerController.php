@@ -42,6 +42,7 @@ class TeacherAnswerController extends Controller
         $data = $answer->toArray();
         $data['result'] = json_decode($answer->result, true);
         $data['answers'] = json_decode($answer->answers, true);
+
         // 用户信息
         $data['user_info']['nickname'] = $answer->user->nickname;
         $data['user_info']['avatar'] = $answer->user->avatar;

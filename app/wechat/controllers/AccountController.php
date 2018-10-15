@@ -51,6 +51,22 @@ class AccountController extends Controller
                     $user->avatar =  $userInfo['avatarUrl'];
                 }
 
+                if (!empty($userInfo['city'])) {
+                    $user->city =  $userInfo['city'];
+                }
+
+                if (!empty($userInfo['province'])) {
+                    $user->province =  $userInfo['province'];
+                }
+
+                if (!empty($userInfo['country'])) {
+                    $user->country =  $userInfo['country'];
+                }
+
+                if (!empty($userInfo['gender'])) {
+                    $user->sex =  $userInfo['gender'];
+                }
+
                 if ($user->save()) {
                     $res['access_token'] = $user->access_token;
                 } else {
