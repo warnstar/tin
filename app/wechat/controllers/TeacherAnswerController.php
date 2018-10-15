@@ -97,7 +97,7 @@ class TeacherAnswerController extends Controller
         $answer->result = json_encode($result);
         try {
             if ($answer->save()) {
-                return ApiResponse::success($result);
+                return ApiResponse::success($answer);
             } else {
                 return ApiResponse::error("PARAM", "入库失败");
             }
