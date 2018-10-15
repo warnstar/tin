@@ -39,4 +39,9 @@ abstract class AppTin extends Tin\Tin
      * @var $storage \app\common\components\storage\ObjectStorage
      */
     public $storage;
+
+    /**
+     * @var $capsule Illuminate\Database\Capsule\Manager
+     */
+    public $capsule;
 }

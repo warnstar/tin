@@ -8,6 +8,7 @@
 namespace app\wechat\controllers;
 
 use app\common\helpers\ApiResponse;
+use app\common\models\Desire;
 use app\common\models\Question;
 use app\common\models\TestUserAnswer;
 use Tin\Controller;
@@ -20,7 +21,13 @@ class TeacherAnswerController extends Controller
 
         $res = (new TestUserAnswer())->search($params);
 
-        return ApiResponse::success($res);
+        $data = $res->toArray();
+        if ($res) foreach ($res as $k => $v) {
+            $data[$k]['user_info']['nickname'] = $v->user->nickname;
+            $data[$k]['user_info']['avatar'] = $v->user->avatar;
+        }
+
+        return ApiResponse::success($data);
     }
 
     public function answerDetail()
@@ -36,8 +43,11 @@ class TeacherAnswerController extends Controller
         $data['result'] = json_decode($answer->result, true);
         $data['answers'] = json_decode($answer->answers, true);
         // 用户信息
-        $data['userInfo']['nickname'] = $answer->user->nickname;
-        $data['userInfo']['avatar'] = $answer->user->avatar;
+        $data['user_info']['nickname'] = $answer->user->nickname;
+        $data['user_info']['avatar'] = $answer->user->avatar;
+
+        // 用户愿望标签
+        $data['user_desire'] = Desire::getUserLast($answer->user_id);
 
         // 测试
         $data['test'] = $answer->test;

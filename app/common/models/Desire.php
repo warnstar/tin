@@ -39,6 +39,32 @@ class Desire extends TinModel
     }
 
     /**
+     * @param $user_id
+     * @return self[]
+     */
+    public static function getUserLast($user_id)
+    {
+        $query = DesireUser::query();
+        $query->where(['user_id' => $user_id]);
+
+        $query->orderBy("id", "DESC");
+
+        $last = $query->first();
+
+        $data = [];
+        if ($last) {
+            $selectIds = json_decode($last->selects, true);
+            $desireSql = Desire::query()
+                ->whereIn("id", $selectIds);
+
+            $data = $desireSql->getModels();
+        }
+
+
+        return $data;
+    }
+
+    /**
      * @param array $params
      * @return mixed
      */

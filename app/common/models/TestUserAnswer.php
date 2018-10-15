@@ -92,16 +92,16 @@ class TestUserAnswer extends TinModel
 
         if (isset($params['status'])) {
             if ($params['status'] === 0 || $params['status'] === '0') {
-                $query->whereNull("result");
+                $query->whereRaw("result IS NULl OR result = ''");
             } else if ($params['status'] === 1 || $params['status'] === '1') {
-                $query->whereNotNull("result");
+                $query->whereRaw("result IS NOT NULl AND result != ''");
             }
         }
 
         if (!empty($params['search'])) {
             $query->leftjoin('ou_user AS u','u.id','=','ou_test_user_answer.user_id');
 
-            $query->where("u.nickname", 'like', "%s{$params['search']}%s");
+            $query->whereRaw("u.nickname LIKE '%{$params['search']}%'");
         }
 
         $query->orderBy("ou_test_user_answer.id", "ASC");
@@ -109,6 +109,7 @@ class TestUserAnswer extends TinModel
         $data = $query->get();
 
         $page = $query->paginate();
+
         if (isset($params['page'])) {
             $query->offset($page->perPage() * $params['page']);
         }

@@ -8,6 +8,7 @@
 namespace app\wechat\controllers;
 
 use app\common\helpers\ApiResponse;
+use app\common\models\Desire;
 use app\common\models\Question;
 use app\common\models\Test;
 use app\common\models\TestUserAnswer;
@@ -88,6 +89,34 @@ class TestController extends Controller
 
     public function result()
     {
+        $id = $this->request->getQueryParam('answer_id');
 
+        $answer = TestUserAnswer::getOneById($id);
+        if (!$answer) {
+            return ApiResponse::error("PARAM", "目标测试答案不存在");
+        }
+
+        $data = $answer;
+        $data['result'] = json_decode($answer->result, true);
+        $data['answers'] = json_decode($answer->answers, true);
+        // 用户信息
+        $data['user_info']['nickname'] = $answer->user->nickname;
+        $data['user_info']['avatar'] = $answer->user->avatar;
+
+        // 用户愿望标签
+        $data['user_desire'] = Desire::getUserLast($answer->user_id);
+
+        // 测试
+        $data['test'] = $answer->test;
+        $data['test']['questions'] = $answer->test->questions;
+        if ($data['test']['questions']) {
+            foreach ($data['test']['questions'] as $k => $one) {
+                if ($one->type == Question::TYPE_SELECT) {
+                    $data['test']['questions'][$k]['items'] = $one->items;
+                }
+            }
+        }
+
+        return ApiResponse::success($data);
     }
 }
