@@ -14,8 +14,12 @@ use app\common\base\TinModel;
  * @property int $test_id
  * @property int $user_id
  * @property string $answers
+ * @property string $result
  * @property string $created_at
  * @property string $updated_at
+ *
+ * @property Test $test
+ * @property User $user
  *
  * @package app\common\models
  */
@@ -26,8 +30,18 @@ class TestUserAnswer extends TinModel
     public $fillable = [
         'test_id',
         'user_id',
+        'result',
         'answers'
     ];
+
+    /**
+     * @param $id
+     * @return self
+     */
+    public static function getOneById($id)
+    {
+        return self::query()->where('id', '=', $id)->first();
+    }
 
     /**
      * @param $user_id
@@ -41,6 +55,22 @@ class TestUserAnswer extends TinModel
             ])
             ->orderBy("id", "DESC")
             ->first();
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return User::query()->where(['id' => $this->user_id])->first();
+    }
+
+    /**
+     * @return Test
+     */
+    public function getTest()
+    {
+        return Test::query()->where(['id' => $this->test_id])->first();
     }
 
     /**

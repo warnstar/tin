@@ -8,9 +8,8 @@
 namespace app\wechat\controllers;
 
 use app\common\helpers\ApiResponse;
-use app\common\models\Test;
+use app\common\models\Question;
 use app\common\models\TestUserAnswer;
-use app\common\models\UserWechatFormId;
 use Tin\Controller;
 
 class TeacherAnswerController extends Controller
@@ -33,8 +32,25 @@ class TeacherAnswerController extends Controller
             return ApiResponse::error("PARAM", "目标测试答案不存在");
         }
 
+        $data = $answer;
+        $data['result'] = json_decode($answer->result, true);
+        $data['answers'] = json_decode($answer->answers, true);
+        // 用户信息
+        $data['userInfo']['nickname'] = $answer->user->nickname;
+        $data['userInfo']['avatar'] = $answer->user->avatar;
 
-        return ApiResponse::success("");
+        // 测试
+        $data['test'] = $answer->test;
+        $data['test']['questions'] = $answer->test->questions;
+        if ($data['test']['questions']) {
+            foreach ($data['test']['questions'] as $k => $one) {
+                if ($one->type == Question::TYPE_SELECT) {
+                    $data['test']['questions'][$k]['items'] = $one->items;
+                }
+            }
+        }
+
+        return ApiResponse::success($data);
     }
 
     public function result()
