@@ -39,7 +39,7 @@ class TeacherAnswerController extends Controller
             return ApiResponse::error("PARAM", "目标测试答案不存在");
         }
 
-        $data = $answer;
+        $data = $answer->toArray();
         $data['result'] = json_decode($answer->result, true);
         $data['answers'] = json_decode($answer->answers, true);
         // 用户信息
@@ -56,6 +56,13 @@ class TeacherAnswerController extends Controller
             foreach ($data['test']['questions'] as $k => $one) {
                 if ($one->type == Question::TYPE_SELECT) {
                     $data['test']['questions'][$k]['items'] = $one->items;
+                }
+
+                // 设置用户的答案
+                foreach ($data['answers'] as $kk => $vv) {
+                    if ($kk == $one->id) {
+                        $data['test']['questions'][$k]['user_value'] = $vv;
+                    }
                 }
             }
         }
