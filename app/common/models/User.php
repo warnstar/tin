@@ -6,7 +6,6 @@ namespace app\common\models;
 
 use app\common\base\TinModel;
 
-
 /**
  * Class User
  *
@@ -43,8 +42,8 @@ class User extends TinModel
     public static function getOneByOpenId($open_id)
     {
         $one = User::query()
-            ->select("ou_user.*")
-            ->leftjoin('ou_user_extra','ou_user_extra.user_id','=','ou_user.id')
+            ->select('ou_user.*')
+            ->leftjoin('ou_user_extra', 'ou_user_extra.user_id', '=', 'ou_user.id')
             ->where(['ou_user_extra.code' => $open_id])
             ->first();
 

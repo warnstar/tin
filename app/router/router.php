@@ -15,7 +15,7 @@ $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 $r->post('/admin/account/login', \app\admin\controllers\AccountController::class . '@login');
 
 
-$r->group('/admin', function(\Tin\Router $r) {
+$r->group('/admin', function (\Tin\Router $r) {
     $r->post('/storage/upload', \app\common\components\storage\controllers\UploadController::class. '@upload');
 
     # 后台首页
@@ -26,14 +26,14 @@ $r->group('/admin', function(\Tin\Router $r) {
         ->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
     // 测评相关
-    $r->group('/test', function(\Tin\Router $r) {
-       $r->get('/index', \app\admin\controllers\TestController::class. '@index');
-       $r->post('/save', \app\admin\controllers\TestController::class. '@form');
-       $r->get('/delete', \app\admin\controllers\TestController::class . '@delete');
+    $r->group('/test', function (\Tin\Router $r) {
+        $r->get('/index', \app\admin\controllers\TestController::class. '@index');
+        $r->post('/save', \app\admin\controllers\TestController::class. '@form');
+        $r->get('/delete', \app\admin\controllers\TestController::class . '@delete');
     });
 
     // 题目相关
-    $r->group('/question', function(\Tin\Router $r) {
+    $r->group('/question', function (\Tin\Router $r) {
         $r->get('/index', \app\admin\controllers\QuestionController::class. '@index');
         $r->get('/detail', \app\admin\controllers\QuestionController::class. '@detail');
         $r->post('/save', \app\admin\controllers\QuestionController::class. '@form');
@@ -41,7 +41,7 @@ $r->group('/admin', function(\Tin\Router $r) {
     });
 
     // 测试愿望
-    $r->group('/desire', function(\Tin\Router $r) {
+    $r->group('/desire', function (\Tin\Router $r) {
         $r->get('/index', \app\admin\controllers\DesireController::class. '@index');
         $r->post('/save', \app\admin\controllers\DesireController::class. '@form');
         $r->get('/delete', \app\admin\controllers\DesireController::class . '@delete');
@@ -58,9 +58,9 @@ $r->get('/wechat/config', \app\wechat\controllers\ConfigController::class. '@com
 $r->get('/wechat/test/home', \app\wechat\controllers\TestController::class. '@home');
 $r->post('/wechat/account/mina-login', \app\wechat\controllers\AccountController::class . '@minaLogin');
 
-$r->group('/wechat', function(\Tin\Router $r) {
+$r->group('/wechat', function (\Tin\Router $r) {
     // 测评相关
-    $r->group('/test', function(\Tin\Router $r) {
+    $r->group('/test', function (\Tin\Router $r) {
         $r->post('/confirm-answer', \app\wechat\controllers\TestController::class. '@userAnswer');
         $r->get('/result', \app\wechat\controllers\TestController::class . '@result');
     });
@@ -73,12 +73,12 @@ $r->group('/wechat', function(\Tin\Router $r) {
     $r->get('/user/info', \app\wechat\controllers\UserController::class . '@info');
 
     // 微信公共
-    $r->group('/wechat-common', function(\Tin\Router $r) {
+    $r->group('/wechat-common', function (\Tin\Router $r) {
         $r->post('/form-id', \app\wechat\controllers\WechatCommonController::class . '@submitFormId');
     });
 
     // 教师端
-    $r->group('/teacher', function(\Tin\Router $r) {
+    $r->group('/teacher', function (\Tin\Router $r) {
         $r->get('/answers', \app\wechat\controllers\TeacherAnswerController::class . '@answers');
         $r->get('/answer-detail', \app\wechat\controllers\TeacherAnswerController::class . '@answerDetail');
 

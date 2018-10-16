@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2018/9/24
- * Time: 15:42
+ * This file is part of Tin.
  */
 namespace app\wechat\controllers;
 
@@ -22,9 +19,11 @@ class TeacherAnswerController extends Controller
         $res = (new TestUserAnswer())->search($params);
 
         $data = $res->toArray();
-        if ($res) foreach ($res as $k => $v) {
-            $data[$k]['user_info']['nickname'] = $v->user->nickname;
-            $data[$k]['user_info']['avatar'] = $v->user->avatar;
+        if ($res) {
+            foreach ($res as $k => $v) {
+                $data[$k]['user_info']['nickname'] = $v->user->nickname;
+                $data[$k]['user_info']['avatar'] = $v->user->avatar;
+            }
         }
 
         return ApiResponse::success($data);
@@ -36,7 +35,7 @@ class TeacherAnswerController extends Controller
 
         $answer = TestUserAnswer::getOneById($id);
         if (!$answer) {
-            return ApiResponse::error("PARAM", "目标测试答案不存在");
+            return ApiResponse::error('PARAM', '目标测试答案不存在');
         }
 
         $data = $answer->toArray();
@@ -78,20 +77,20 @@ class TeacherAnswerController extends Controller
         $answer_id = isset($post['answer_id']) ? $post['answer_id'] : null;
         $answer = TestUserAnswer::getOneById($answer_id);
         if (!$answer) {
-            return ApiResponse::error("PARAM", "目标测试答案不存在");
+            return ApiResponse::error('PARAM', '目标测试答案不存在');
         }
 
         $result = [];
         if (!empty($post['result']['conclusion'])) {
             $result['conclusion'] = $post['result']['conclusion'];
         } else {
-            return ApiResponse::error("PARAM", "请上传结论");
+            return ApiResponse::error('PARAM', '请上传结论');
         }
 
         if (!empty($post['result']['detail'])) {
             $result['detail'] = $post['result']['detail'];
         } else {
-            return ApiResponse::error("PARAM", "请上传结论解读");
+            return ApiResponse::error('PARAM', '请上传结论解读');
         }
 
         $answer->result = json_encode($result);
@@ -99,10 +98,10 @@ class TeacherAnswerController extends Controller
             if ($answer->save()) {
                 return ApiResponse::success($answer);
             } else {
-                return ApiResponse::error("PARAM", "入库失败");
+                return ApiResponse::error('PARAM', '入库失败');
             }
         } catch (\Exception $e) {
-            return ApiResponse::error("SERVER", $e->getMessage());
+            return ApiResponse::error('SERVER', $e->getMessage());
         }
     }
 }

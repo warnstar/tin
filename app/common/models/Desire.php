@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/17
- * Time: 20:25
+ * This file is part of Tin.
  */
 namespace app\common\models;
 
@@ -31,8 +28,8 @@ class Desire extends TinModel
      */
     public static function getValidIds(array $ids)
     {
-        $ids = self::query()->whereIn("id", $ids)
-            ->select("id")
+        $ids = self::query()->whereIn('id', $ids)
+            ->select('id')
             ->get();
 
         return $ids;
@@ -47,7 +44,7 @@ class Desire extends TinModel
         $query = DesireUser::query();
         $query->where(['user_id' => $user_id]);
 
-        $query->orderBy("id", "DESC");
+        $query->orderBy('id', 'DESC');
 
         $last = $query->first();
 
@@ -55,7 +52,7 @@ class Desire extends TinModel
         if ($last) {
             $selectIds = json_decode($last->selects, true);
             $desireSql = Desire::query()
-                ->whereIn("id", $selectIds);
+                ->whereIn('id', $selectIds);
 
             $data = $desireSql->getModels();
         }
@@ -79,7 +76,7 @@ class Desire extends TinModel
             $query->offset($page->perPage() * $params['page']);
         }
 
-        $query->orderByDesc("id");
+        $query->orderByDesc('id');
 
         $data = $query->get();
 

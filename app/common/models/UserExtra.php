@@ -6,7 +6,6 @@ namespace app\common\models;
 
 use app\common\base\TinModel;
 
-
 /**
  * Class UserExtra
  *
@@ -31,7 +30,6 @@ class UserExtra extends TinModel
 
     public static function getOneByOpenId($open_id)
     {
-        
     }
 
     public static function createByUserAndOpenId($open_id, $user_id)

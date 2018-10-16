@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2018/9/24
- * Time: 15:42
+ * This file is part of Tin.
  */
 namespace app\wechat\controllers;
 
@@ -30,7 +27,7 @@ class DesireController extends Controller
             return ApiResponse::error('PARAM', '请传入test_id');
         } else {
             if (!Test::getOneById($post['test_id'])) {
-                return ApiResponse::error("NOT_FOUND", '测试对象不存在');
+                return ApiResponse::error('NOT_FOUND', '测试对象不存在');
             }
         }
 

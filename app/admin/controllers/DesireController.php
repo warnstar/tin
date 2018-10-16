@@ -19,7 +19,6 @@ class DesireController extends Controller
         return ApiResponse::success($res);
     }
 
-
     public function detail()
     {
         $id = $this->request->getQueryParam('id');

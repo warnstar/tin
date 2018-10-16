@@ -6,7 +6,6 @@ namespace app\admin\models;
 
 use app\common\base\TinModel;
 
-
 /**
  * Class Admin
  *

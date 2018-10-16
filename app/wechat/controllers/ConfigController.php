@@ -5,10 +5,7 @@
 namespace app\wechat\controllers;
 
 use app\common\helpers\ApiResponse;
-use app\common\models\TestUserAnswer;
-use app\common\models\User;
 use Tin\Controller;
-use \Tin;
 
 class ConfigController extends Controller
 {

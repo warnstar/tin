@@ -19,7 +19,6 @@ class TestController extends Controller
         return ApiResponse::success($res);
     }
 
-
     public function form()
     {
         $id = $this->request->getParsedBodyParam('id');

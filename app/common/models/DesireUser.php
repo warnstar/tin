@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/17
- * Time: 20:25
+ * This file is part of Tin.
  */
 namespace app\common\models;
 
@@ -38,7 +35,7 @@ class DesireUser extends TinModel
     public static function getLastOneByTestAndUser($test_id, $user_id)
     {
         $one = self::query()
-            ->orderBy("id", "DESC")
+            ->orderBy('id', 'DESC')
             ->where(['test_id' => $test_id, 'user_id' => $user_id])
             ->first();
 

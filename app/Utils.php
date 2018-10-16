@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/10/16
- * Time: 11:53
+ * This file is part of Tin.
  */
 namespace app;
 
@@ -13,8 +10,9 @@ class Utils
      * @param $dir
      * @return bool
      */
-    public static function Directory($dir){
-        return  is_dir ( $dir ) or self::Directory(dirname( $dir )) and  mkdir ( $dir , 0777);
+    public static function Directory($dir)
+    {
+        return  is_dir($dir) or self::Directory(dirname($dir)) and  mkdir($dir, 0777);
     }
 
     /**

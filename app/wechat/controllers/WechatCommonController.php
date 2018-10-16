@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2018/9/24
- * Time: 15:42
+ * This file is part of Tin.
  */
 namespace app\wechat\controllers;
 

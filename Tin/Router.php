@@ -7,7 +7,6 @@ namespace Tin;
 
 use FastRoute;
 use Tin\Exception\ExitException;
-use Tin\Exception\HttpInterruptException;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
 use Tin\Middleware\MiddlewareBeforeRouteTrait;

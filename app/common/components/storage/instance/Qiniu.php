@@ -1,7 +1,6 @@
 <?php
 /**
- * This file is part of Insurance.
- *
+ * This file is part of Tin.
  */
 namespace app\common\components\storage\instance;
 

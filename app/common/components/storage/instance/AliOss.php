@@ -1,16 +1,13 @@
 <?php
 /**
- * This file is part of Insurance.
- *
+ * This file is part of Tin.
  */
 namespace app\common\components\storage\instance;
 
 use app\common\components\storage\ObjectStorage;
 use OSS\Core\OssException;
 use OSS\OssClient;
-use Qiniu\Auth;
 use Qiniu\Storage\BucketManager;
-use Qiniu\Storage\UploadManager;
 
 /**
  * ~~~
@@ -71,7 +68,7 @@ class AliOss extends ObjectStorage
             $this->client->uploadFile($this->bucket, $path, $file->file);
 
             return $path;
-        } catch(OssException $e) {
+        } catch (OssException $e) {
             return $e;
         }
     }
@@ -140,7 +137,7 @@ class AliOss extends ObjectStorage
      */
     public function getLink($key = '')
     {
-        return sprintf("https://%s.%s/%s", $this->bucket, $this->endpoint, $key);
+        return sprintf('https://%s.%s/%s', $this->bucket, $this->endpoint, $key);
     }
 
     /**

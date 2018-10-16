@@ -7,7 +7,6 @@ namespace app\wechat\controllers;
 use app\common\helpers\ApiResponse;
 use app\common\models\TestUserAnswer;
 use Tin\Controller;
-use \Tin;
 
 class UserController extends Controller
 {

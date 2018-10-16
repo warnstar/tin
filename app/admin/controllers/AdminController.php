@@ -7,7 +7,6 @@ namespace app\admin\controllers;
 use app\admin\models\Admin;
 use app\common\helpers\ApiResponse;
 use Tin\Controller;
-use Tin\Tin;
 
 class AdminController extends Controller
 {

@@ -17,7 +17,7 @@ class AccountController extends Controller
         $userInfo = $this->request->getParsedBodyParam('userInfo');
 
         if (!$code) {
-            return ApiResponse::error("PARAMS", '请传入小程序code');
+            return ApiResponse::error('PARAMS', '请传入小程序code');
         }
 
         try {
@@ -44,7 +44,7 @@ class AccountController extends Controller
                 $user->access_token = rand_str(48);
 
                 if (!empty($userInfo['nickName'])) {
-                   $user->nickname =  $userInfo['nickName'];
+                    $user->nickname =  $userInfo['nickName'];
                 }
 
                 if (!empty($userInfo['avatarUrl'])) {

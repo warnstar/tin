@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/17
- * Time: 20:25
+ * This file is part of Tin.
  */
 namespace app\common\models;
 
@@ -34,6 +31,7 @@ class Question extends TinModel
     ];
 
     const TYPE_SELECT = 'select';
+
     const TYPE_UPLOAD_IMG = 'upload_img';
 
     /**
@@ -51,7 +49,7 @@ class Question extends TinModel
             $query->offset($page->perPage() * $params['page']);
         }
 
-        $query->orderByDesc("id");
+        $query->orderByDesc('id');
 
         $data = $query->get();
 
@@ -64,7 +62,6 @@ class Question extends TinModel
 
         return $res;
     }
-
 
     /**
      * @return QuestionItem[]
@@ -96,16 +93,15 @@ class Question extends TinModel
         return parent::fill($attributes);
     }
 
-
     /**
      * @param int $test_id
      * @param int[] $ids
      */
     public static function getValidIds(int $test_id, array $ids)
     {
-        $ids = self::query()->whereIn("id", $ids)
+        $ids = self::query()->whereIn('id', $ids)
             ->where(['test_id' => $test_id])
-            ->select("id")
+            ->select('id')
             ->get();
 
         return $ids;

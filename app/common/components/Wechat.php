@@ -1,4 +1,7 @@
 <?php
+/**
+ * This file is part of Tin.
+ */
 namespace app\common\components;
 
 use EasyWeChat\Work\MiniProgram\Application;
@@ -23,7 +26,7 @@ class Wechat extends Component
     {
         $config = $config ? $config :  $this->config['mina'];
 
-        if(empty($this->config['mina']) || !$this->config['mina'] instanceof Application){
+        if (empty($this->config['mina']) || !$this->config['mina'] instanceof Application) {
             self::$_apps['mina'] = Factory::miniProgram($config);
         }
 

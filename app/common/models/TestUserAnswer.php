@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/17
- * Time: 20:25
+ * This file is part of Tin.
  */
 namespace app\common\models;
 
@@ -53,7 +50,7 @@ class TestUserAnswer extends TinModel
             ->where([
                 'user_id' => $user_id
             ])
-            ->orderBy("id", "DESC")
+            ->orderBy('id', 'DESC')
             ->first();
     }
 
@@ -80,7 +77,7 @@ class TestUserAnswer extends TinModel
     public function search($params = [])
     {
         $query = self::query();
-        $query->select("ou_test_user_answer.*");
+        $query->select('ou_test_user_answer.*');
 
         if (isset($params['user_id'])) {
             $query->where(['user_id' => $params['user_id']]);
@@ -93,18 +90,18 @@ class TestUserAnswer extends TinModel
         if (isset($params['status'])) {
             if ($params['status'] === 0 || $params['status'] === '0') {
                 $query->whereRaw("result IS NULl OR result = ''");
-            } else if ($params['status'] === 1 || $params['status'] === '1') {
+            } elseif ($params['status'] === 1 || $params['status'] === '1') {
                 $query->whereRaw("result IS NOT NULl AND result != ''");
             }
         }
 
         if (!empty($params['search'])) {
-            $query->leftjoin('ou_user AS u','u.id','=','ou_test_user_answer.user_id');
+            $query->leftjoin('ou_user AS u', 'u.id', '=', 'ou_test_user_answer.user_id');
 
             $query->whereRaw("u.nickname LIKE '%{$params['search']}%'");
         }
 
-        $query->orderBy("ou_test_user_answer.id", "ASC");
+        $query->orderBy('ou_test_user_answer.id', 'ASC');
 
         $data = $query->get();
 

@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/17
- * Time: 20:25
+ * This file is part of Tin.
  */
 namespace app\common\models;
 
@@ -44,7 +41,7 @@ class QuestionItem extends TinModel
             $query->offset($page->perPage() * $params['page']);
         }
 
-        $query->orderByDesc("id");
+        $query->orderByDesc('id');
 
         $data = $query->get();
 
@@ -57,5 +54,4 @@ class QuestionItem extends TinModel
 
         return $res;
     }
-
 }

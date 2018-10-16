@@ -6,7 +6,6 @@ namespace app\common\models;
 
 use app\common\base\TinModel;
 
-
 /**
  * Class UserWechatFormId
  *

@@ -1,9 +1,6 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchuang
- * Date: 2018/9/24
- * Time: 15:42
+ * This file is part of Tin.
  */
 namespace app\wechat\controllers;
 
@@ -22,7 +19,7 @@ class TestController extends Controller
         $test = Test::getOneById($id);
 
         if (!$test) {
-            return ApiResponse::error("NOT_FOUND", '对象不存在');
+            return ApiResponse::error('NOT_FOUND', '对象不存在');
         }
 
         $data = $test->toArray();
@@ -46,7 +43,7 @@ class TestController extends Controller
         $test_id = isset($post['test_id']) ? $post['test_id'] : null;
         $test = Test::getOneById($test_id);
         if (!$test) {
-            return ApiResponse::error("NOT_FOUND", '测试对象不存在');
+            return ApiResponse::error('NOT_FOUND', '测试对象不存在');
         }
 
         if (empty($post['answers'])) {
@@ -93,7 +90,7 @@ class TestController extends Controller
 
         $answer = TestUserAnswer::getOneById($id);
         if (!$answer) {
-            return ApiResponse::error("PARAM", "目标测试答案不存在");
+            return ApiResponse::error('PARAM', '目标测试答案不存在');
         }
 
         $data = $answer;

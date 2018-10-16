@@ -19,7 +19,6 @@ class QuestionController extends Controller
         return ApiResponse::success($res);
     }
 
-
     public function detail()
     {
         $id = $this->request->getQueryParam('id');
@@ -42,7 +41,7 @@ class QuestionController extends Controller
             $post  = $this->request->getParsedBody();
 
             if (!$post || !is_array($post)) {
-                return ApiResponse::error("PARAM", "提交内容不为空");
+                return ApiResponse::error('PARAM', '提交内容不为空');
             }
 
             if ($one->fill($post)) {
