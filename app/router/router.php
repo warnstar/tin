@@ -7,6 +7,7 @@ $r = new \Tin\Router();
 
 // 全局cros中间件
 $r->addMiddlewareBeforeRoute(\app\common\middlewares\CROSMiddleware::class);
+$r->addMiddlewareBeforeRoute(\app\common\middlewares\RequestLogMiddleware::class);
 
 $r->get('/', \app\admin\controllers\IndexController::class . '@index');
 

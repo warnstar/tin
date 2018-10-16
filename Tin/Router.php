@@ -6,6 +6,8 @@
 namespace Tin;
 
 use FastRoute;
+use Tin\Exception\ExitException;
+use Tin\Exception\HttpInterruptException;
 use Tin\Http\Request;
 use Tin\Http\StatusCode;
 use Tin\Middleware\MiddlewareBeforeRouteTrait;
@@ -191,10 +193,10 @@ class Router
 
     /**
      * 一次http请求的地点
-     *
-     * @param Request  $request
+     * @param Request $request
+     * @throws Exception\ExitException
      */
-    public function execute(&$request)
+    public function execute(Request &$request)
     {
         /**
          * 构造中间件队列
@@ -212,8 +214,6 @@ class Router
                     $request_method =$request->getMethod();
                     $request_uri = $request->getUri()->getPath();
 
-                    printConsole(sprintf('%s Fd=%s %s %s', date('Y-m-d H:i:s'), $request->getFd(), $request_method, $request_uri));
-
                     $httpMethod =$request_method;
                     $uri = $request_uri;
 
@@ -225,50 +225,53 @@ class Router
                     $routeInfo = $this->getDispatcher()->dispatch($httpMethod, $uri);
 
                     switch ($routeInfo[0]) {
-                    case FastRoute\Dispatcher::NOT_FOUND:
-                        // ... 404 Not Found
+                        case FastRoute\Dispatcher::NOT_FOUND:
+                            // ... 404 Not Found
 
-                        $data = 'not fund';
-                        $request->response->write($data);
-                        break;
-                    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-                        // ... 405 Method Not Allowed
-                        $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
-                        break;
-                    case FastRoute\Dispatcher::FOUND:
-                        $routeIdentified = $routeInfo[1];
-                        $vars = $routeInfo[2];
+                            $data = 'not fund';
+                            $request->response->write($data);
+                            break;
+                        case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+                            // ... 405 Method Not Allowed
+                            $request->response->withStatus(StatusCode::HTTP_METHOD_NOT_ALLOWED);
+                            break;
+                        case FastRoute\Dispatcher::FOUND:
+                            $routeIdentified = $routeInfo[1];
+                            $vars = $routeInfo[2];
 
-                        $route = $this->getRouteByIdentified($routeIdentified);
+                            $route = $this->getRouteByIdentified($routeIdentified);
 
-                        if (!$route) {
-                            throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
-                        }
+                            if (!$route) {
+                                throw new \Exception(sprintf('目标路由不存在：%s', $routeIdentified));
+                            }
 
-                        /**
-                         * 构造中间件队列
-                         */
-                        $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
+                            try {
+                                /**
+                                 * 构造中间件队列
+                                 */
+                                $handles = array_merge($this->getMiddlewareHandles(), $route->getMiddlewareHandles());
 
-                        /**
-                         * 中间件调度处理
-                         */
-                        (new \Tin\Middleware\Processor())
-                            ->send($request)
-                            ->through($handles)
-                            ->then(function ($request) use ($vars, $route) {
-                                $data = $route->run($vars, $request);
-                                $request->response->write($data);
-                            });
-                        break;
-                    default:
-                        $data = 'not fund';
-                        $request->response->write($data);
+                                /**
+                                 * 中间件调度处理
+                                 */
+                                (new \Tin\Middleware\Processor())
+                                    ->send($request)
+                                    ->through($handles)
+                                    ->then(function ($request) use ($vars, $route) {
+                                        $data = $route->run($vars, $request);
+                                        $request->response->write($data);
+                                    });
+                            } catch (ExitException $e) {
+                                // 正常http中断
+                            }
+                            break;
+                        default:
+                            $data = 'not fund';
+                            $request->response->write($data);
+                    }
                 }
-
-                    $request->response->end();
-                }
-        );
+            );
+        $request->response->end();
     }
 
     /**
