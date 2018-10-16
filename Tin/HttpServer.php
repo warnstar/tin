@@ -79,11 +79,13 @@ class HttpServer
             try {
                 Tin::$app->router->execute(Request::createFromSwoole($request, $response));
             } catch (ExitException $e) {
+            } catch (\Exception $e) {
+                $response->end("服务器内部错误：" . $e->getMessage());
             }
         });
 
         $http->on('WorkerError', function (\Swoole\Http\Server $serv, int $worker_id, int $worker_pid, int $exit_code, int $signal) {
-            dump(func_get_args());
+            dump("服务器内部错误");
         });
 
         $http->start();
