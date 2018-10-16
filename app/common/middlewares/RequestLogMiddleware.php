@@ -45,6 +45,6 @@ class RequestLogMiddleware extends Middleware
             ]
         ];
 
-        Utils::file_put_contents(APP_PATH . '/runtime/request/' . date('Y-m-d') . '.log', json_encode($log, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND);
+        Utils::file_put_contents(APP_PATH . '/runtime/request/' . date('Y-m-d') . '.log', json_encode($log, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n\n", FILE_APPEND);
     }
 }
