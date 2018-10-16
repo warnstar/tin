@@ -24,7 +24,6 @@ class RequestLogMiddleware extends Middleware
                 $request->response->getStatusCode()
             )
         );
-        yield $request;
 
         // 日志输出到文件
         $log = [
@@ -38,13 +37,12 @@ class RequestLogMiddleware extends Middleware
                 'headers' => $request->getHeaders(),
                 'queryParams' => $request->getQueryParams(),
                 'bodyParams' => $request->getParsedBody()
-            ],
-            'response' => [
-                'code' => $request->response->getStatusCode(),
-                'data' => json_decode($request->response->getData(), true) ? json_decode($request->response->getData(), true) : $request->response->getData()
             ]
         ];
 
         Utils::file_put_contents(APP_PATH . '/runtime/request/' . date('Y-m-d') . '.log', json_encode($log, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n\n", FILE_APPEND);
+
+        yield $request;
+
     }
 }
