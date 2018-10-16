@@ -4,6 +4,8 @@
  */
 namespace app;
 
+use Swoole\Async;
+
 class Utils
 {
     /**
@@ -16,15 +18,20 @@ class Utils
     }
 
     /**
-     * @param $path
+     * @param $filename
      * @param $data
+     * @param int $flags
+     * @param callable|null $callback
+     * @return bool
      */
-    public static function file_put_contents($filename, $data, $flags = 0, $context = null)
+    public static function file_put_contents($filename, $data, $flags = 0,  callable $callback = null)
     {
         if (self::Directory(dirname($filename))) {
-            file_put_contents($filename, $data, $flags, $context);
-        } else {
-            // TODO 异常处理
+            if (Async::writeFile($filename, $data, $callback, $flags)) {
+                return true;
+            }
         }
+
+        return false;
     }
 }
