@@ -181,7 +181,7 @@
 
                         this.tableData.splice(this.idx, 1);
                         this.delVisible = false;
-                        this.$router.push('/test/index');
+                        this.$router.push('/desire/index');
                     } else {
                         this.$message.error(res.data.message);
                     }

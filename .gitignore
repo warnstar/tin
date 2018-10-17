@@ -9,6 +9,6 @@ vendor
 docker-compose.yml
 
 
-app/runtime
+/app/runtime
 
 /app/runtime/logs

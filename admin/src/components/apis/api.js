@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { route } from '../../main';
 
-
 // axios.defaults.baseURL =  "http://oo:1400";
 axios.defaults.baseURL =  "https://hou-api.72ou.com";
 
