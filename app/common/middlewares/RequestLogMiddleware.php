@@ -27,6 +27,7 @@ class RequestLogMiddleware extends Middleware
 
         // 日志输出到文件
         $log = [
+            "time", date('Y-m-d H:i:s'),
             'user' => [
                 'user_id' => $request->user->id
             ],
