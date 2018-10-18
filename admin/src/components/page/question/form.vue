@@ -109,7 +109,10 @@
                 optionIdx : -1,
                 typeMaps : [{
                     value: 'select',
-                    label: '选择题'
+                    label: '单选题'
+                }, {
+                    value: 'select_multi',
+                    label: '多选题'
                 }, {
                     value: 'upload_img',
                     label: '上传图片'
