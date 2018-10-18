@@ -59,6 +59,17 @@
                         ]
                     },
                     {
+                        icon: 'el-icon-lx-warn',
+                        title: '用户管理',
+                        index : '/user/index',
+                        subs: [
+                            {
+                                index: '/user/index',
+                                title: '用户管理'
+                            }
+                        ]
+                    },
+                    {
                         icon: 'el-icon-lx-cascades',
                         index: '/desire/index',
                         title: '答题愿望配置'

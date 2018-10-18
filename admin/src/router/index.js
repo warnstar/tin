@@ -21,6 +21,11 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
+                    path: '/user/index',
+                    component: resolve => require(['../components/page/user/Index.vue'], resolve),
+                    meta: { title: '用户管理' }
+                },
+                {
                     path: '/test/index',
                     component: resolve => require(['../components/page/test/Index.vue'], resolve),
                     meta: { title: '测评管理' }

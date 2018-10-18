@@ -61,3 +61,5 @@ export const getQuestionDelete = params => { return axios.get(`/admin/question/d
 export const getDesireIndex = params => { return axios.get('/admin/desire/index', { params : params})}
 export const postDesireSave = params => { return axios.post(`/admin/desire/save`, params )};
 export const getDesireDelete = params => { return axios.get(`/admin/desire/delete`, {params : params })};
+
+export const getUserIndex = params => { return axios.get('/admin/user/index', { params : params})}

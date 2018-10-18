@@ -46,6 +46,12 @@ $r->group('/admin', function (\Tin\Router $r) {
         $r->post('/save', \app\admin\controllers\DesireController::class. '@form');
         $r->get('/delete', \app\admin\controllers\DesireController::class . '@delete');
     });
+
+
+    // 用户管理
+    $r->group('/user', function (\Tin\Router $r) {
+        $r->get('/index', \app\admin\controllers\UserController::class. '@index');
+    });
 })->addMiddleware(\app\admin\middleware\AuthTokenMiddleware::class);
 
 
