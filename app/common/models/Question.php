@@ -32,6 +32,8 @@ class Question extends TinModel
 
     const TYPE_SELECT = 'select';
 
+    const TYPE_SELECT_MULTI = 'select_multi';
+
     const TYPE_UPLOAD_IMG = 'upload_img';
 
     /**

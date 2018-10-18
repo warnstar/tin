@@ -27,7 +27,7 @@ class TestController extends Controller
         $data['questions'] = $test->questions;
         if ($data['questions']) {
             foreach ($data['questions'] as $k => $one) {
-                if ($one->type == Question::TYPE_SELECT) {
+                if (in_array($one->type, [Question::TYPE_SELECT, Question::TYPE_SELECT_MULTI])) {
                     $data['questions'][$k]['items'] = $one->items;
                 }
             }

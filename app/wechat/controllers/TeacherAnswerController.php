@@ -54,7 +54,7 @@ class TeacherAnswerController extends Controller
         $data['test']['questions'] = $answer->test->questions;
         if ($data['test']['questions']) {
             foreach ($data['test']['questions'] as $k => $one) {
-                if ($one->type == Question::TYPE_SELECT) {
+                if (in_array($one->type, [Question::TYPE_SELECT, Question::TYPE_SELECT_MULTI])) {
                     $data['test']['questions'][$k]['items'] = $one->items;
                 }
 
