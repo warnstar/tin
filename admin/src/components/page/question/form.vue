@@ -159,7 +159,7 @@
                             this.typeDisable = true;
                         }
 
-                        if (this.form.type == 'select') {
+                        if (this.form.type == 'select' || this.form.type == 'select_multi') {
                             this.selectOptionHidden = false;
                         }
 
