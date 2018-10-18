@@ -114,6 +114,12 @@
                     value: 'select_multi',
                     label: '多选题'
                 }, {
+                    value: 'input',
+                    label: '填写文字'
+                }, {
+                    value: 'date',
+                    label: '日期选择'
+                }, {
                     value: 'upload_img',
                     label: '上传图片'
                 }]
