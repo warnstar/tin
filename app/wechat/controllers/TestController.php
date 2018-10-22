@@ -22,7 +22,10 @@ class TestController extends Controller
             return ApiResponse::error('NOT_FOUND', '对象不存在');
         }
 
+
         $data = $test->toArray();
+
+        $data['test_count'] = TestUserAnswer::query()->where(['test_id' => $id])->count();
 
         $data['questions'] = $test->questions;
         if ($data['questions']) {
@@ -32,6 +35,7 @@ class TestController extends Controller
                 }
             }
         }
+
 
         return ApiResponse::success($data);
     }

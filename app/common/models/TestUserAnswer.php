@@ -95,6 +95,8 @@ class TestUserAnswer extends TinModel
             }
         }
 
+
+
         if (!empty($params['search'])) {
             $query->leftjoin('ou_user AS u', 'u.id', '=', 'ou_test_user_answer.user_id');
 
@@ -103,13 +105,13 @@ class TestUserAnswer extends TinModel
 
         $query->orderBy('ou_test_user_answer.id', 'ASC');
 
-        $data = $query->get();
-
         $page = $query->paginate();
-
         if (isset($params['page'])) {
             $query->offset($page->perPage() * $params['page']);
         }
+
+        $data = $query->get();
+
 
         return $data;
     }
