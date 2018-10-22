@@ -107,6 +107,7 @@ class TestUserAnswer extends TinModel
 
         $page = $query->paginate();
         if (isset($params['page'])) {
+            $params['page'] = $params['page'] > 0 ? $params['page'] -1 : 0;
             $query->offset($page->perPage() * $params['page']);
         }
 
