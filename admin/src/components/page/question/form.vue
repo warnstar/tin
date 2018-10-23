@@ -140,18 +140,28 @@
             }
         },
         methods: {
+            resetForm() {
+                this.form = {
+                    id : null,
+                    test_id : this.$route.query.test_id,
+                    title: '',
+                    desc: '',
+                    type : 'select'
+                }
+            },
             onSubmit() {
                 postQuestionSave(this.form).then(res => {
                     if (res.data.status == 200) {
+                        this.resetForm();
                         this.$message.success('提交成功！');
-                        this.$router.replace('/question/index');
+                        this.$router.replace('/question/index?id=' + this.$route.query.test_id);
                     } else {
                         this.$message.error(res.data.message);
                     }
                 });
             },
             cancel() {
-                this.$router.replace('/question/index');
+                this.$router.replace('/question/index?id=' + this.$route.query.test_id);
             },
             getData() {
                 var query = {
@@ -168,8 +178,6 @@
                         if (this.form.type == 'select' || this.form.type == 'select_multi') {
                             this.selectOptionHidden = false;
                         }
-
-                        console.log(this.form);
                     } else {
                         this.$message.error(res.data.message);
                     }
