@@ -5,7 +5,14 @@
 
 $components['capsule'] = \app\common\components\DbComponent::getInstance();
 $components['router'] =  require(APP_PATH . '/router/router.php');
-$components['server'] = \Tin\HttpServer::build();
+$components['server'] = new \Tin\HttpServer([
+    'swooleConfig' => [
+        'host' => getenv('swoole.host'),
+        'port' => getenv('swoole.port'),
+        'worker_num' => getenv('swoole.worker_num'),
+        'package_max_length' => getenv('swoole.package_max_length'),
+    ]
+]);
 
 $components['wechat'] = new \app\common\components\Wechat([
     'config' => [

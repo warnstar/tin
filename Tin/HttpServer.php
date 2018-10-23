@@ -9,31 +9,31 @@ use Swoole\Server;
 use Tin\Exception\ExitException;
 use Tin\Http\Request;
 
-class HttpServer
+class HttpServer extends Component
 {
-    private function __construct($config = [])
-    {
-    }
-
-    public static function build($config = [])
-    {
-        return new self($config);
-    }
-
     /**
      * @var $swServer Server
      */
     private $swServer;
 
-    public $host = '0.0.0.0';
-
-    public $port = '80';
-
-    public $worker_num = 4;
-
-    public $daemmonize = false;
-
     public $document_root = '../public';
+
+    public $swooleConfig = [];
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+
+        if (empty($this->swooleConfig['host'])) {
+            $this->swooleConfig['host'] = '0.0.0.0';
+        }
+
+        if (empty($this->swooleConfig['port'])) {
+            $this->swooleConfig['port'] = '80';
+        }
+
+    }
+
 
     public function reload()
     {
@@ -42,18 +42,14 @@ class HttpServer
 
     public function run()
     {
-        $http = new \Swoole\Http\Server($this->host, $this->port);
+        $http = new \Swoole\Http\Server($this->swooleConfig['host'], $this->swooleConfig['port']);
 
         // 设置全局swoole server变量
         $this->swServer = &$http;
 
-        $http->set([
-            'worker_num' => $this->worker_num,
-            'daemonize' => $this->daemmonize,
-            'backlog' => 128,
-            'enable_static_handler' => true,
+        $http->set(array_merge($this->swooleConfig, [
             'document_root' => $this->document_root
-        ]);
+        ]));
 
         $http->on('start', function ($server) {
             echo "Tin已启动http服务器，监听80端口\n";
