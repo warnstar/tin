@@ -8,13 +8,13 @@
 class Tin extends Tin\Tin
 {
     /**
-     * @var Tin|BaseTin|AppTin the application instance
+     * @var $app Tin|HttpTin|AppTin|ConsoleTin the application instance
      */
     public static $app;
 }
 
 
-abstract class BaseTin extends Tin\Tin
+abstract class HttpTin extends Tin\Tin
 {
     /**
      * @var $router \Tin\Router
@@ -25,6 +25,11 @@ abstract class BaseTin extends Tin\Tin
      * @var $server \Tin\HttpServer
      */
     public $server;
+
+    /**
+     * @var $capsule Illuminate\Database\Capsule\Manager
+     */
+    public $capsule;
 }
 
 
@@ -35,13 +40,15 @@ abstract class AppTin extends Tin\Tin
      */
     public $wechat;
 
-    /**
-     * @var $storage \app\common\components\storage\ObjectStorage
-     */
-    public $storage;
 
+}
+
+abstract class ConsoleTin extends Tin\Tin
+{
     /**
-     * @var $capsule Illuminate\Database\Capsule\Manager
+     * @var $console \Tin\Console
      */
-    public $capsule;
+    public $console;
+
+
 }
