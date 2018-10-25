@@ -9,5 +9,9 @@ namespace Tin;
 
 interface ConsoleActionInterface
 {
+    /**
+     * @param $args array
+     * @return mixed
+     */
     public function run($args);
 }
