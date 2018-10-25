@@ -28,6 +28,8 @@ class Response extends Message implements ResponseInterface
      */
     private $data;
 
+    private $is_end = false;
+
     /**
      * @var
      */
@@ -311,7 +313,9 @@ class Response extends Message implements ResponseInterface
      */
     public function write($data)
     {
-        $this->data = $data;
+        if (!$this->is_end) {
+            $this->data = $data;
+        }
         return $this;
     }
 
@@ -542,6 +546,11 @@ class Response extends Message implements ResponseInterface
      */
     public function end($html = '')
     {
+        if ($this->is_end) {
+            return;
+        }
+        $this->is_end = true;
+
         // 设置响应数据
         if ($this->data) {
             $this->swResponse->write($this->data);
@@ -572,5 +581,13 @@ class Response extends Message implements ResponseInterface
     public function sendfile($filename)
     {
         $this->swResponse->sendfile($filename);
+    }
+
+    /**
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

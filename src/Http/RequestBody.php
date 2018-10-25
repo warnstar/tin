@@ -22,6 +22,6 @@ class RequestBody
      */
     public function __construct($rawData = '')
     {
-        $this->rawData = $rawData;
+        $this->rawData = $rawData ? $rawData : '';
     }
 }

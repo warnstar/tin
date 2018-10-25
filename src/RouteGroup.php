@@ -1,13 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: wchua
- * Date: 2018/9/26
- * Time: 20:08
+ * This file is part of Tin.
  */
 namespace Tin;
-
-use Tin\Middleware\MiddlewareTrait;
 
 class RouteGroup
 {
