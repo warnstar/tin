@@ -5,7 +5,7 @@
 
 namespace Tin;
 
-class ConsoleTin extends BaseTin
+class ConsoleTin extends Tin
 {
     public function run()
     {

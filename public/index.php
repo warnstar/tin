@@ -11,4 +11,4 @@ $config = array_merge(
     require(APP_PATH . "/common/config/http.php")
 );
 
-(new \Tin\Tin($config['components']))->run();
+(new \Tin\HttpTin($config['components']))->run();
