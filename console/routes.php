@@ -8,7 +8,8 @@
 
 
 $maps = [
-    'test' => \console\actions\test::class
+    'test' => \console\actions\test::class,
+    'async' => \console\actions\Async::class
 ];
 
 
