@@ -4,7 +4,16 @@ services:
         build: .
         ports:
             - "1400:80"
-        tty: true
+        restart: always
+        links:
+          - "async"
         volumes:
           - .:/var/www/html
-        command: "tail"
+        command: ""php /var/www/html/public/index.php"
+    async:
+        build: .
+        restart: always
+        volumes:
+          - .:/var/www/html
+        command: "php /var/www/html/console/console.php async start"
+

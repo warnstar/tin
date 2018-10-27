@@ -75,6 +75,6 @@ WORKDIR /var/www/html
 #RUN composer install --no-dev \
 #    && composer dump-autoload -o
 
-EXPOSE 80
+EXPOSE 80 9502
 
 CMD ["php", "/var/www/html/public/index.php"]

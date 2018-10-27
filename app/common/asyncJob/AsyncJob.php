@@ -58,7 +58,7 @@ class AsyncJob
         $client->on("close", function($cli){
 
         });
-        $client->connect("127.0.0.1", 9502, 0.5);
+        $client->connect(getenv("async.server"), getenv("async.port"), 0.5);
 
         return true;
     }
