@@ -4,14 +4,12 @@
  */
 
 $components['capsule'] = \app\common\components\DbComponent::getInstance();
-$components['router'] =  require(APP_PATH . '/router/router.php');
-$components['server'] = new \Tin\HttpServer([
-    'swooleConfig' => [
-        'host' => getenv('swoole.host'),
-        'port' => getenv('swoole.port'),
-        'worker_num' => getenv('swoole.worker_num'),
-        'package_max_length' => getenv('swoole.package_max_length'),
-    ]
+
+$components['storage'] = new \app\common\components\storage\instance\AliOss([
+    'accessKey' => getenv('oss.ali.accessKey'),
+    'accessSecret' => getenv('oss.ali.accessSecret'),
+    'endpoint' => getenv('oss.ali.endpoint'),
+    'bucket' => getenv('oss.ali.bucket')
 ]);
 
 $components['wechat'] = new \app\common\components\Wechat([
@@ -31,22 +29,6 @@ $components['wechat'] = new \app\common\components\Wechat([
         ]
     ],
 ]);
-
-//$components['storage'] = new \app\common\components\storage\instance\Qiniu([
-//    'accessKey' => getenv('qiniu.access_key'),
-//    'accessSecret' => getenv('qiniu.secret_key'),
-//    'bucket' => getenv('qiniu.bucket'),
-//    'domian' => getenv('qiniu.domain'),
-//    'https' => getenv('qiniu.https')
-//]);
-
-$components['storage'] = new \app\common\components\storage\instance\AliOss([
-    'accessKey' => getenv('oss.ali.accessKey'),
-    'accessSecret' => getenv('oss.ali.accessSecret'),
-    'endpoint' => getenv('oss.ali.endpoint'),
-    'bucket' => getenv('oss.ali.bucket')
-]);
-
 $config['components'] = $components;
 
 return $config;

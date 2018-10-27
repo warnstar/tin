@@ -10,9 +10,10 @@ use app\common\base\TinModel;
  * Class QuestionItem
  * @property int $test_id
  * @property int $user_id
+ * @property int $process_user_id
  * @property string $answers
  * @property string $result
- * @property string $created_at
+ * @property \Illuminate\Support\Carbon $created_at
  * @property string $updated_at
  *
  * @property Test $test
@@ -28,7 +29,8 @@ class TestUserAnswer extends TinModel
         'test_id',
         'user_id',
         'result',
-        'answers'
+        'answers',
+        'process_user_id'
     ];
 
     /**

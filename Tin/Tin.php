@@ -45,6 +45,10 @@ class Tin
         self::$app = $this;
     }
 
+    public function run()
+    {
+
+    }
     /**
      * Calling a non-existant method on App checks to see if there's an item
      * in the container that is callable and if so, calls it.
@@ -74,12 +78,6 @@ class Tin
     public function __get($name)
     {
         return $this->container->get($name);
-    }
-
-    public function run()
-    {
-        Tin::$app->router->init();
-        Tin::$app->server->run();
     }
 
     public static function autoload($className)
