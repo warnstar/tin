@@ -8,6 +8,7 @@ use app\common\helpers\ApiResponse;
 use app\common\models\Desire;
 use app\common\models\Question;
 use app\common\models\TestUserAnswer;
+use app\wechat\moduleMessage\messages\TestResultMessage;
 use Tin\Controller;
 
 class TeacherAnswerController extends Controller
@@ -94,8 +95,20 @@ class TeacherAnswerController extends Controller
         }
 
         $answer->result = json_encode($result);
+        $answer->process_user_id = $this->request->user->id;
+
         try {
             if ($answer->save()) {
+
+                // 发送模板消息
+                (new TestResultMessage())
+                    ->setUser($answer->user_id)
+                    ->buildData([
+                        'test_result' => $result['conclusion'],
+                        'test_time' => $answer->created_at->toDateTimeString()
+                    ])
+                    ->send();
+
                 return ApiResponse::success($answer);
             } else {
                 return ApiResponse::error('PARAM', '入库失败');

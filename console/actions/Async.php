@@ -36,27 +36,24 @@ class Async implements ConsoleActionInterface
 
     protected function start()
     {
-        $server = new Server("127.0.0.1", 9502);
+        $server = new Server("0.0.0.0", 9502);
         $server->set(array('task_worker_num' => 4));
         $server->on('receive', function(Server $server, $fd, $reactor_id, $data) {
             $task_id = $server->task($data);
         });
 
         $server->on('task', function (Server $server, $task_id, $reactor_id, $data) {
-            $res = 'fail';
-
             $asyncJob = new AsyncJob();
             if ($asyncJob->execute($data)) {
-                $res = 'ok';
             } else {
                 dump($asyncJob->getErrors());
             }
 
-            $server->finish(" -> {$res}");
+            $server->finish("");
         });
 
         $server->on('finish', function ($server, $task_id, $data) {
-            echo "AsyncTask[$task_id] finished: {$data}\n";
+
         });
 
         $server->start();
@@ -69,7 +66,7 @@ class Async implements ConsoleActionInterface
 
             $job = [
                 'job' => TestJob::KEY,
-                'data' => 12312321
+                'data' => "testJob"
             ];
 
             $cli->send(json_encode($job, true));
