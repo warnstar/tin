@@ -1,14 +1,21 @@
 {
     "name": "warnstar/tin",
+<<<<<<< HEAD
     "description": "swoole web project",
     "type": "project",
     "license": "0.1",
+=======
+    "description": "swoole http server",
+    "type": "library",
+    "license": "MIT",
+>>>>>>> f7ecb70773f36db2777b2e5f03b1504adfc77093
     "authors": [
         {
             "name": "wchuang",
             "email": "wchuang@aliyun.com"
         }
     ],
+<<<<<<< HEAD
     "require": {
         "warnstar/tin-core": "dev-master",
         "illuminate/database": "^5.6",
@@ -20,10 +27,34 @@
         "symfony/var-dumper": "^3.1"
     },
     "require-dev": {
+=======
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.0.0",
+        "ext-swoole": ">=4.0.0",
+        "nikic/fast-route": "^1.3",
+        "vlucas/phpdotenv": "^2.4",
+        "psr/http-message": "^1.0",
+        "container-interop/container-interop": "^1.2",
+        "psr/container": "^1.0",
+        "pimple/pimple": "^3.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "symfony/var-dumper": "^3.1",
+>>>>>>> f7ecb70773f36db2777b2e5f03b1504adfc77093
         "friendsofphp/php-cs-fixer": "^2.10",
         "eaglewu/swoole-ide-helper": "dev-master"
     },
     "scripts": {
         "cs": "./vendor/bin/php-cs-fixer fix "
+<<<<<<< HEAD
+=======
+    },
+    "autoload": {
+        "psr-4": {
+            "Tin\\": "src"
+        }
+>>>>>>> f7ecb70773f36db2777b2e5f03b1504adfc77093
     }
 }

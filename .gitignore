@@ -2,6 +2,7 @@ composer.lock
 
 vendor
 
+<<<<<<< HEAD
 .idea
 
 .env
@@ -12,3 +13,6 @@ docker-compose.yml
 /app/runtime
 
 /app/runtime/logs
+=======
+.idea
+>>>>>>> f7ecb70773f36db2777b2e5f03b1504adfc77093
