@@ -77,4 +77,4 @@ WORKDIR /var/www/html
 
 EXPOSE 80 9502
 
-CMD ["php", "/var/www/html/public/index.php"]
+CMD ["top"]
