@@ -1,0 +1,14 @@
+composer.lock
+
+vendor
+
+.idea
+
+.env
+
+docker-compose.yml
+
+
+/app/runtime
+
+/app/runtime/logs

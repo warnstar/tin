@@ -1,0 +1,11 @@
+version: '2'
+services:
+    cli:
+        build: .
+        ports:
+            - "1400:80"
+        restart: always
+        volumes:
+          - .:/var/www/html
+        command: ""php /var/www/html/public/index.php"
+
