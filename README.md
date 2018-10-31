@@ -10,20 +10,8 @@ composer install
 
 #### 启动
 ```
-<<<<<<< HEAD
 php public/index.php
-=======
-require_once __DIR__ .  './vendor/autoload.php';
 
-$r = new \Tin\Router();
-
-$r->get('/', \app\admin\controllers\IndexController::class . '@index');
-
-$components['router'] =  $r;
-$components['server'] = \Tin\HttpServer::build();
-
-(new \Tin($components))->run();
->>>>>>> f7ecb70773f36db2777b2e5f03b1504adfc77093
 ```
 
 ### 路由配置
